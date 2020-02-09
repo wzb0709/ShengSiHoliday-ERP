@@ -30,6 +30,8 @@ const MainLayout = (props: any) => {
   const [menuKey, setMenuKey] = useState<Array<string>>([]);
   //控制content刷新
   const [refresh, setRefresh] = useState<boolean>(true);
+  //控制菜单展开
+  const [openMenu,setOpenMenu] = useState<Array<string>>(['1'])
 
   //判断用户是否登录
   const dispatch = useDispatch()
@@ -121,8 +123,6 @@ const MainLayout = (props: any) => {
     </Menu>
   )
 
-
-
   //右侧下拉菜单点击事件
   const handleSelectMenu = (param: ClickParam) => {
     if (param.key === '0') {
@@ -132,6 +132,14 @@ const MainLayout = (props: any) => {
       if (tmpTab) setTabs([tmpTab]);
     }
   };
+
+  //菜单展开事件监听
+  const handleMenuOpenChange = (openKeys:any) => {
+    if(openKeys.length >=3 ){
+      openKeys.splice(1,1)
+    }
+    setOpenMenu(openKeys)
+  }
 
   return (
     <Layout style={{ minHeight: '100vh' }}>
@@ -151,6 +159,8 @@ const MainLayout = (props: any) => {
           defaultOpenKeys={['1']}
           mode="inline"
           selectedKeys={menuKey}
+          onOpenChange={handleMenuOpenChange}
+          openKeys={openMenu}
         >
           {menuList.map((item: IMenuItem) => {
             if (item.children.length > 0) {
@@ -224,18 +234,7 @@ const MainLayout = (props: any) => {
           </Tabs>
           <div style={{ position: 'relative' }}>
             <div
-              style={{
-                padding: 24,
-                background: '#fff',
-                height: 705,
-                overflowY: 'auto',
-                position: 'absolute',
-                left: 0,
-                top: 0,
-                bottom: 0,
-                right: 0,
-                width: '100%',
-              }}
+              className={styles.content}
             >
               {refresh && <Fragment>
                 {props.children}

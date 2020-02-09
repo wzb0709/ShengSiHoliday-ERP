@@ -26,6 +26,10 @@ const config: IConfig = {
       routes: [
         { path: '/', component: './index' },
         { path: '/login', component: './login/index' },
+        { path: '/market', component: './market/breadcrumb' ,routes:[
+            {path:'/market/ad',component:'./market/ad/adLocation'}
+          ]
+        },
         { path: '/main/list', component: './main/index' },
         { path: '/sub', component: './sub/breadcrumb', routes: [
             { path: '/sub/list', component: './sub/index' },

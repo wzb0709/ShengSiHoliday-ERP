@@ -1,11 +1,11 @@
-import React, { useEffect, useState, Fragment } from 'react';
+import React, { useEffect, useState, Fragment, useCallback } from 'react'
 import styles from './index.scss';
 import { Icon, Layout, Menu, Tabs, Dropdown, Button } from 'antd';
 import { menuList } from '@/utils/menuList';
 import { router, Link } from 'umi';
 import { IMenuItem } from '@/utils/menuList';
 import { ClickParam } from 'antd/lib/menu';
-import { TransitionGroup, CSSTransition } from 'react-transition-group';
+import { useDispatch } from 'dva'
 
 
 const { Header, Content, Sider } = Layout;
@@ -29,6 +29,18 @@ const MainLayout = (props: any) => {
   const [menuKey, setMenuKey] = useState<Array<string>>([]);
   //控制content刷新
   const [refresh, setRefresh] = useState<boolean>(true);
+
+  //判断用户是否登录
+  const dispatch = useDispatch()
+  const getUserInfo = useCallback(() => {
+    dispatch({
+      type: 'login/getUserInfo',
+      payload:{id:localStorage.getItem('id')}
+    })
+  },[dispatch])
+  useEffect(()=>{
+    getUserInfo()
+  },[getUserInfo])
 
 
   //根据路由变化来生成tabs

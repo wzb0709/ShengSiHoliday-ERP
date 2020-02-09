@@ -3,6 +3,7 @@ import LoginLayout from './loginLayout'
 import MainLayout from '@/layouts/mainLayout'
 
 const BasicLayout = (props: any) => {
+
   if (props.location.pathname === '/login')
     return (
       <LoginLayout>{props.children}</LoginLayout>

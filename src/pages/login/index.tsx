@@ -2,6 +2,7 @@ import React from 'react';
 import styles from "./index.scss";
 import {Form,Divider,Input,Icon,Button} from 'antd'
 import {router} from 'umi'
+import { useDispatch } from 'dva'
 
 const FormItem = Form.Item
 
@@ -14,11 +15,15 @@ const Login = (props:any) => {
 
   const { getFieldDecorator } = props.form
 
+  const dispatch = useDispatch()
+
   const handleSubmit = () => {
     props.form.validateFields((err:any,values:ILogin)=>{
       if(!err){
-        console.log(values)
-        router.replace('/')
+        dispatch({
+          type:'login/userLogin',
+          payload:{...values}
+        })
       }
     })
   }

@@ -5,7 +5,8 @@ import { menuList } from '@/utils/menuList';
 import { router, Link } from 'umi';
 import { IMenuItem } from '@/utils/menuList';
 import { ClickParam } from 'antd/lib/menu';
-import { useDispatch } from 'dva'
+import { useDispatch, useSelector } from 'dva'
+import { IUserInfo } from '@/models/login'
 
 
 const { Header, Content, Sider } = Layout;
@@ -101,6 +102,27 @@ const MainLayout = (props: any) => {
     }
   };
 
+  //获取用户信息
+  const userInfo:IUserInfo = useSelector((state:any) => state.login.userInfo)
+
+  //用户登出事件
+  const handleUserLogout = () => {
+    router.replace('/login')
+    localStorage.clear()
+  }
+
+  //用户信息下拉菜单
+  const menu = (
+    <Menu>
+      <Menu.Item onClick={handleUserLogout}>
+        <Icon type="logout" />
+        登出账号
+      </Menu.Item>
+    </Menu>
+  )
+
+
+
   //右侧下拉菜单点击事件
   const handleSelectMenu = (param: ClickParam) => {
     if (param.key === '0') {
@@ -163,7 +185,14 @@ const MainLayout = (props: any) => {
         </Menu>
       </Sider>
       <Layout>
-        <Header style={{ background: '#fff', padding: 0 }}/>
+        <Header style={{ background: '#fff', padding: 0 ,position:"relative"}}>
+          <Dropdown overlay={menu} placement="bottomLeft">
+            <div className={styles.userInfo}>
+              <div>{userInfo.user_name}</div>
+              <div>{userInfo.company}</div>
+            </div>
+          </Dropdown>
+        </Header>
         <Content style={{ margin: '0 16px' }}>
           <Tabs
             hideAdd={true}

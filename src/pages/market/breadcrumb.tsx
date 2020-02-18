@@ -5,7 +5,8 @@ const BreadcrumbLayout: FC = (props) => {
 
   const breadCrumb: Array<IRouterItem> = [
     { path: '/market', name: '营销中心' },
-    { path: '/market/ad', name: '广告管理' },
+    { path: '/market/ad', name: '广告位管理' },
+    { path: '/market/ad/:id', name: '广告管理' },
     { path: '/market/coupon', name: '优惠券管理' },
     { path: '/market/help', name: '小贴士管理' },
     { path: '/market/comment', name: '评价管理' },

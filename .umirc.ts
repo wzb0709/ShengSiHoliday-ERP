@@ -34,8 +34,10 @@ const config: IConfig = {
         { path: '/product', component: './product/breadcrumb' ,routes:[
             {path:'/product/oneDay',component:'./product/oneDay/oneDay'},
             {path:'/product/oneDay/:id',component:'./product/oneDay/oneDayDetail'},
+            {path:'/product/oneDay/:id/plan',component:'./product/oneDayManager/datePlan'},
             {path:'/product/oneDay/:id/edit',component:'./product/oneDay/oneDayEdit'},
             {path:'/product/oneDay/:id/img',component:'./imgList'},
+            {path:'/product/oneDayManager',component:'./product/oneDayManager/oneDayManager'},
             {path:'/product/party',component:'./product/party/party'},
             {path:'/product/party/:id',component:'./product/party/partyDetail'},
             {path:'/product/party/:id/img',component:'./imgList'},

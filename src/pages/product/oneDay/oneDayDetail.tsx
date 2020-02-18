@@ -67,6 +67,8 @@ const OneDayDetail: FC<IProps> = (props) => {
           <Divider type='vertical'/>
           <Link to={`/product/oneDay/${props.match.params.id}/img`}>图文编辑</Link>
           <Divider type='vertical'/>
+          <Link to={`/product/oneDay/${props.match.params.id}/plan`}>计划管理</Link>
+          <Divider type='vertical'/>
           <a>复制产品</a>
           <Divider type='vertical'/>
           <a>转让产品</a>

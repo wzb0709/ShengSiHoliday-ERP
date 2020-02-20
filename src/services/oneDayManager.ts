@@ -51,13 +51,29 @@ export function updatePlanStatus(id:string,status:number) {
   return axios.put(`/productDate/${id}/${status}`)
 }
 
-export function getPlanList(search:string,status:number,start_time:string,end_time:string,page:number,size:number) {
+export function getPlanList(search:string,status:number,start_time:string,end_time:string,op_id:string,page:number,size:number) {
   const params = {
-    search,status,start_time,end_time,page,size
+    search,status,start_time,end_time,page,size,op_id
   }
   return axios.get('/productDatePackage',{params})
 }
 
 export function getPlanPackage(prodateid:string) {
-  return axios.get(`/productDatePackage/${prodateid}`)
+  return axios.get(`/productDatePackage/date/${prodateid}`)
+}
+
+export function getPlanInfo(id:string) {
+  return axios.get(`/productDatePackage/datail/${id}`)
+}
+
+export function deletePlanPackage(id:string) {
+  return axios.delete(`/productDate/package/${id}`)
+}
+
+export function updatePlanPackageStatus(id:string,status:number) {
+  return axios.put(`/productDate/package/${id}/${status}`)
+}
+
+export function addPlanPackage(item:any) {
+  return axios.post(`/productDate/addpackage`,item)
 }

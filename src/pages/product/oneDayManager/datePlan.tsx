@@ -33,7 +33,7 @@ const DatePlan: FC<IProps> = (props) => {
 
   const columns: ColumnProps<Object>[] = [
     { dataIndex: 'package_title', title: '套餐名称' },
-    { dataIndex: 'package_summary', title: '套餐描述' },
+    { dataIndex: 'start_time', title: '开始时间' },
     { dataIndex: 'package_price', title: '套餐价格' },
     { dataIndex: 'package_commission', title: '分销佣金' },
     { dataIndex: 'package_count', title: '数量' },

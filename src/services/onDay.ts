@@ -1,7 +1,18 @@
 import axios from 'axios'
 
-export function getOneDayList(search:string,status:number,page:number,size:number){
-  return axios.get(`/product/${status}/${page}/${size}?search=${search}`)
+interface IParams {
+  search:string,
+  status:number,
+  op_id:string,
+  start_time:string,
+  end_time:string,
+  page:number,
+  size:number
+}
+
+export function getOneDayList(item:IParams){
+  const params = {...item}
+  return axios.get(`/product/list`,{params})
 }
 
 interface IOneDayItem {

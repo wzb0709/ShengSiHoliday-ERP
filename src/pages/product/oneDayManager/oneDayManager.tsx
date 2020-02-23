@@ -21,11 +21,10 @@ const OneDayManager: FC = (props) => {
   const [params, setParams] = useState<IOneDayManagerSearch>({ search: '', status: -1, start_time: '', end_time: '', op_id: '' })
 
   const columns: ColumnProps<Object>[] = [
-    { dataIndex: 'product_no', title: '产品编号' },
-    { dataIndex: 'start_date', title: '产品标题' },
+    { dataIndex: 'product_title', title: '产品标题' },
     { dataIndex: 'start_date', title: '发团时间', render:recode => <>{moment(recode).format('YYYY-MM-DD')}</>},
     { dataIndex: 'package_count', title: '套餐数' },
-    { dataIndex: 'package_take', title: '已收' },
+    { dataIndex: 'take_count', title: '已收' },
     { dataIndex: 'op_id', title: '计调' },
     {
       dataIndex: '', title: '上架状态', render: recode =>
@@ -61,7 +60,9 @@ const OneDayManager: FC = (props) => {
   }
 
   //查询按钮点击事件
-  const handleSearch = (values: IOneDayManagerSearch) => {
+  const handleSearch = (values: any) => {
+    values.start_time = values.start_time.format('YYYY-MM-DD')
+    values.end_time = values.end_time.format('YYYY-MM-DD')
     setParams({ ...values })
   }
   //监听表格页数变更
@@ -81,7 +82,7 @@ const OneDayManager: FC = (props) => {
         dataSource={dataSource}
         scroll={{ y: 510 }}
         bordered={true}
-        rowKey='id'
+        rowKey='product_date_id'
       />
     </>
   )

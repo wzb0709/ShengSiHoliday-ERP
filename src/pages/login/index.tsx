@@ -1,7 +1,6 @@
 import React from 'react';
 import styles from "./index.scss";
 import {Form,Divider,Input,Icon,Button} from 'antd'
-import {router} from 'umi'
 import { useDispatch } from 'dva'
 
 const FormItem = Form.Item

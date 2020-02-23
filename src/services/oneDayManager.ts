@@ -55,7 +55,7 @@ export function getPlanList(search:string,status:number,start_time:string,end_ti
   const params = {
     search,status,start_time,end_time,page,size,op_id
   }
-  return axios.get('/productDatePackage',{params})
+  return axios.get('/productDatePackage/list',{params})
 }
 
 export function getPlanPackage(prodateid:string) {

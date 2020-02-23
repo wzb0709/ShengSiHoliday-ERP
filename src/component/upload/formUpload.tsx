@@ -21,7 +21,6 @@ export default class FormUpload extends Component<Props, {}>{
   static getDerivedStateFromProps(props:any, state:any) {
     const newFiles:any = []
     let value:any
-
     if (props.value !== undefined && props.value.length > 0) {
       if (typeof props.value === 'string') {
         value = [props.value]
@@ -90,6 +89,7 @@ export default class FormUpload extends Component<Props, {}>{
   }
 
   handleChange = ({ file, fileList, event }:any) => {
+    console.log(file)
     if (file.status === 'done' || file.status === 'removed') {
       if (file.status === 'done') {
         for (let item of fileList) {
@@ -101,11 +101,11 @@ export default class FormUpload extends Component<Props, {}>{
           }
         }
       }
+    }
+    // @ts-ignore
+    if (this.props.onChange) {
       // @ts-ignore
-      if (this.props.onChange) {
-        // @ts-ignore
-        this.props.onChange(fileList.map((item:any) => item.url))
-      }
+      this.props.onChange(fileList.map((item:any) => item.url))
     }
 
     this.setState({ fileList })

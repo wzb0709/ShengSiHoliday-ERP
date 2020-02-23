@@ -52,6 +52,7 @@ const UserTable: FC<IProps> = (props) => {
         total: props.count,
         onChange:props.onPageChange
       }}
+      scroll={{ y: 510 }}
       bordered={true}
     />
   )

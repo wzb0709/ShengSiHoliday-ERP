@@ -7,10 +7,22 @@
   @extend %fullScreen;
   position: relative;
   background: {
-    image: url("../assets/login_bg.jpg");
+    image: url("../assets/login_bg.png");
     repeat: no-repeat;
     size: cover;
   };
+}
+
+.text{
+  background: #3D7BF7;
+  color: #FFF;
+  display: flex;
+  align-items: center;
+  height: 55px;
+  font-size: 18px;
+  font-weight: bold;
+  box-sizing: border-box;
+  padding-left: 450px;
 }
 
 .title{

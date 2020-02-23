@@ -17,13 +17,18 @@ const OneDay:FC = (props) => {
   //表格数据源
   const [dataSource, setDataSource] = useState<Array<any>>([])
   //查询的相关参数
-  const [params, setParams] = useState<IOneDaySearch>({ search:'',status:-1 })
+  const [params, setParams] = useState<IOneDaySearch>({ search:'',status:-1,op_id:'',start_time:'',end_time:'' })
   //控制模态框
   const [visible,setVisible] = useState<boolean>(false)
   const [initialValue,setInitialValue] = useState({})
 
   const columns: ColumnProps<Object>[] = [
+    { dataIndex: 'product_no', title: '产品编号' },
     { dataIndex: 'product_title', title: '产品标题' },
+    { dataIndex: 'package_count', title: '套餐' },
+    { dataIndex: 'online_plan', title: '发团计划' },
+    { dataIndex: 'eval_count', title: '评价' },
+    { dataIndex: 'op_id', title: '计调' },
     {
       dataIndex: '', title: '上架状态', render: recode =>
         <Row type='flex'>
@@ -40,7 +45,7 @@ const OneDay:FC = (props) => {
 
   //获取表格源数据
   const getOneDayList = useCallback(() => {
-    oneDayServices.getOneDayList(params.search,params.status,page,size)
+    oneDayServices.getOneDayList({...params,page,size})
       .then((res: any) => {
         setDataSource(res.data)
         setCount(res.count)
@@ -59,7 +64,9 @@ const OneDay:FC = (props) => {
   }
 
   //查询按钮点击事件
-  const handleSearch = (values: IOneDaySearch) => {
+  const handleSearch = (values: any) => {
+    values.start_time = values.start_time.format('YYYY-MM-DD')
+    values.end_time = values.end_time.format('YYYY-MM-DD')
     setParams({ ...values })
   }
   //监听表格页数变更

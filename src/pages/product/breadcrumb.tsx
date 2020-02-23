@@ -16,9 +16,14 @@ const BreadcrumbLayout: FC = (props) => {
     { path: '/product/oneDayManager/:id', name: '计划详情' },
     { path: '/product/oneDayManager/:id/edit', name: '编辑计划' },
     { path: '/product/shopping', name: '当地购物' },
+    { path: '/product/shopping/:id', name: '当地购物详情' },
+    { path: '/product/shopping/:id/edit', name: '编辑基本信息' },
+    { path: '/product/shopping/:id/img', name: '编辑图文详情' },
     { path: '/product/party', name: '定制游' },
     { path: '/product/party/:id', name: '定制游详情' },
     { path: '/product/party/:id/img', name: '编辑图文详情' },
+    { path: '/product/reception', name: '一团一议' },
+    { path: '/product/reception/:id', name: '一团一议详情' },
   ]
 
   return (

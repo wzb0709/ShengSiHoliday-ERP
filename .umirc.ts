@@ -28,7 +28,8 @@ const config: IConfig = {
         { path: '/login', component: './login/index' },
         { path: '/market', component: './market/breadcrumb' ,routes:[
             {path:'/market/ad',component:'./market/ad/adLocation'},
-            {path:'/market/ad/:id',component:'./market/ad/adInfo/adInfo'}
+            {path:'/market/ad/:id',component:'./market/ad/adInfo/adInfo'},
+            {path:'/market/comment',component:'./market/comment'},
           ]
         },
         { path: '/product', component: './product/breadcrumb' ,routes:[
@@ -40,13 +41,22 @@ const config: IConfig = {
             {path:'/product/oneDayManager',component:'./product/oneDayManager/oneDayManager'},
             {path:'/product/oneDayManager/:id',component:'./product/oneDayManager/detail'},
             {path:'/product/oneDayManager/:id/edit',component:'./product/oneDayManager/detail/detailEdit'},
+            {path:'/product/shopping',component:'./product/shopping'},
+            {path:'/product/shopping/:id',component:'./product/shopping/detail'},
+            {path:'/product/shopping/:id/edit',component:'./product/shopping/detail/detailEdit'},
+            {path:'/product/shopping/:id/img',component:'./imgList'},
             {path:'/product/party',component:'./product/party/party'},
             {path:'/product/party/:id',component:'./product/party/partyDetail'},
             {path:'/product/party/:id/img',component:'./imgList'},
             {path:'/product/car',component:'./product/car/car'},
+            {path:'/product/reception',component:'./product/reception'},
+            {path:'/product/reception/:id',component:'./product/reception/detail'},
             // {path:'/product/car/:id',component:'./product/car/car'}
           ]
         },
+        { path: '/member', component: './member/breadcrumb' ,routes:[
+            {path:'/member/manager',component:'./member/memberList'},
+          ]},
         { path: '/basic', component: './basic/breadcrumb' ,routes:[
             {path:'/basic/food',component:'./basic/food'},
             {path:'/basic/food/:id',component:'./basic/food/detail'},

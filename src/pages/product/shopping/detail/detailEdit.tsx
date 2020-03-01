@@ -70,6 +70,7 @@ const ShoppingEdit: FC<IProps> = (props) => {
       <Card
         title='基本信息'
         extra={<a onClick={handleConfirm}>保存</a>}
+        style={{width:1200,margin:'0 auto'}}
       >
         {!loading && <ShoppingForm
           initialValue={basicInfo}
@@ -77,9 +78,9 @@ const ShoppingEdit: FC<IProps> = (props) => {
           ref={childRef}
         />}
       </Card>
-
-      <ShoppingPackageInfo id={props.match.params.id} canEdit={true}/>
-
+      <div style={{width:1200,margin:'0 auto'}}>
+        <ShoppingPackageInfo id={props.match.params.id} canEdit={true}/>
+      </div>
     </>
   )
 }

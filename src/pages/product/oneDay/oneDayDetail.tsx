@@ -4,6 +4,10 @@ import { Link, router } from 'umi'
 import * as oneDayServices from '@/services/onDay'
 import PackageInfo from '@/pages/product/oneDay/packageInfo'
 import OtherPackageInfo from '@/pages/product/oneDay/otherPackageInfo'
+import { getAllList } from '@/utils/common'
+import { IUserInfo } from '@/models/login'
+import { useSelector } from 'dva'
+import ChangeMember from '@/component/changeMember'
 
 interface IProps {
   match: any
@@ -17,7 +21,8 @@ export interface IBasicInfo {
   announcements:string,
   warm_prompt:string,
   product_tag:Array<string>,
-  travel_person:number
+  travel_person:number,
+  create_id:string
 }
 
 const OneDayDetail: FC<IProps> = (props) => {
@@ -30,8 +35,13 @@ const OneDayDetail: FC<IProps> = (props) => {
     announcements:'',
     warm_prompt:'',
     product_tag:[],
-    travel_person:0
+    travel_person:0,
+    create_id:''
   })
+  const [memberList,setMemberList] = useState<any>([])
+  const [changeVisible,setChangeVisible] = useState<boolean>(false)
+
+  const userInfo: IUserInfo = useSelector((state: any) => state.login.userInfo)
 
   const getBasicInfo = useCallback(() => {
     oneDayServices.getOneDayInfo(props.match.params.id).then((res:any)=>{
@@ -42,6 +52,9 @@ const OneDayDetail: FC<IProps> = (props) => {
   },[props.match.params.id])
   useEffect(() => {
     getBasicInfo()
+    getAllList().then(res=>{
+      setMemberList(res)
+    })
   }, [getBasicInfo])
 
 
@@ -58,27 +71,39 @@ const OneDayDetail: FC<IProps> = (props) => {
     })
   }
 
+  const handleCopyProduct = () => {
+    Modal.confirm({
+      title:'提示',
+      content:'是否要复制该产品?',
+      onOk:() => {
+        oneDayServices.copyProduct(props.match.params.id).then(() => {
+          message.success('操作成功！')
+        })
+      }
+    })
+  }
+
   return (
     <>
       <Card
         title='基本信息'
-        extra={<>
+        extra={userInfo.issale && <>
           <Link to={`/product/oneDay/${props.match.params.id}/edit`}>编辑产品</Link>
           <Divider type='vertical'/>
           <Link to={`/product/oneDay/${props.match.params.id}/img`}>图文编辑</Link>
           <Divider type='vertical'/>
           <Link to={`/product/oneDay/${props.match.params.id}/plan`}>计划管理</Link>
           <Divider type='vertical'/>
-          <a>复制产品</a>
+          <a onClick={handleCopyProduct} >复制产品</a>
           <Divider type='vertical'/>
-          <a>转让产品</a>
+          <a onClick={() => setChangeVisible(true)} >转让产品</a>
           <Divider type='vertical'/>
           <a onClick={handleDelete} style={{ color: 'red' }}>删除产品</a>
         </>}
       >
         <Row>
-          <Col span={15}>
-            <Calendar />
+          <Col span={13}>
+            <Calendar  />
           </Col>
           <Col span={9} style={{marginTop:70}}>
             <Row style={{ marginBottom: 20 }}>产品标题：{basicInfo.product_title}</Row>
@@ -104,12 +129,22 @@ const OneDayDetail: FC<IProps> = (props) => {
         title='计调信息'
         style={{ marginTop: 20 }}
       >
-        123
+        <Row style={{ marginBottom: 20 }}>
+          <Col span={12} >计调姓名：{memberList.find((item:any) => item.id === basicInfo.create_id) ? memberList.find((item:any) => item.id === basicInfo.create_id).name : ''}</Col>
+          <Col span={12} >联系方式：{memberList.find((item:any) => item.id === basicInfo.create_id) ? memberList.find((item:any) => item.id === basicInfo.create_id).phone : ''}</Col>
+        </Row>
       </Card>
 
       <PackageInfo id={props.match.params.id} canEdit={false}/>
 
       <OtherPackageInfo id={props.match.params.id} canEdit={false}/>
+
+      <ChangeMember
+        visible={changeVisible}
+        onCancel={() => setChangeVisible(false)}
+        memberList={memberList}
+        type={1}
+      />
     </>
   )
 }

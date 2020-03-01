@@ -1,9 +1,13 @@
 import React, { FC, useCallback, useEffect, useState } from 'react'
-import { Card, Divider, message, Modal, Row, Tag } from 'antd'
+import { Card, Col, Divider, message, Modal, Row, Tag } from 'antd'
 
 import * as partyServices from '@/services/party'
 import PartyModal from '@/pages/product/party/partyModal'
 import { router, Link } from 'umi'
+import { IUserInfo } from '@/models/login'
+import { useSelector } from 'dva'
+import { getAllList } from '@/utils/common'
+import ChangeMember from '@/component/changeMember'
 
 interface IProps {
   match: any
@@ -17,6 +21,7 @@ interface IBasicInfo {
   travel_person: number,
   travel_price: number,
   travel_pics: Array<string>,
+  create_id:string
 }
 
 const PartyDetail: FC<IProps> = (props) => {
@@ -30,9 +35,14 @@ const PartyDetail: FC<IProps> = (props) => {
       travel_person: 0,
       travel_price: 0,
       travel_pics: [],
+      create_id:''
     })
 
   const [visible,setVisible] = useState<boolean>(false)
+  const [memberList,setMemberList] = useState<any>([])
+  const [changeVisible,setChangeVisible] = useState<boolean>(false)
+
+  const userInfo: IUserInfo = useSelector((state: any) => state.login.userInfo)
 
   const tagColor = ['magenta', 'red', 'volcano']
 
@@ -45,6 +55,9 @@ const PartyDetail: FC<IProps> = (props) => {
   }, [props.match.params.id])
   useEffect(() => {
     getBasicInfo()
+    getAllList().then(res=>{
+      setMemberList(res)
+    })
   }, [getBasicInfo])
 
   const handleUpdateModal = () => {
@@ -79,19 +92,31 @@ const PartyDetail: FC<IProps> = (props) => {
     })
   }
 
+  const handleCopyProduct = () => {
+    Modal.confirm({
+      title:'提示',
+      content:'是否要复制该产品?',
+      onOk:() => {
+        partyServices.copyProduct(props.match.params.id).then(() => {
+          message.success('操作成功！')
+        })
+      }
+    })
+  }
+
 
   return (
     <>
       <Card
         title='基本信息'
-        extra={<>
+        extra={userInfo.issale && <>
           <a onClick={handleUpdateModal} >编辑产品</a>
           <Divider type='vertical' />
           <Link to={`/product/party/${props.match.params.id}/img`} >图文编辑</Link>
           <Divider type='vertical' />
-          <a>复制产品</a>
-          <Divider type='vertical' />
-          <a>转让产品</a>
+          <a onClick={handleCopyProduct} >复制产品</a>
+          <Divider type='vertical'/>
+          <a onClick={() => setChangeVisible(true)} >转让产品</a>
           <Divider type='vertical' />
           <a onClick={handleDelete} style={{color:'red'}}>删除产品</a>
         </>}
@@ -109,13 +134,22 @@ const PartyDetail: FC<IProps> = (props) => {
         title='计调信息'
         style={{ marginTop: 20 }}
       >
-        111
+        <Row>
+          <Col span={12}>计调姓名：{memberList.find((item:any) => item.id === basicInfo.create_id) ? memberList.find((item:any) => item.id === basicInfo.create_id).name : ''}</Col>
+          <Col span={12}>联系方式：{memberList.find((item:any) => item.id === basicInfo.create_id) ? memberList.find((item:any) => item.id === basicInfo.create_id).phone : ''}</Col>
+        </Row>
       </Card>
       <PartyModal
         visible={visible}
         onCancel={() => setVisible(false)}
         onOk={handleConfirm}
         initialValue={basicInfo}
+      />
+      <ChangeMember
+        visible={changeVisible}
+        onCancel={() => setChangeVisible(false)}
+        memberList={memberList}
+        type={1}
       />
     </>
   )

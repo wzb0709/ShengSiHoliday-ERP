@@ -6,6 +6,7 @@ interface IProps {
   form:WrappedFormUtils
   initialValue:IReceptionSearch
   onSearch:(values:IReceptionSearch) => void
+  opList:any
 }
 
 export interface IReceptionSearch {
@@ -48,7 +49,13 @@ const ReceptionSearch:FC<IProps> = (props) => {
               required: false,
             },
           ],
-        })(<Select placeholder='请选择计调' style={{width:200}} />)}
+        })(<Select placeholder='请选择计调' style={{width:200}} >
+          {props.opList.map((item:any)=>{
+            return(
+              <Option key={item.id}>{item.name}</Option>
+            )
+          })}
+        </Select>)}
       </FormItem>
       <Button type='primary' style={{marginBottom:24,marginLeft:20}} onClick={handleConfirm}>查询</Button>
     </>

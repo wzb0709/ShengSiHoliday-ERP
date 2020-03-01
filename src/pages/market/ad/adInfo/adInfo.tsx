@@ -143,14 +143,15 @@ const AdInfo:FC<IProps> = (props) => {
   return (
     <>
       <Row type='flex' align='middle'>
-        <Button onClick={handleOpenAddModal} type='primary' style={{ marginBottom: 24, marginRight: 20 }}>新增广告位</Button>
+        <Button onClick={handleOpenAddModal} type='primary' style={{ marginBottom: 24, marginRight: 20 }}>新增广告</Button>
         <AdInfoSearch initialValue={params} onSearch={handleSearch}/>
       </Row>
       <Table
         columns={columns}
         pagination={{ pageSize: size, total: count, current: page, onChange: handlePageChange }}
         dataSource={dataSource}
-        scroll={{ y: 510 }}
+        // @ts-ignore
+        scroll={{ y: parseInt(localStorage.getItem('height') - 377) }}
         bordered={true}
         rowKey='id'
       />

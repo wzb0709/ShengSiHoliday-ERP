@@ -1,9 +1,11 @@
 import React, { FC, useCallback, useEffect, useState } from 'react'
 import * as planServices from '@/services/oneDayManager'
-import { Card, Col, Row } from 'antd'
+import { Card, Col, Divider, message, Modal, Row } from 'antd'
 import moment from  'moment'
 import PackageTable from '@/pages/product/oneDayManager/detail/packageTable'
-import { Link } from 'umi'
+import { Link, router } from 'umi'
+import { getAllList } from '@/utils/common'
+import * as oneDayServices from '@/services/onDay'
 
 interface IProps {
   match:any
@@ -28,16 +30,33 @@ const DetailEdit:FC<IProps> = (props) => {
     status:-1,
     op_id:''
   })
-
+  const [memberList,setMemberList] = useState<any>([])
 
   const getBasicInfo = useCallback(() => {
     planServices.getPlanInfo(props.match.params.id).then((res:any)=>{
       setBasicInfo(res)
     })
   },[props.match.params.id])
+
   useEffect(() =>{
     getBasicInfo()
+    getAllList().then(res=>{
+      setMemberList(res)
+    })
   },[getBasicInfo])
+
+  const handleDelete = () => {
+    Modal.confirm({
+      title:'提示',
+      content:'是否要删除该产品?',
+      onOk:() => {
+        planServices.deletePlan(props.match.params.id).then(() => {
+          message.success('操作成功！')
+          router.replace('/product/oneDayManager')
+        })
+      }
+    })
+  }
 
   return (
     <>
@@ -45,6 +64,10 @@ const DetailEdit:FC<IProps> = (props) => {
         title='基本信息'
         extra={<>
           <Link to={`/product/oneDayManager/${props.match.params.id}/edit`} >编辑计划</Link>
+          <Divider type='vertical' />
+          <a>复制计划</a>
+          <Divider type='vertical' />
+          <a onClick={handleDelete} style={{color:'red'}}>删除计划</a>
         </>}
       >
         <Row>
@@ -64,6 +87,17 @@ const DetailEdit:FC<IProps> = (props) => {
           </Col>
         </Row>
       </Card>
+
+      <Card
+        title='计调信息'
+        style={{ marginTop: 20 }}
+      >
+        <Row>
+          <Col span={12}>计调姓名：{memberList.find((item:any) => item.id === basicInfo.op_id) ? memberList.find((item:any) => item.id === basicInfo.op_id).name : ''}</Col>
+          <Col span={12}>联系方式：{memberList.find((item:any) => item.id === basicInfo.op_id) ? memberList.find((item:any) => item.id === basicInfo.op_id).phone : ''}</Col>
+        </Row>
+      </Card>
+
       <PackageTable id={props.match.params.id} canEdit={false}/>
     </>
   )

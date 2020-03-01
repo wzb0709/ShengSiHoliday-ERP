@@ -8,6 +8,7 @@ import * as receptionServices from '@/services/reception'
 import PartyModal from '@/pages/product/party/partyModal'
 import ReceptionSearch, { IReceptionSearch } from '@/pages/product/reception/receptionSearch'
 import ReceptionModal from '@/pages/product/reception/receptionModal'
+import { getAllList, getOpList } from '@/utils/common'
 
 const Reception:FC = (props) => {
 
@@ -25,11 +26,18 @@ const Reception:FC = (props) => {
   const [visible,setVisible] = useState<boolean>(false)
   const [initialValue,setInitialValue] = useState({})
 
+  const [saleList, setSaleList] = useState<any>([])
+  const [opList, setOpList] = useState<any>([])
+
   const columns: ColumnProps<Object>[] = [
     { dataIndex: 'product_no', title: '产品编号' },
     { dataIndex: 'product_title', title: '产品标题' },
     { dataIndex: 'order_count', title: '订单' },
-    { dataIndex: 'op_id', title: '计调' },
+    {
+      dataIndex: 'op_id',
+      title: '计调' ,
+      render: recode => saleList.find((item: any) => item.id === recode) ? saleList.find((item: any) => item.id === recode).name : '无对应计调',
+    },
     {
       dataIndex: 'id', title: '操作', render: recode => <Fragment>
         <Link to={`/product/reception/${recode}`} >查看详情</Link>
@@ -41,12 +49,18 @@ const Reception:FC = (props) => {
   const getReceptionList = useCallback(() => {
     receptionServices.getReception(params.search,params.op_id,page,size)
       .then((res: any) => {
-        setDataSource(res.data)
-        setCount(res.count)
+        getAllList().then(res1 => {
+          setSaleList(res1)
+          setDataSource(res.data)
+          setCount(res.count)
+        })
       })
   }, [page, size, params])
   useEffect(() => {
     getReceptionList()
+    getOpList().then(res=>{
+      setOpList(res)
+    })
   }, [getReceptionList])
 
 
@@ -80,13 +94,14 @@ const Reception:FC = (props) => {
     <>
       <Row type='flex' align='middle'>
         <Button onClick={handleAddModal} type='primary' style={{ marginBottom: 24, marginRight: 20 }}>新增一团一议</Button>
-        <ReceptionSearch initialValue={params} onSearch={handleSearch}/>
+        <ReceptionSearch opList={opList} initialValue={params} onSearch={handleSearch}/>
       </Row>
       <Table
         columns={columns}
         pagination={{ pageSize: size, total: count, current: page, onChange: handlePageChange }}
         dataSource={dataSource}
-        scroll={{ y: 510 }}
+        // @ts-ignore
+        scroll={{ y: parseInt(localStorage.getItem('height') - 377) }}
         bordered={true}
         rowKey='id'
       />

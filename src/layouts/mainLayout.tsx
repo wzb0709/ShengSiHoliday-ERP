@@ -1,16 +1,16 @@
 import React, { useEffect, useState, Fragment, useCallback } from 'react'
-import styles from './index.scss';
-import { Icon, Layout, Menu, Tabs, Dropdown, Button } from 'antd';
-import { menuList } from '@/utils/menuList';
-import { router, Link } from 'umi';
-import { IMenuItem } from '@/utils/menuList';
-import { ClickParam } from 'antd/lib/menu';
+import styles from './index.scss'
+import { Icon, Layout, Menu, Tabs, Dropdown, Button, Row, Avatar } from 'antd'
+import { menuList } from '@/utils/menuList'
+import { router, Link } from 'umi'
+import { IMenuItem } from '@/utils/menuList'
+import { ClickParam } from 'antd/lib/menu'
 import { useDispatch, useSelector } from 'dva'
 import { IUserInfo } from '@/models/login'
 
 
-const { Header, Content, Sider } = Layout;
-const { SubMenu } = Menu;
+const { Header, Content, Sider } = Layout
+const { SubMenu } = Menu
 
 interface ITab {
   title: string
@@ -21,91 +21,90 @@ interface ITab {
 const MainLayout = (props: any) => {
 
   //控制侧边栏的开关
-  const [collapsed, setCollapsed] = useState<boolean>(false);
+  const [collapsed, setCollapsed] = useState<boolean>(false)
   //tabs路由导航
-  const [tabs, setTabs] = useState<Array<ITab>>([]);
+  const [tabs, setTabs] = useState<Array<ITab>>([])
   //tabs的活动key
-  const [activeKey, setActiveKey] = useState<string>('');
+  const [activeKey, setActiveKey] = useState<string>('')
   //menu的key
-  const [menuKey, setMenuKey] = useState<Array<string>>([]);
+  const [menuKey, setMenuKey] = useState<Array<string>>([])
   //控制content刷新
-  const [refresh, setRefresh] = useState<boolean>(true);
+  const [refresh, setRefresh] = useState<boolean>(true)
   //控制菜单展开
-  const [openMenu,setOpenMenu] = useState<Array<string>>(['1'])
+  const [openMenu, setOpenMenu] = useState<Array<string>>(['1'])
 
   //判断用户是否登录
   const dispatch = useDispatch()
   const getUserInfo = useCallback(() => {
     dispatch({
       type: 'login/getUserInfo',
-      payload:{id:localStorage.getItem('id')}
     })
-  },[dispatch])
-  useEffect(()=>{
+  }, [dispatch])
+  useEffect(() => {
     getUserInfo()
-  },[getUserInfo])
+  }, [getUserInfo])
 
 
   //根据路由变化来生成tabs
   useEffect(() => {
-    const router = props.children.props.location.pathname;
-    if(router === '/'){
+    const router = props.children.props.location.pathname
+    if (router === '/') {
       setMenuKey(['1'])
       setActiveKey('none')
       return
     }
-    let routerList: Array<string> = router.split('/');
+    let routerList: Array<string> = router.split('/')
     menuList.forEach((item: IMenuItem) => {
       if (routerList.includes(item.path)) {
         item.children.forEach((item1: IMenuItem) => {
           if (routerList.includes(item1.path)) {
-            const index = tabs.findIndex((tabItem: ITab) => tabItem.title === item1.title);
-            let tmpTabs: Array<ITab> = [...tabs];
+            const index = tabs.findIndex((tabItem: ITab) => tabItem.title === item1.title)
+            let tmpTabs: Array<ITab> = [...tabs]
             if (index === -1) {
-              const key = new Date().getTime().toString();
+              const key = new Date().getTime().toString()
               tmpTabs.push({
                 title: item1.title,
                 path: router,
                 key,
-              });
-              setActiveKey(key);
+              })
+              setActiveKey(key)
             } else {
-              tmpTabs[index].path = router;
-              setActiveKey(tmpTabs[index].key);
+              tmpTabs[index].path = router
+              setActiveKey(tmpTabs[index].key)
             }
-            setMenuKey([item1.id.toString()]);
-            setTabs(tmpTabs);
+            setMenuKey([item1.id.toString()])
+            setTabs(tmpTabs)
           }
-        });
+        })
       }
-    });
-  }, [props.children.props.location.pathname]);
+    })
+  }, [props.children.props.location.pathname])
 
   //当刷新参数变化时将其再次变化实现刷新
   useEffect(() => {
-    if (!refresh) setRefresh(true);
-  }, [refresh]);
+    if (!refresh) setRefresh(true)
+  }, [refresh])
 
   //tabItem点击事件
   const handleTabClick = (key: string) => {
-    const tab = tabs.find((tab: ITab) => tab.key === key);
-    if (tab) router.push(tab.path);
-  };
+    const tab = tabs.find((tab: ITab) => tab.key === key)
+    if (tab) router.push(tab.path)
+  }
 
   //tab删除事件
   const handleTabRemove = (targetKey: string | React.MouseEvent<HTMLElement>, action: 'add' | 'remove') => {
     if (action === 'remove') {
-      let tmpTabs: Array<ITab> = [...tabs];
-      const index = tmpTabs.findIndex((item: ITab) => item.key === targetKey);
-      tmpTabs.splice(index, 1);
-      setTabs(tmpTabs);
-      if (tmpTabs.length === 0) router.push('/');
-      else router.push(tmpTabs[tmpTabs.length - 1].path);
+      let tmpTabs: Array<ITab> = [...tabs]
+      const index = tmpTabs.findIndex((item: ITab) => item.key === targetKey)
+      tmpTabs.splice(index, 1)
+      setTabs(tmpTabs)
+      if (tmpTabs.length === 0) router.push('/')
+      else router.push(tmpTabs[tmpTabs.length - 1].path)
     }
-  };
+  }
 
   //获取用户信息
-  const userInfo:IUserInfo = useSelector((state:any) => state.login.userInfo)
+  const userInfo: IUserInfo = useSelector((state: any) => state.login.userInfo)
 
   //用户登出事件
   const handleUserLogout = () => {
@@ -117,7 +116,7 @@ const MainLayout = (props: any) => {
   const menu = (
     <Menu>
       <Menu.Item onClick={handleUserLogout}>
-        <Icon type="logout" />
+        <Icon type="logout"/>
         登出账号
       </Menu.Item>
     </Menu>
@@ -126,20 +125,24 @@ const MainLayout = (props: any) => {
   //右侧下拉菜单点击事件
   const handleSelectMenu = (param: ClickParam) => {
     if (param.key === '0') {
-      setRefresh(false);
+      setRefresh(false)
     } else if (param.key === '1') {
-      const tmpTab: ITab | undefined = tabs.find((item: ITab) => item.key === activeKey);
-      if (tmpTab) setTabs([tmpTab]);
+      const tmpTab: ITab | undefined = tabs.find((item: ITab) => item.key === activeKey)
+      if (tmpTab) setTabs([tmpTab])
     }
-  };
+  }
 
   //菜单展开事件监听
-  const handleMenuOpenChange = (openKeys:any) => {
-    if(openKeys.length >=3 ){
-      openKeys.splice(1,1)
+  const handleMenuOpenChange = (openKeys: any) => {
+    if (openKeys.length >= 3) {
+      openKeys.splice(1, 1)
     }
     setOpenMenu(openKeys)
   }
+
+  useEffect(() => {
+    localStorage.setItem('height', document.body.clientHeight.toString())
+  }, [props.children])
 
   return (
     <Layout style={{ minHeight: '100vh' }}>
@@ -147,11 +150,41 @@ const MainLayout = (props: any) => {
         collapsible={true}
         collapsed={collapsed}
         onCollapse={() => setCollapsed(!collapsed)}
+        style={{
+          overflow: 'auto',
+          height: '100vh',
+          position: 'fixed',
+          left: 0,
+        }}
       >
         <div className='logo'>
-          <h1 className={styles.title}>
-            {collapsed ? '嵊泗' : '嵊泗假日'}
-          </h1>
+          <div className={styles.title} style={{padding:collapsed ? '' : '10px'}}>
+            {collapsed ?
+              <div style={{lineHeight:'64px'}}>
+                {userInfo.head_img !== '' &&
+                <Dropdown overlay={menu} placement="bottomLeft">
+                  <Avatar size='large' src={userInfo.head_img} />
+                </Dropdown>}
+                {userInfo.head_img === '' &&
+                <Dropdown overlay={menu} placement="bottomLeft">
+                  <Avatar size='large' style={{ backgroundColor: '#87d068' }} icon="user" />
+                </Dropdown>}
+              </div>
+              :
+              <Row type='flex'  style={{ height: '100%' }} justify='space-between'>
+                {userInfo.head_img !== '' &&
+                <Avatar size='large' src={userInfo.head_img} />}
+                {userInfo.head_img === '' && <Avatar size='large' style={{ backgroundColor: '#87d068' }} icon="user" />}
+                <div style={{width:100,textAlign:'left'}}>
+                  <div>{userInfo.user_name}</div>
+                  <div style={{fontSize:10,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{userInfo.dept_name} {userInfo.position}</div>
+                </div>
+                <Dropdown overlay={menu} placement="bottomLeft">
+                  <Icon type="poweroff" style={{marginTop:6}} />
+                </Dropdown>
+              </Row>
+            }
+          </div>
         </div>
         <Menu
           theme="dark"
@@ -179,35 +212,27 @@ const MainLayout = (props: any) => {
                       <Menu.Item key={item1.id}>
                         <Link to={`/${item.path}/${item1.path}`}>{item1.title}</Link>
                       </Menu.Item>
-                    );
+                    )
                   })}
                 </SubMenu>
-              );
+              )
             } else {
               return (
                 <Menu.Item key={item.id} onClick={() => router.push(item.path)}>
                   <Icon type={item.icon}/>
                   <span>{item.title}</span>
                 </Menu.Item>
-              );
+              )
             }
           })}
         </Menu>
       </Sider>
       <Layout>
-        <Header style={{ background: '#fff', padding: 0 ,position:"relative"}}>
-          <Dropdown overlay={menu} placement="bottomLeft">
-            <div className={styles.userInfo}>
-              <div>{userInfo.user_name}</div>
-              <div>{userInfo.company}</div>
-            </div>
-          </Dropdown>
-        </Header>
         <Content style={{ margin: '0 16px' }}>
           <Tabs
             hideAdd={true}
             type="editable-card"
-            style={{ paddingTop: 17 }}
+            style={{ paddingTop: 17, marginLeft: !collapsed ? 200 : 80 }}
             tabBarExtraContent={
               <div className="tab-option">
                 <Dropdown
@@ -235,6 +260,8 @@ const MainLayout = (props: any) => {
           <div style={{ position: 'relative' }}>
             <div
               className={styles.content}
+              style={{ marginLeft: !collapsed ? 200 : 80 ,width:!collapsed ? 'calc(100vw - 240px)' : 'calc(100vw - 120px)'}}
+              id='content'
             >
               {refresh && <Fragment>
                 {props.children}
@@ -244,7 +271,7 @@ const MainLayout = (props: any) => {
         </Content>
       </Layout>
     </Layout>
-  );
-};
+  )
+}
 
-export default MainLayout;
+export default MainLayout

@@ -19,6 +19,7 @@ const config: IConfig = {
       },
     }],
   ],
+  externals: { BMap: 'BMap' },
   routes: [
     {
       path: '/',
@@ -30,6 +31,11 @@ const config: IConfig = {
             {path:'/market/ad',component:'./market/ad/adLocation'},
             {path:'/market/ad/:id',component:'./market/ad/adInfo/adInfo'},
             {path:'/market/comment',component:'./market/comment'},
+            {path:'/market/help',component:'./market/help'},
+          ]
+        },
+        { path: '/order', component: './order/breadcrumb' ,routes:[
+            {path:'/order/oneDay',component:'./order/oneDay'},
           ]
         },
         { path: '/product', component: './product/breadcrumb' ,routes:[
@@ -57,16 +63,24 @@ const config: IConfig = {
         { path: '/member', component: './member/breadcrumb' ,routes:[
             {path:'/member/manager',component:'./member/memberList'},
           ]},
+        { path: '/administrative', component: './administrative/breadcrumb' ,routes:[
+            {path:'/administrative/notice',component:'./administrative/notice'},
+            {path:'/administrative/addressBook',component:'./administrative/addressBook'},
+          ]},
         { path: '/basic', component: './basic/breadcrumb' ,routes:[
+            {path:'/basic/bus',component:'./basic/bus'},
+            {path:'/basic/point',component:'./basic/point'},
             {path:'/basic/food',component:'./basic/food'},
             {path:'/basic/food/:id',component:'./basic/food/detail'},
             {path:'/basic/attraction',component:'./basic/attraction'},
             {path:'/basic/attraction/:id',component:'./basic/attraction/detail'},
+            {path:'/basic/attraction/:id/img',component:'./imgList'},
           ]},
         { path: '/system', component: './system/breadcrumb' ,routes:[
             {path:'/system/auth',component:'./system/auth'},
             {path:'/system/character',component:'./system/character'},
             {path:'/system/member',component:'./system/user'},
+            {path:'/system/department',component:'./system/department'},
           ]},
         { path: '/main/list', component: './main/index' },
         { path: '/sub', component: './sub/breadcrumb', routes: [

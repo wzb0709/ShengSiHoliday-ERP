@@ -7,6 +7,7 @@ import { IUserInfo } from '@/services/user'
 import UserTable from '@/pages/system/user/userTable'
 import UserModal from '@/pages/system/user/userModal'
 import { IAuthItem } from '@/pages/system/auth/authTable'
+import { getDeptInfo } from '@/services/common'
 
 const User: FC = (props) => {
 
@@ -20,6 +21,7 @@ const User: FC = (props) => {
   const [initialValue, setInitialValue] = useState({})
   const [id, setId] = useState<string>('')
   const [characterList, setCharacterList] = useState<Array<IAuthItem>>([])
+  const [deptList,setDeptList] = useState<any>([])
 
   const getUserList = useCallback(() => {
     userServices.getUserList({
@@ -40,6 +42,9 @@ const User: FC = (props) => {
   useEffect(() => {
     getUserList()
     getCharacterList()
+    getDeptInfo().then(res=>{
+      setDeptList(res)
+    })
   }, [getUserList])
 
   const handelSearch = (values: IUserSearch) => {
@@ -124,6 +129,7 @@ const User: FC = (props) => {
         onCancel={() => setVisible(false)}
         onOk={handleConfirmUser}
         initialValue={initialValue}
+        deptList={deptList}
         characterList={characterList}
       />
       <Button type='primary' onClick={handleAddUser}>添加用户</Button>
@@ -136,6 +142,7 @@ const User: FC = (props) => {
         onViewUserInfo={handleViewUserInfo}
         onDeleteUser={handleDeleteUser}
         onPageChange={handlePageChange}
+        deptList={deptList}
         dataSource={dataSource}
         page={page}
         size={size}

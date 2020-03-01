@@ -14,7 +14,7 @@ interface IBasicInfo {
   scenic_pics: Array<string>,
   scenic_address: string,
   scenic_time: string,
-  scenic_phone:string
+  scenic_phone:Array<string>
 }
 
 const AttractionDetail:FC<IProps> = (props) => {
@@ -25,7 +25,7 @@ const AttractionDetail:FC<IProps> = (props) => {
       scenic_pics:['','','',''],
       scenic_address: '',
       scenic_time: '',
-      scenic_phone:''
+      scenic_phone:[]
     })
 
   const [visible,setVisible] = useState<boolean>(false)
@@ -33,6 +33,7 @@ const AttractionDetail:FC<IProps> = (props) => {
   const getBasicInfo = useCallback(() => {
     attractionServices.getScenicInfo(props.match.params.id).then((res: any) => {
       res.scenic_pics = JSON.parse(res.scenic_pics)
+      res.scenic_phone = JSON.parse(res.scenic_phone)
       setBasicInfo(res)
     })
   }, [props.match.params.id])
@@ -48,6 +49,7 @@ const AttractionDetail:FC<IProps> = (props) => {
     const params = {
       ...values,
       scenic_pics:JSON.stringify(values.scenic_pics),
+      scenic_phone:JSON.stringify(values.scenic_phone)
     }
     attractionServices.updateScenic(params,props.match.params.id).then(() => {
       message.success('操作成功!')
@@ -76,6 +78,8 @@ const AttractionDetail:FC<IProps> = (props) => {
         title='基本信息'
         extra={<>
           <a onClick={handleUpdateModal} >编辑产品</a>
+          <Divider type='vertical'/>
+          <Link to={`/basic/attraction/${props.match.params.id}/img`}>图文编辑</Link>
           <Divider type='vertical' />
           <a onClick={handleDelete} style={{color:'red'}}>删除产品</a>
         </>}
@@ -87,7 +91,7 @@ const AttractionDetail:FC<IProps> = (props) => {
           </Col>
         </Row>
         <Row style={{ marginBottom: 10 }}>营业地址：{basicInfo.scenic_address}</Row>
-        <Row style={{ marginBottom: 10 }}>联系电话：{basicInfo.scenic_phone}</Row>
+        <Row style={{ marginBottom: 10 }}>联系电话：{basicInfo.scenic_phone.map(item=>{return <>{item} </>})}</Row>
         <Row style={{ marginBottom: 10 }}>
           {basicInfo.scenic_pics.map((item,index)=>{
             return item !=='' && (

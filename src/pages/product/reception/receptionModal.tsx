@@ -64,10 +64,10 @@ const ReceptionModal:FC<IProps> = (props) => {
           rules: [
             {
               required: true,
-              message: '请输入数量',
+              message: '请输入行程缩影',
             },
           ],
-        })(<Input.TextArea rows={3} placeholder='请输入数量' style={{width:"90%"}} />)}
+        })(<Input.TextArea rows={3} placeholder='请输入行程缩影' style={{width:"90%"}} />)}
       </FormItem>
     </Modal>
   )

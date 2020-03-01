@@ -13,9 +13,14 @@ body {
   text-align: center;
 }
 
-.ant-tabs-bar{
+.ant-tabs-bar {
   border-bottom: 0 !important;
 }
-.ant-tabs-tab-active{
+
+.ant-tabs-tab-active {
   border-bottom: 1px solid #e8e8e8;
+}
+
+.ant-fullcalendar-fullscreen .ant-fullcalendar-month, .ant-fullcalendar-fullscreen .ant-fullcalendar-date{
+  height: 80px !important;
 }

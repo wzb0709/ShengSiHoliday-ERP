@@ -21,8 +21,14 @@ const PackageInfo: FC<IProps> = (props) => {
   const columns: ColumnProps<Object>[] = props.canEdit ? [
     { dataIndex: 'package_title', title: '套餐名称' },
     { dataIndex: 'package_summary', title: '套餐描述' },
-    { dataIndex: 'package_price', title: '默认套餐价格' },
-    { dataIndex: 'package_commission', title: '默认分销佣金' },
+    { dataIndex: '', title: '默认套餐价格' ,render:recode => <>
+        <div>成人：￥{recode.package_adult_price}</div>
+        <div style={{marginTop:10}} >儿童：￥{recode.package_child_price}</div>
+      </>},
+    { dataIndex: '', title: '默认分销佣金' ,render:recode => <>
+        <div>成人：￥{recode.package_adult_commission}</div>
+        <div style={{marginTop:10}}>儿童：￥{recode.package_child_commission}</div>
+      </>},
     { dataIndex: 'package_count', title: '默认数量' },
     { dataIndex: 'advance_booking', title: '下单截止' },
     { dataIndex: 'persistence_time', title: '暂留时间' },
@@ -49,8 +55,14 @@ const PackageInfo: FC<IProps> = (props) => {
   ] : [
     { dataIndex: 'package_title', title: '套餐名称' },
     { dataIndex: 'package_summary', title: '套餐描述' },
-    { dataIndex: 'package_price', title: '默认套餐价格' },
-    { dataIndex: 'package_commission', title: '默认分销佣金' },
+    { dataIndex: '', title: '默认套餐价格' ,render:recode => <>
+        <div>成人：￥{recode.package_adult_price}</div>
+        <div style={{marginTop:10}} >儿童：￥{recode.package_child_price}</div>
+      </>},
+    { dataIndex: '', title: '默认分销佣金' ,render:recode => <>
+        <div>成人：￥{recode.package_adult_commission}</div>
+        <div style={{marginTop:10}}>儿童：￥{recode.package_child_commission}</div>
+      </>},
     { dataIndex: 'package_count', title: '默认数量' },
     { dataIndex: 'advance_booking', title: '下单截止' },
     { dataIndex: 'persistence_time', title: '暂留时间' },
@@ -134,13 +146,14 @@ const PackageInfo: FC<IProps> = (props) => {
   return (
     <Card
       title='套餐信息'
-      style={{ marginTop: 20 }}
+      style={{ width:1200,margin:'20px auto 0'  }}
       extra={props.canEdit && <a onClick={handleAddPackage}>添加套餐</a>}
     >
       <Table
         bordered={true}
         dataSource={dataSource}
         columns={columns}
+        rowKey='id'
       />
       <PackageModal
         visible={visible}

@@ -8,6 +8,7 @@ import * as commonServer from '@/services/common'
 import BatchAddModal from './batchAddModal'
 import CardList from '@/component/imageCard/cardList'
 import ImageModal from '@/component/imageCard/modal'
+import PreviewModal from './previewModal'
 
 /**
 *@fileName:index.js
@@ -26,6 +27,7 @@ class ImageCard extends Component{
     initialValue:{},
     visible:false,
     imgVisible:false,
+    previewVisible:false
   }
 
   componentDidMount = () => {
@@ -283,12 +285,24 @@ class ImageCard extends Component{
           >
             完成编辑
           </Button>
+          <Button
+            type='primary'
+            style={{marginBottom: 20,marginLeft:20}}
+            onClick={() => this.setState({previewVisible:true})}
+          >
+            预览
+          </Button>
         </Row>
         <CardList
           dataSource={this.state.dataSource}
           onDND={this.handelDND}
           onModal={this.handleModal}
           onDelete={this.handleDelete}
+        />
+        <PreviewModal
+          visible={this.state.previewVisible}
+          onCancel={() => this.setState({previewVisible:false})}
+          dataSource={this.state.dataSource}
         />
       </Fragment>
     )

@@ -1,5 +1,5 @@
 import React, { FC } from 'react'
-import { Form, Input, InputNumber, Modal, Select, TimePicker } from 'antd'
+import { Form, Input, InputNumber, Modal, Select, TimePicker, Row,Col } from 'antd'
 import { WrappedFormUtils } from 'antd/es/form/Form'
 
 interface IProps{
@@ -11,7 +11,6 @@ interface IProps{
 }
 
 const FormItem = Form.Item
-const Option = Select.Option
 
 const PackageModal:FC<IProps> = (props) => {
 
@@ -19,6 +18,11 @@ const PackageModal:FC<IProps> = (props) => {
   const formItemLayout = {
     labelCol: {span: 6},
     wrapperCol: {span: 18},
+  }
+
+  const formItemLayout1 = {
+    labelCol: {span: 12},
+    wrapperCol: {span: 12},
   }
 
   const handleConfirm = () => {
@@ -60,28 +64,62 @@ const PackageModal:FC<IProps> = (props) => {
           ],
         })(<Input placeholder='请输入套餐描述' style={{width:"90%"}} />)}
       </FormItem>
-      <FormItem label='默认套餐价格' {...formItemLayout}>
-        {getFieldDecorator('package_price', {
-          initialValue:props.initialValue.package_price,
-          rules: [
-            {
-              required: true,
-              message: '请输入默认套餐价格',
-            },
-          ],
-        })(<InputNumber placeholder='请输入默认套餐价格' style={{width:"90%"}} />)}
-      </FormItem>
-      <FormItem label='默认分销佣金' {...formItemLayout}>
-        {getFieldDecorator('package_commission', {
-          initialValue:props.initialValue.package_commission,
-          rules: [
-            {
-              required: true,
-              message: '请输入默认分销佣金',
-            },
-          ],
-        })(<InputNumber placeholder='请输入默认分销佣金' style={{width:"90%"}} />)}
-      </FormItem>
+      <Row>
+        <Col span={12}>
+          <FormItem label='默认套餐价格(成人)' {...formItemLayout1}>
+            {getFieldDecorator('package_adult_price', {
+              initialValue:props.initialValue.package_adult_price,
+              rules: [
+                {
+                  required: true,
+                  message: '请输入默认套餐价格(成人)',
+                },
+              ],
+            })(<InputNumber placeholder='请输入默认套餐价格(成人)' style={{width:"90%"}} />)}
+          </FormItem>
+        </Col>
+        <Col span={12}>
+          <FormItem label='默认分销佣金(成人)' {...formItemLayout}>
+            {getFieldDecorator('package_adult_commission', {
+              initialValue:props.initialValue.package_adult_commission,
+              rules: [
+                {
+                  required: true,
+                  message: '请输入默认分销佣金(成人)',
+                },
+              ],
+            })(<InputNumber placeholder='请输入默认分销佣金(成人)' style={{width:"80%"}} />)}
+          </FormItem>
+        </Col>
+      </Row>
+      <Row>
+        <Col span={12}>
+          <FormItem label='默认套餐价格(儿童)' {...formItemLayout1}>
+            {getFieldDecorator('package_child_price', {
+              initialValue:props.initialValue.package_child_price,
+              rules: [
+                {
+                  required: true,
+                  message: '请输入默认套餐价格(儿童)',
+                },
+              ],
+            })(<InputNumber placeholder='请输入默认套餐价格(儿童)' style={{width:"90%"}} />)}
+          </FormItem>
+        </Col>
+        <Col span={12}>
+          <FormItem label='默认分销佣金(儿童)' {...formItemLayout}>
+            {getFieldDecorator('package_child_commission', {
+              initialValue:props.initialValue.package_child_commission,
+              rules: [
+                {
+                  required: true,
+                  message: '请输入默认分销佣金(儿童)',
+                },
+              ],
+            })(<InputNumber placeholder='请输入默认分销佣金(儿童)' style={{width:"80%"}} />)}
+          </FormItem>
+        </Col>
+      </Row>
       <FormItem label='默认数量' {...formItemLayout}>
         {getFieldDecorator('package_count', {
           initialValue:props.initialValue.package_count,

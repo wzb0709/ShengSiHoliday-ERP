@@ -80,7 +80,8 @@ const Attraction:FC = (props) => {
   const handleConfirm = (values:any) => {
     const params = {
       ...values,
-      scenic_pics:JSON.stringify(values.scenic_pics)
+      scenic_pics:JSON.stringify(values.scenic_pics),
+      scenic_phone:JSON.stringify(values.scenic_phone)
     }
     attractionServices.addScenic(params).then(() => {
       message.success('操作成功!')
@@ -94,14 +95,15 @@ const Attraction:FC = (props) => {
   return (
     <>
       <Row type='flex' align='middle'>
-        <Button onClick={handleAddModal} type='primary' style={{ marginBottom: 24, marginRight: 20 }}>新增美食</Button>
+        <Button onClick={handleAddModal} type='primary' style={{ marginBottom: 24, marginRight: 20 }}>新增景点</Button>
         <AttractionSearch initialValue={params} onSearch={handleSearch}/>
       </Row>
       <Table
         columns={columns}
         pagination={{ pageSize: size, total: count, current: page, onChange: handlePageChange }}
         dataSource={dataSource}
-        scroll={{ y: 510 }}
+        // @ts-ignore
+        scroll={{ y: parseInt(localStorage.getItem('height') - 377) }}
         bordered={true}
         rowKey='id'
       />

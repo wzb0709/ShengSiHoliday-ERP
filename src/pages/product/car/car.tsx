@@ -4,6 +4,8 @@ import * as carServices from '@/services/car'
 import { Button, Divider, message, Modal, Row, Table } from 'antd'
 import { Link, router } from 'umi'
 import { ColumnProps } from 'antd/lib/table'
+import CarModal from '@/pages/product/car/carModal'
+import CarInfoModal from '@/pages/product/car/carInfo'
 
 const Car: FC = (props) => {
 
@@ -16,10 +18,14 @@ const Car: FC = (props) => {
   //表格数据源
   const [dataSource, setDataSource] = useState<Array<any>>([])
   //查询的相关参数
-  const [params, setParams] = useState<ICarSearch>({ site: -1, is_driver: -1, rental_time_type: -1 })
+  const [params, setParams] = useState<ICarSearch>({ status:-1,search:''})
+
+  const [visible,setVisible] = useState<boolean>(false)
+  const [infoVisible,setInfoVisible] = useState<boolean>(false)
+  const [initialValue,setInitialValue] = useState<any>({})
 
   const columns: ColumnProps<Object>[] = [
-    { dataIndex: 'advertising_title', title: '车型名称' },
+    { dataIndex: 'car_title', title: '车型名称' },
     {
       dataIndex: '', title: '上架状态', render: recode =>
         <Row type='flex'>
@@ -28,17 +34,15 @@ const Car: FC = (props) => {
         </Row>,
     },
     {
-      dataIndex: 'id', title: '操作', render: recode => <Fragment>
-        <Link to={`/car/${recode}`} >查看详情</Link>
-        <Divider type='vertical'/>
-        <a style={{ color: 'red' }} onClick={() => handleDelete(recode)}>删除</a>
+      dataIndex: '', title: '操作', render: recode => <Fragment>
+        <a onClick={() => handleViewInfo(recode)} >查看详情</a>
       </Fragment>,
     },
   ]
 
   //获取表格源数据
   const getCarList = useCallback(() => {
-    carServices.getCarList(params.site, params.is_driver, params.rental_time_type, page, size)
+    carServices.getCarList(params.search, params.status, page, size)
       .then((res: any) => {
         setDataSource(res.data)
         setCount(res.count)
@@ -57,17 +61,19 @@ const Car: FC = (props) => {
       })
   }
 
-  //删除汽车
-  const handleDelete = (id: string) => {
-    Modal.confirm({
-      title: '是否确认删除该项？',
-      onOk: () => {
-        carServices.deleteCar(id).then(() => {
-          message.success('删除成功')
-          getCarList()
-        })
-      },
+
+
+  const handleConfirm = (values:any) => {
+    carServices.addCar({...values}).then(res=>{
+      message.success('操作成功!')
+      setVisible(false)
+      getCarList()
     })
+  }
+
+  const handleViewInfo = (item:any) => {
+    setInitialValue(item)
+    setInfoVisible(true)
   }
 
 
@@ -84,16 +90,29 @@ const Car: FC = (props) => {
   return (
     <>
       <Row type='flex' align='middle'>
-        <Button onClick={() => router.push('/car/0')} type='primary' style={{ marginBottom: 24, marginRight: 20 }}>新增汽车</Button>
+        <Button onClick={() => setVisible(true)} type='primary' style={{ marginBottom: 24, marginRight: 20 }}>新增汽车</Button>
         <CarSearch initialValue={params} onSearch={handleSearch}/>
       </Row>
       <Table
         columns={columns}
         pagination={{ pageSize: size, total: count, current: page, onChange: handlePageChange }}
         dataSource={dataSource}
-        scroll={{ y: 510 }}
+        // @ts-ignore
+        scroll={{ y: parseInt(localStorage.getItem('height') - 377) }}
         bordered={true}
         rowKey='id'
+      />
+      <CarInfoModal
+        visible={infoVisible}
+        basicInfo={initialValue}
+        onCancel={() => setInfoVisible(false)}
+        onRefresh={getCarList}
+      />
+      <CarModal
+        visible={visible}
+        onCancel={() => setVisible(false)}
+        onOk={handleConfirm}
+        initialValue={{}}
       />
     </>
 

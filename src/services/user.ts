@@ -17,6 +17,9 @@ export interface IUserInfo {
   account:string
   pwd:string
   phone:string
+  department_id:string,
+  position:string,
+  head_img:string
   id?:string
 }
 

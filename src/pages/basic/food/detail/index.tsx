@@ -15,7 +15,7 @@ interface IBasicInfo {
   food_address: string,
   consumption: number,
   food_time: string,
-  food_phones:string
+  food_phones:Array<string>
 }
 
 const FoodDetail:FC<IProps> = (props) => {
@@ -27,7 +27,7 @@ const FoodDetail:FC<IProps> = (props) => {
       food_address: '',
       consumption: 0,
       food_time: '',
-      food_phones:''
+      food_phones:[]
     })
 
   const [visible,setVisible] = useState<boolean>(false)
@@ -35,6 +35,7 @@ const FoodDetail:FC<IProps> = (props) => {
   const getBasicInfo = useCallback(() => {
     foodServices.getFoodInfo(props.match.params.id).then((res: any) => {
       res.food_pics = JSON.parse(res.food_pics)
+      res.food_phones = JSON.parse(res.food_phones)
       setBasicInfo(res)
     })
   }, [props.match.params.id])
@@ -50,6 +51,7 @@ const FoodDetail:FC<IProps> = (props) => {
     const params = {
       ...values,
       food_pics:JSON.stringify(values.food_pics),
+      food_phones:JSON.stringify(values.food_phones)
     }
     foodServices.updateFood(params,props.match.params.id).then(() => {
       message.success('操作成功!')
@@ -92,7 +94,7 @@ const FoodDetail:FC<IProps> = (props) => {
           </Col>
         </Row>
         <Row style={{ marginBottom: 10 }}>营业地址：{basicInfo.food_address}</Row>
-        <Row style={{ marginBottom: 10 }}>联系电话：{basicInfo.food_phones}</Row>
+        <Row style={{ marginBottom: 10 }}>联系电话：{basicInfo.food_phones.map(item=>{return <>{item} </>})}</Row>
         <Row style={{ marginBottom: 10 }}>
           {basicInfo.food_pics.map((item,index)=>{
             return item !=='' && (

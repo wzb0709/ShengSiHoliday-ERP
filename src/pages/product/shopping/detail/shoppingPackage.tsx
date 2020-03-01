@@ -64,7 +64,7 @@ const ShoppingPackageInfo: FC<IProps> = (props) => {
   }, [getPackageList])
 
   const handleChangeStatus = (id: string, status: number) => {
-    shoppingServices.updateShoppingStatus(id, status === 1 ? 0 : 1)
+    shoppingServices.updateShoppingPackageStatus(id, status === 1 ? 0 : 1)
       .then(() => {
         message.success('操作成功！')
         getPackageList()

@@ -27,9 +27,9 @@
 
 .title{
   color: #FFF;
-  line-height: 64px;
   height: 100%;
-  font-size: 27px;
+  font-size: 18px;
+  box-sizing: border-box;
 }
 
 .userInfo{
@@ -52,13 +52,13 @@
 .content{
   padding: 24px;
   background: #fff;
-  height: calc(100vh - 155px);
+  height: calc(100vh - 100px);
   overflow-y: auto;
   position: absolute;
+  box-sizing: border-box;
   left: 0;
   top: 0;
   bottom: 0;
   right: 0;
-  width: 100%;
 }
 

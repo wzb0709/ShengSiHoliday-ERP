@@ -118,7 +118,7 @@ const OtherPackageInfo: FC<IProps> = (props) => {
   return (
     <Card
       title='附加套餐信息'
-      style={{ marginTop: 20 }}
+      style={{ width:1200,margin:'20px auto 0'  }}
       extra={props.canEdit && <a onClick={handleAddPackage}>添加附加套餐</a>}
     >
       <Table

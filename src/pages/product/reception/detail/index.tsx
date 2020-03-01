@@ -4,6 +4,10 @@ import { Card, Col, Divider, message, Modal, Row } from 'antd'
 import moment from  'moment'
 import { Link, router } from 'umi'
 import ReceptionModal from '@/pages/product/reception/receptionModal'
+import { IUserInfo } from '@/models/login'
+import { useSelector } from 'dva'
+import { getAllList } from '@/utils/common'
+import ChangeMember from '@/component/changeMember'
 
 interface IProps {
   match:any
@@ -14,21 +18,25 @@ interface IBasicInfo {
   product_title:string,
   product_subtitle:string,
   travel_summary:string,
-  op_id:string
+  create_id:string
 }
 
 const ReceptionDetail:FC<IProps> = (props) => {
 
   const [visible,setVisible] = useState<boolean>(false)
+  const [changeVisible,setChangeVisible] = useState<boolean>(false)
 
   const [basicInfo,setBasicInfo] = useState<IBasicInfo>({
     product_no:'',
     product_title:'',
     product_subtitle:'',
     travel_summary:'',
-    op_id:''
+    create_id:''
   })
 
+  const [memberList,setMemberList] = useState<any>([])
+
+  const userInfo: IUserInfo = useSelector((state: any) => state.login.userInfo)
 
   const getBasicInfo = useCallback(() => {
     receptionServices.getReceptionInfo(props.match.params.id).then((res:any)=>{
@@ -37,6 +45,9 @@ const ReceptionDetail:FC<IProps> = (props) => {
   },[props.match.params.id])
   useEffect(() =>{
     getBasicInfo()
+    getAllList().then(res=>{
+      setMemberList(res)
+    })
   },[getBasicInfo])
 
 
@@ -64,16 +75,28 @@ const ReceptionDetail:FC<IProps> = (props) => {
     })
   }
 
+  const handleCopyProduct = () => {
+    Modal.confirm({
+      title:'提示',
+      content:'是否要复制该产品?',
+      onOk:() => {
+        receptionServices.copyProduct(props.match.params.id).then(() => {
+          message.success('操作成功！')
+        })
+      }
+    })
+  }
+
   return (
     <>
       <Card
         title='基本信息'
-        extra={<>
+        extra={userInfo.issale && <>
           <a onClick={() => setVisible(true)}>编辑产品</a>
           <Divider type='vertical' />
-          <a>复制产品</a>
-          <Divider type='vertical' />
-          <a>转让产品</a>
+          <a onClick={handleCopyProduct} >复制产品</a>
+          <Divider type='vertical'/>
+          <a onClick={() => setChangeVisible(true)} >转让产品</a>
           <Divider type='vertical' />
           <a onClick={handleDelete} style={{color:'red'}}>删除产品</a>
         </>}
@@ -95,7 +118,10 @@ const ReceptionDetail:FC<IProps> = (props) => {
         title='计调信息'
         style={{marginTop:20}}
       >
-
+        <Row>
+          <Col span={12}>计调姓名：{memberList.find((item:any) => item.id === basicInfo.create_id) ? memberList.find((item:any) => item.id === basicInfo.create_id).name : ''}</Col>
+          <Col span={12}>联系方式：{memberList.find((item:any) => item.id === basicInfo.create_id) ? memberList.find((item:any) => item.id === basicInfo.create_id).phone : ''}</Col>
+        </Row>
       </Card>
 
       <ReceptionModal
@@ -103,6 +129,12 @@ const ReceptionDetail:FC<IProps> = (props) => {
         onCancel={() => setVisible(false)}
         onOk={handleConfirm}
         initialValue={basicInfo}
+      />
+      <ChangeMember
+        visible={changeVisible}
+        onCancel={() => setChangeVisible(false)}
+        memberList={memberList}
+        type={1}
       />
     </>
   )

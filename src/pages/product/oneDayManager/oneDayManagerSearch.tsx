@@ -7,6 +7,7 @@ interface IProps {
   form:WrappedFormUtils
   initialValue:IOneDayManagerSearch
   onSearch:(values:IOneDayManagerSearch) => void
+  opList:any
 }
 
 export interface IOneDayManagerSearch {
@@ -42,9 +43,9 @@ const OneDayManagerSearch:FC<IProps> = (props) => {
               required: false,
             },
           ],
-        })(<Input placeholder='搜索关键词' style={{width:200}} />)}
+        })(<Input placeholder='搜索关键词' style={{width:150}} />)}
       </FormItem>
-      <FormItem style={{width:200,marginLeft:20}}>
+      <FormItem style={{width:150,marginLeft:20}}>
         {getFieldDecorator('status', {
           initialValue:props.initialValue.status,
           rules: [
@@ -52,13 +53,13 @@ const OneDayManagerSearch:FC<IProps> = (props) => {
               required: false,
             },
           ],
-        })(<Select placeholder='请选择上架状态' style={{width:200}} >
+        })(<Select placeholder='请选择上架状态' style={{width:150}} >
           <Option value={-1}>全部上架状态</Option>
           <Option value={0}>未上架</Option>
           <Option value={1}>已上架</Option>
         </Select>)}
       </FormItem>
-      <FormItem style={{width:200,marginLeft:20}} >
+      <FormItem style={{width:150,marginLeft:20}} >
         {getFieldDecorator('start_time', {
           initialValue:props.initialValue.start_time === '' ? undefined : moment(props.initialValue.start_time),
           rules: [
@@ -66,9 +67,9 @@ const OneDayManagerSearch:FC<IProps> = (props) => {
               required: false,
             },
           ],
-        })(<DatePicker  placeholder='请选择开始时间' style={{width:200}} />)}
+        })(<DatePicker  placeholder='请选择开始时间' style={{width:150}} />)}
       </FormItem>
-      <FormItem style={{width:200,marginLeft:20}} >
+      <FormItem style={{width:150,marginLeft:20}} >
         {getFieldDecorator('end_time', {
           initialValue:props.initialValue.end_time === '' ? undefined : moment(props.initialValue.end_time),
           rules: [
@@ -76,9 +77,9 @@ const OneDayManagerSearch:FC<IProps> = (props) => {
               required: false,
             },
           ],
-        })(<DatePicker placeholder='请选择结束时间' style={{width:200}} />)}
+        })(<DatePicker placeholder='请选择结束时间' style={{width:150}} />)}
       </FormItem>
-      <FormItem style={{width:200,marginLeft:20}}>
+      <FormItem style={{width:150,marginLeft:20}}>
         {getFieldDecorator('op_id', {
           initialValue:props.initialValue.op_id === '' ? undefined : props.initialValue.op_id,
           rules: [
@@ -86,7 +87,13 @@ const OneDayManagerSearch:FC<IProps> = (props) => {
               required: false,
             },
           ],
-        })(<Select placeholder='请选择计调' style={{width:200}} />)}
+        })(<Select placeholder='请选择计调' style={{width:150}} >
+          {props.opList.map((item:any)=>{
+            return(
+              <Option key={item.id}>{item.name}</Option>
+            )
+          })}
+        </Select>)}
       </FormItem>
       <Button type='primary' style={{marginBottom:24,marginLeft:20}} onClick={handleConfirm}>查询</Button>
     </>

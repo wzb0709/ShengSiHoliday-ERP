@@ -6,7 +6,12 @@ import { router } from 'umi'
 export interface IUserInfo {
   id:string,
   user_name:string,
-  company:string,
+  dept_name:string,
+  head_img:string,
+  phone:string,
+  position:string,
+  issale:boolean,
+  isop:boolean,
   roleList:Array<IRole>
 }
 
@@ -41,8 +46,8 @@ export default {
       message.success('登录成功！')
       router.push('/')
     },
-    * getUserInfo({payload:{id}}:{payload:{id:string}},{call,put}:any){
-      const res = yield call(() => loginServices.getUserInfo({id}))
+    * getUserInfo({},{call,put}:any){
+      const res = yield call(() => loginServices.getUserInfo())
       if(!res.id || res.id === '' || res.id == null){
         message.error('您还没有登录，即将跳转至登录界面')
         router.replace('/login')

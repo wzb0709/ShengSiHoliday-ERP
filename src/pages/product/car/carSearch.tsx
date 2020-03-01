@@ -9,9 +9,8 @@ interface IProps {
 }
 
 export interface ICarSearch {
-  site:number,
-  is_driver:number,
-  rental_time_type:number
+  status:number,
+  search:string
 }
 
 const FormItem = Form.Item
@@ -31,46 +30,28 @@ const CarSearch:FC<IProps> = (props) => {
 
   return (
     <>
-      <FormItem style={{width:200}}>
-        {getFieldDecorator('site', {
-          initialValue:props.initialValue.site,
+      <FormItem>
+        {getFieldDecorator('search', {
+          initialValue:props.initialValue.search,
           rules: [
             {
               required: false,
             },
           ],
-        })(<Select placeholder='请选择座位数' style={{width:200}} >
-          <Option value={-1}>全部座位</Option>
-          <Option value={0}>7座</Option>
-          <Option value={1}>10座</Option>
-        </Select>)}
+        })(<Input placeholder='搜索关键词' style={{width:200}} />)}
       </FormItem>
       <FormItem style={{width:200,marginLeft:20}}>
-        {getFieldDecorator('is_driver', {
-          initialValue:props.initialValue.is_driver,
+        {getFieldDecorator('status', {
+          initialValue:props.initialValue.status,
           rules: [
             {
               required: false,
             },
           ],
-        })(<Select placeholder='是否有司机' style={{width:200}} >
-          <Option value={-1}>全部</Option>
-          <Option value={0}>无司机</Option>
-          <Option value={1}>有司机</Option>
-        </Select>)}
-      </FormItem>
-      <FormItem style={{width:200,marginLeft:20}}>
-        {getFieldDecorator('rental_time_type', {
-          initialValue:props.initialValue.rental_time_type,
-          rules: [
-            {
-              required: false,
-            },
-          ],
-        })(<Select placeholder='租赁类型' style={{width:200}} >
-          <Option value={-1}>全部类型</Option>
-          <Option value={0}>按天</Option>
-          <Option value={1}>按小时</Option>
+        })(<Select placeholder='请选择上架状态' style={{width:200}} >
+          <Option value={-1}>全部上架状态</Option>
+          <Option value={0}>已下架</Option>
+          <Option value={1}>已上架</Option>
         </Select>)}
       </FormItem>
       <Button type='primary' style={{marginBottom:24,marginLeft:20}} onClick={handleConfirm}>查询</Button>

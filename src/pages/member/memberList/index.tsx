@@ -43,6 +43,7 @@ const MemberList: FC = (props) => {
     setPage(page)
   }
 
+
   return (
     <div>
       <MemberSearch
@@ -54,7 +55,8 @@ const MemberList: FC = (props) => {
         columns={columns}
         dataSource={dataSource}
         rowKey='id'
-        scroll={{ y: 510 }}
+        // @ts-ignore
+        scroll={{ y: parseInt(localStorage.getItem('height') - 377) }}
         pagination={{ pageSize: size, total: count, current: page, onChange: handlePageChange }}
       />
     </div>

@@ -30,3 +30,8 @@ export function addReception(item:IReceptionItem) {
 export function deleteReception(id:string) {
   return axios.delete(`/receptionProduct/${id}`)
 }
+
+export function copyProduct(id:string) {
+  const params = {id}
+  return axios.put(`/receptionProduct/copy`,params)
+}

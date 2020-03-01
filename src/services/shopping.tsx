@@ -67,3 +67,8 @@ export function updateShoppingPackageStatus(id:string,status:number) {
 export function deleteShoppingPackage(id:string) {
   return axios.delete(`/shopPackage/${id}`)
 }
+
+export function copyProduct(id:string) {
+  const params = {id}
+  return axios.put(`/shopProduct/copy`,params)
+}

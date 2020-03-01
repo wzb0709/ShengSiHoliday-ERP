@@ -104,7 +104,8 @@ const Shopping:FC = (props) => {
         columns={columns}
         pagination={{ pageSize: size, total: count, current: page, onChange: handlePageChange }}
         dataSource={dataSource}
-        scroll={{ y: 510 }}
+        // @ts-ignore
+        scroll={{ y: parseInt(localStorage.getItem('height') - 377) }}
         bordered={true}
         rowKey='id'
       />

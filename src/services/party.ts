@@ -1,7 +1,7 @@
 import axios from 'axios'
 
-export function getCustomerList(search:string,status:number,page:number,size:number) {
-  const params = {search,size,page,status}
+export function getCustomerList(search:string,status:number,opid:string,page:number,size:number) {
+  const params = {search,size,page,status,opid}
   return axios.get('/costomerTravel',{params})
 }
 
@@ -41,4 +41,9 @@ export function deleteCustomer(id:string) {
 
 export function getCustomerDetails(id:string) {
   return axios.get(`/costomerTravel/detail/${id}`)
+}
+
+export function copyProduct(id:string) {
+  const params = {id}
+  return axios.put(`/costomerTravel/copy`,params)
 }

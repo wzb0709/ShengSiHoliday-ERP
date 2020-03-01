@@ -75,13 +75,13 @@ const AttractionModal:FC<IProps> = (props) => {
                   message: '请输入联系电话',
                 },
               ],
-            })(<Input placeholder='请输入联系电话' style={{width:"90%"}} />)}
+            })(<Select placeholder='请输入联系电话' mode='tags' style={{ width: '90%' }}/>)}
           </FormItem>
         </Col>
         <Col span={12} >
           <FormItem>
-            {getFieldDecorator('food_pics', {
-              initialValue:props.initialValue.food_pics,
+            {getFieldDecorator('scenic_pics', {
+              initialValue:props.initialValue.scenic_pics,
               rules: [
                 {
                   required: true,

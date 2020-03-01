@@ -34,8 +34,14 @@ const DatePlan: FC<IProps> = (props) => {
   const columns: ColumnProps<Object>[] = [
     { dataIndex: 'package_title', title: '套餐名称' },
     { dataIndex: 'start_time', title: '开始时间' },
-    { dataIndex: 'package_price', title: '套餐价格' },
-    { dataIndex: 'package_commission', title: '分销佣金' },
+    { dataIndex: '', title: '套餐价格' ,render:recode => <>
+        <div>成人：￥{recode.package_adult_price}</div>
+        <div style={{marginTop:10}} >儿童：￥{recode.package_child_price}</div>
+      </>},
+    { dataIndex: '', title: '分销佣金' ,render:recode => <>
+        <div>成人：￥{recode.package_adult_commission}</div>
+        <div style={{marginTop:10}}>儿童：￥{recode.package_child_commission}</div>
+      </>},
     { dataIndex: 'package_count', title: '数量' },
     {
       dataIndex: 'id', title: '操作', render: recode => <>
@@ -86,8 +92,10 @@ const DatePlan: FC<IProps> = (props) => {
     const arr: any = JSON.parse(JSON.stringify(dataSource))
     arr.forEach((item: any) => {
       if (item.id === id) {
-        item.package_price = values.package_price
-        item.package_commission = values.package_commission
+        item.package_adult_price = values.package_adult_price
+        item.package_adult_commission = values.package_adult_commission
+        item.package_child_price = values.package_child_price
+        item.package_child_commission = values.package_child_commission
         item.package_count = values.package_count
       }
     })

@@ -55,8 +55,10 @@ interface IPackageItem {
   package_title:string,
   product_id:string,
   package_summary:string,
-  package_price:number,
-  package_commission:number,
+  package_child_price:number,
+  package_child_commission:number,
+  package_adult_price:number,
+  package_adult_commission:number,
   package_count:number,
   advance_booking:string,
   persistence_time:string,
@@ -105,5 +107,10 @@ export function updateOtherPackageStatus(id:string,status:number) {
 
 export function deleteOtherPackage(id:string) {
   return axios.delete(`/productExtraPackage/${id}`)
+}
+
+export function copyProduct(id:string) {
+  const params = {id}
+  return axios.put(`/product/copy`,params)
 }
 

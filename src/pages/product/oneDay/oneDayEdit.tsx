@@ -21,6 +21,7 @@ const OneDayEdit: FC<IProps> = (props) => {
     warm_prompt: '',
     product_tag: [],
     travel_person: 0,
+    create_id:''
   })
   const [loading, setLoading] = useState<boolean>(true)
 
@@ -62,6 +63,7 @@ const OneDayEdit: FC<IProps> = (props) => {
       <Card
         title='基本信息'
         extra={<a onClick={handleConfirm}>保存</a>}
+        style={{width:1200,margin:'0 auto'}}
       >
         {!loading && <OneDayForm
           initialValue={basicInfo}

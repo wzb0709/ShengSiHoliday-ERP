@@ -18,6 +18,30 @@ export const menuList:Array<IMenuItem> = [
     children: [],
   },
   {
+    title: '行政中心',
+    icon:'notification',
+    id:46,
+    path:'administrative',
+    children: [
+      {
+        title: '待办事项',
+        children: [],
+        id:47,
+        path:'upcoming',
+      },{
+        title: '公告管理',
+        children: [],
+        id:48,
+        path:'notice',
+      },{
+        title: '通讯录',
+        children: [],
+        id:49,
+        path:'addressBook',
+      }
+    ],
+  },
+  {
     title: '产品中心',
     icon:'appstore',
     id:2,
@@ -28,7 +52,7 @@ export const menuList:Array<IMenuItem> = [
       id:3,
       path:'oneDay',
     },{
-      title: '一日游管理',
+      title: '一日游计划管理',
       children: [],
       id:4,
       path:'oneDayManager',
@@ -215,11 +239,6 @@ export const menuList:Array<IMenuItem> = [
       id:37,
       path:'point',
     },{
-      title: '汽车租赁点',
-      children: [],
-      id:38,
-      path:'car',
-    },{
       title: '公交信息',
       children: [],
       id:39,
@@ -240,6 +259,11 @@ export const menuList:Array<IMenuItem> = [
       children: [],
       id:42,
       path:'character',
+    },{
+      title: '部门管理',
+      children: [],
+      id:50,
+      path:'department',
     },{
       title: '用户管理',
       children: [],

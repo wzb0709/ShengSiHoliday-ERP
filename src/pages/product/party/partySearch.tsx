@@ -6,11 +6,13 @@ interface IProps {
   form:WrappedFormUtils
   initialValue:IPartySearch
   onSearch:(values:IPartySearch) => void
+  opList:any
 }
 
 export interface IPartySearch {
   search:string,
   status:number,
+  opid:string
 }
 
 const FormItem = Form.Item
@@ -52,6 +54,22 @@ const PartySearch:FC<IProps> = (props) => {
           <Option value={-1}>全部上架状态</Option>
           <Option value={0}>未上架</Option>
           <Option value={1}>已上架</Option>
+        </Select>)}
+      </FormItem>
+      <FormItem style={{width:150,marginLeft:20}}>
+        {getFieldDecorator('opid', {
+          initialValue:props.initialValue.opid === '' ? undefined : props.initialValue.opid,
+          rules: [
+            {
+              required: false,
+            },
+          ],
+        })(<Select placeholder='请选择计调' style={{width:150}} >
+          {props.opList.map((item:any)=>{
+            return(
+              <Option key={item.id}>{item.name}</Option>
+            )
+          })}
         </Select>)}
       </FormItem>
       <Button type='primary' style={{marginBottom:24,marginLeft:20}} onClick={handleConfirm}>查询</Button>

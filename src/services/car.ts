@@ -1,33 +1,33 @@
 import axios from 'axios'
 
-export function getCarList(site:number,is_driver:number,rental_time_type:number,page:number,size:number) {
+export function getCarList(search:string,status:number,page:number,size:number) {
   const params = {
-    site,is_driver,rental_time_type,page,size
+    search,status,page,size
   }
-  return axios.get('/carRental',{params})
+  return axios.get('/carInfo',{params})
 }
 
 interface ICarItem {
-  site_num:number,
-  is_driver:number,
-  rental_time_type:number,
-  rental_price:number,
-  rental_commission:number
+  car_title:string,
+  car_pic:string,
+  car_site:number,
+  time_price:number,
+  day_price:number
 }
 
 export function updateCar(item:ICarItem,id:string) {
   const params = {...item,id}
-  return axios.put('/carRental',params)
+  return axios.put('/carInfo',params)
 }
 
 export function addCar(item:ICarItem) {
-  return axios.post('/carRental',item)
+  return axios.post('/carInfo',item)
 }
 
 export function updateStatus(id:string,status:number) {
-  return axios.put(`/carRental/${id}/${status}`)
+  return axios.put(`/carInfo/${id}/${status}`)
 }
 
 export function deleteCar(id:string) {
-  return axios.delete(`/carRental/${id}`)
+  return axios.delete(`/carInfo/${id}`)
 }

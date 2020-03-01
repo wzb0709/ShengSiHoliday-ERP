@@ -5,6 +5,6 @@ export function userLogin({account,pwd}:{account:string,pwd:string}) {
   return axios.get('/login',{params})
 }
 
-export function getUserInfo({id}:{id:string}) {
-  return axios.get(`/login/${id}`)
+export function getUserInfo() {
+  return axios.get(`/login/token`)
 }

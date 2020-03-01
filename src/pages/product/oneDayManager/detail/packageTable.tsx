@@ -1,5 +1,5 @@
 import React, { FC, Fragment, useCallback, useEffect, useState } from 'react'
-import { Card, Divider, message, Modal, Row, Table } from 'antd'
+import { Card, Divider, message, Modal, Row, Select, Table } from 'antd'
 import { ColumnProps } from 'antd/lib/table'
 
 import * as planServices from '@/services/oneDayManager'
@@ -17,11 +17,13 @@ const PackageTable: FC<IProps> = (props) => {
   const [visible, setVisible] = useState<boolean>(false)
   const [id, setId] = useState<string>('')
   const [initialValue,setInitialValue] = useState<any>({})
-
+  const [addVisible,setAddVisible] = useState<boolean>(false)
+  //
   // const [packageList, setPackageList] = useState<any>([])
   // const getTotalPackageList = useCallback(() => {
   //   oneDayServices.getPackageList(props.match.params.id).then(res => {
   //     setPackageList(res)
+  //     console.log(res)
   //   })
   // }, [props.id])
   // useEffect(() => {
@@ -32,8 +34,14 @@ const PackageTable: FC<IProps> = (props) => {
   const columns: ColumnProps<Object>[] = props.canEdit ? [
     { dataIndex: 'package_title', title: '套餐名称' },
     { dataIndex: 'start_time', title: '出发时间' },
-    { dataIndex: 'package_price', title: '套餐价格' },
-    { dataIndex: 'package_commission', title: '分销佣金' },
+    { dataIndex: '', title: '套餐价格' ,render:recode => <>
+        <div>成人：￥{recode.package_adult_price}</div>
+        <div style={{marginTop:10}} >儿童：￥{recode.package_child_price}</div>
+      </>},
+    { dataIndex: '', title: '分销佣金' ,render:recode => <>
+        <div>成人：￥{recode.package_adult_commission}</div>
+        <div style={{marginTop:10}}>儿童：￥{recode.package_child_commission}</div>
+      </>},
     { dataIndex: 'package_count', title: '数量' },
     {
       dataIndex: '', title: '上线状态', render: recode =>
@@ -57,8 +65,14 @@ const PackageTable: FC<IProps> = (props) => {
   ] : [
     { dataIndex: 'package_title', title: '套餐名称' },
     { dataIndex: 'start_time', title: '出发时间' },
-    { dataIndex: 'package_price', title: '套餐价格' },
-    { dataIndex: 'package_commission', title: '分销佣金' },
+    { dataIndex: '', title: '套餐价格',render:recode => <>
+        <div>成人：￥{recode.package_adult_price}</div>
+        <div style={{marginTop:10}} >儿童：￥{recode.package_child_price}</div>
+      </> },
+    { dataIndex: '', title: '分销佣金' ,render:recode => <>
+        <div>成人：￥{recode.package_adult_commission}</div>
+        <div style={{marginTop:10}}>儿童：￥{recode.package_child_commission}</div>
+      </>},
     { dataIndex: 'package_count', title: '数量' },
     {
       dataIndex: '', title: '上线状态', render: recode =>
@@ -96,7 +110,19 @@ const PackageTable: FC<IProps> = (props) => {
         setVisible(false)
         getPackageList()
       })
+    }else{
+      planServices.addPlanPackage({ ...params}).then(() => {
+        message.success('操作成功！')
+        setVisible(false)
+        getPackageList()
+      })
     }
+  }
+
+  const handleAddPackage = () => {
+    setId('')
+    setInitialValue({})
+    setVisible(true)
   }
 
 
@@ -124,11 +150,13 @@ const PackageTable: FC<IProps> = (props) => {
     <Card
       title='套餐信息'
       style={{ marginTop: 20 }}
+      extra={props.canEdit  && <a onClick={handleAddPackage}>添加套餐</a>}
     >
       <Table
         bordered={true}
         dataSource={dataSource}
         columns={columns}
+        rowKey='id'
       />
       <DatePlanModal
         visible={visible}
@@ -136,6 +164,32 @@ const PackageTable: FC<IProps> = (props) => {
         onOk={handleConfirm}
         initialValue={initialValue}
       />
+      {/*<Modal*/}
+      {/*  title='添加套餐'*/}
+      {/*  width={600}*/}
+      {/*  onCancel={() => setAddVisible(false)}*/}
+      {/*  destroyOnClose={true}*/}
+      {/*  visible={addVisible}*/}
+      {/*  onOk={handleAddPackage}*/}
+      {/*>*/}
+      {/*  <Row type='flex' align='middle'>*/}
+      {/*    <div>套餐名称</div>*/}
+      {/*    <Select*/}
+      {/*      placeholder='请选择套餐'*/}
+      {/*      style={{ marginLeft: 10, width: 300 }}*/}
+      {/*      mode="multiple"*/}
+      {/*      // onChange={handleSelectChange}*/}
+      {/*    >*/}
+      {/*      {packageList.map((item: any) => {*/}
+      {/*        return (*/}
+      {/*          <Select.Option key={item.id}>*/}
+      {/*            {item.package_title}*/}
+      {/*          </Select.Option>*/}
+      {/*        )*/}
+      {/*      })}*/}
+      {/*    </Select>*/}
+      {/*  </Row>*/}
+      {/*</Modal>*/}
     </Card>
   )
 }

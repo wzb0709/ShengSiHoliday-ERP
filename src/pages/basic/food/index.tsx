@@ -80,7 +80,8 @@ const Food:FC = (props) => {
   const handleConfirm = (values:any) => {
     const params = {
       ...values,
-      food_pics:JSON.stringify(values.food_pics)
+      food_pics:JSON.stringify(values.food_pics),
+      food_phones:JSON.stringify(values.food_phones)
     }
     foodServices.addFood(params).then(() => {
       message.success('操作成功!')
@@ -101,7 +102,8 @@ const Food:FC = (props) => {
         columns={columns}
         pagination={{ pageSize: size, total: count, current: page, onChange: handlePageChange }}
         dataSource={dataSource}
-        scroll={{ y: 510 }}
+        // @ts-ignore
+        scroll={{ y: parseInt(localStorage.getItem('height') - 377) }}
         bordered={true}
         rowKey='id'
       />

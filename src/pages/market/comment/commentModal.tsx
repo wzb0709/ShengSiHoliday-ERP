@@ -5,6 +5,7 @@ import FormUpload from '@/component/upload/formUpload'
 
 import * as oneDayServices from '@/services/onDay'
 import * as partyServices from '@/services/party'
+import * as shopServices from '@/services/shopping'
 
 interface IProps{
   readonly visible:boolean,
@@ -30,14 +31,25 @@ const CommentModal:FC<IProps> = (props) => {
 
   useEffect(() => {
     if(props.initialValue.content_type === 1){
-      oneDayServices.getOneDayList('',-1,1,10000).then(res=>{
+      oneDayServices.getOneDayList({
+        search:'',
+        status:-1,
+        op_id:'',
+        start_time:'',
+        end_time:'',
+        page:1,
+        size:10000
+      }).then(res=>{
         setDataSource(res.data)
         props.form.setFieldsValue({content_id:props.initialValue.content_id})
       })
     }else if(props.initialValue.content_type === 2){
-
+      shopServices.getShoppingList('',-1,1,10000).then(res=>{
+        setDataSource(res.data)
+        props.form.setFieldsValue({content_id:props.initialValue.content_id})
+      })
     }else{
-      partyServices.getCustomerList('',-1,1,10000).then(res=>{
+      partyServices.getCustomerList('',-1,'',1,10000).then(res=>{
         setDataSource(res.data)
         props.form.setFieldsValue({content_id:props.initialValue.content_id})
       })
@@ -54,17 +66,28 @@ const CommentModal:FC<IProps> = (props) => {
 
   const handleSelectChange = (value:number) => {
     if(value === 1){
-      oneDayServices.getOneDayList('',-1,1,10000).then(res=>{
+      oneDayServices.getOneDayList({
+        search:'',
+        status:-1,
+        op_id:'',
+        start_time:'',
+        end_time:'',
+        page:1,
+        size:10000
+      }).then(res=>{
         props.form.setFieldsValue({'content_id':null})
         setDataSource(res.data)
       })
     }else if(value === 3){
-      partyServices.getCustomerList('',-1,1,10000).then(res=>{
+      partyServices.getCustomerList('',-1,'',1,10000).then(res=>{
         props.form.setFieldsValue({'content_id':null})
         setDataSource(res.data)
       })
     }else{
-
+      shopServices.getShoppingList('',-1,1,10000).then(res=>{
+        props.form.setFieldsValue({'content_id':null})
+        setDataSource(res.data)
+      })
     }
   }
 
@@ -114,11 +137,7 @@ const CommentModal:FC<IProps> = (props) => {
           ],
         })(<Select placeholder='请选择评价评价产品' style={{width:"70%"}} >
           {dataSource.map((item:any)=>{
-            return props.form.getFieldValue('content_type') === 1 ? (
-              <Option key={item.id}>{item.product_title}</Option>
-            ): props.form.getFieldValue('content_type') === 3 ? (
-              <Option key={item.id}>{item.travel_title}</Option>
-            ) :(<div />)
+            return <Option key={item.id}>{item.product_title}</Option>
           })}
         </Select>)}
       </FormItem>}

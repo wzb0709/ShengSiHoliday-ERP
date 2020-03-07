@@ -26,3 +26,27 @@ export function changeMember(id:string,userid:string,type:number) {
   }
   return axios.put(`/baseOrder/changesaleop`,params)
 }
+
+export function getBasicOrderInfo(id:string) {
+  return axios.get(`/baseOrder?id=${id}`)
+}
+
+
+export function updateBasicOrderInfo(item:any) {
+  return axios.put(`/baseOrder`,item)
+}
+
+export function updateOrderStatus(id:string,status:number) {
+  const params = {
+    id,status
+  }
+  return axios.put(`/baseOrder/status`,params)
+}
+
+export function getExpressList() {
+  return axios.get(`/sysConfig/expresscompany`)
+}
+
+export function getExpressInfo(expressno :string) {
+  return axios.get(`/express/${expressno}`)
+}

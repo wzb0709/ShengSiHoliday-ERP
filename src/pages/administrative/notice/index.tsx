@@ -7,6 +7,8 @@ import * as noticeServices from '@/services/notice'
 
 import NoticeSearch, { INoticeSearch } from '@/pages/administrative/notice/noticeSearch'
 import NoticeModal from '@/pages/administrative/notice/noticeModal'
+import { IMember } from '@/models/login'
+import { useSelector } from 'dva'
 
 const Notice:FC = (props) => {
 
@@ -27,10 +29,12 @@ const Notice:FC = (props) => {
   const [initialValue,setInitialValue] = useState({})
   const [id,setId] = useState<string>('')
 
+  const memberList: Array<IMember> = useSelector((state: any) => state.login.memberList)
 
   const columns: ColumnProps<Object>[] = [
     { dataIndex: 'notice_title', title: '公告标题'},
-    { dataIndex: 'create_id', title: '创建人'},
+    // @ts-ignore
+    { dataIndex: 'create_id', title: '创建人',render:recode => memberList.find(item => item.id === recode) ? memberList.find(item => item.id === recode).name : ''},
     { dataIndex: 'create_time', title: '发布时间',render:recode => moment(recode).format('YYYY-MM-DD')},
     {
       dataIndex: '', title: '显示状态', render: recode =>

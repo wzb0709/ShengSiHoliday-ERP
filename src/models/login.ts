@@ -2,6 +2,7 @@ import * as loginServices from '@/services/login'
 import axios from 'axios'
 import { message } from 'antd'
 import { router } from 'umi'
+import { getAllList } from '@/utils/common'
 
 export interface IUserInfo {
   id:string,
@@ -13,6 +14,17 @@ export interface IUserInfo {
   issale:boolean,
   isop:boolean,
   roleList:Array<IRole>
+}
+
+export interface IMember {
+  id:string,
+  name:string,
+  phone:string,
+  dept_id:number,
+  department_name:string,
+  position:string,
+  is_sales:boolean,
+  is_op:boolean,
 }
 
 interface IRole {
@@ -30,10 +42,11 @@ export default {
   namespace: 'login',
   state: {
     userInfo: {},
+    memberList:[]
   },
   reducers: {
-    setUserInfo(state: any, { payload: userInfo }: { payload: IUserInfo }) {
-      return {userInfo}
+    setUserInfo(state: any, { payload: {userInfo,memberList}} : {payload:{userInfo:IUserInfo,memberList:Array<IMember>}}) {
+      return {userInfo,memberList}
     },
   },
   effects: {
@@ -53,7 +66,8 @@ export default {
         router.replace('/login')
         return Promise.reject('用户未登录')
       }
-      yield put({type:'setUserInfo',payload:res})
+      const res2 = yield call(() => getAllList())
+      yield put({type:'setUserInfo',payload:{userInfo:res,memberList:res2}})
     }
   },
 }

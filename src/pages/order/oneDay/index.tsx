@@ -1,13 +1,15 @@
 import React, { FC, Fragment, useCallback, useEffect, useState } from 'react'
-import PartySearch, { IPartySearch } from '@/pages/product/party/partySearch'
 import { ColumnProps } from 'antd/lib/table'
-import { Badge, Button, message, Row, Table } from 'antd'
+import { Badge, Row, Table, Statistic, Button } from 'antd'
 import { Link } from 'umi'
 import moment from 'moment'
 
 import * as OneDayOrderServices from '@/services/order/oneDay'
-import PartyModal from '@/pages/product/party/partyModal'
+import * as pointServices from '@/services/point'
 import OneDayOrderSearch, { IOneDayOrderSearch } from '@/pages/order/oneDay/oneDaySearch'
+import { getAllList } from '@/utils/common'
+import { IMember } from '@/models/login'
+import { useSelector } from 'dva'
 
 const OneDayOrder: FC = (props) => {
   //表格的页数
@@ -29,12 +31,15 @@ const OneDayOrder: FC = (props) => {
     opid:''
   })
 
+  const memberList: Array<IMember> = useSelector((state: any) => state.login.memberList)
+  const [carList,setCarList] = useState<any>([])
+
   const columns: ColumnProps<Object>[] = [
     { dataIndex: '', title: '订单信息' ,render:recode => <>
         <div>{recode.order_no}</div>
         <div>{recode.adult_count}成人 {recode.child_count}儿童</div>
       </>},
-    { dataIndex: 'car_point_id', title: '上车点' },
+    { dataIndex: 'car_point_id', title: '上车点',render:recode=>carList.find((item:any) => item.id === recode) ? carList.find((item:any) => item.id === recode).point_title : '' },
     { dataIndex: '', title: '产品信息' ,render:recode => <>
         <div>{recode.product_title}</div>
         <div>{moment(recode.travel_date).format('YYYY-MM-DD')}</div>
@@ -44,9 +49,9 @@ const OneDayOrder: FC = (props) => {
         <div>{recode.contact_phone}</div>
       </>},
     { dataIndex: '', title: '款项' ,render:recode => <>
-        <div>营业款：<span>{recode.total_price}</span></div>
-        <div>已收款：<span style={{color:'#00CD00'}}>{recode.paid}</span></div>
-        <div>未收款：<span style={{color:"red"}}>{recode.unpaid}</span></div>
+        <div style={{display:'flex',alignItems:'center'}}>营业款：<Statistic prefix='￥' valueStyle={{fontSize:16}} value={recode.total_price} /></div>
+        <div style={{display:'flex',alignItems:'center'}}>已收款：<Statistic prefix='￥' valueStyle={{fontSize:16,color:'#00CD00'}} value={recode.paid} /></div>
+        <div style={{display:'flex',alignItems:'center'}}>未收款：<Statistic prefix='￥' valueStyle={{fontSize:16,color:'red'}} value={recode.unpaid} /></div>
       </>},
     { dataIndex: 'status', title: '订单状态' ,render:recode => <>
         {recode === 0 ? <Badge status='warning' text='待付款' />
@@ -57,8 +62,10 @@ const OneDayOrder: FC = (props) => {
                   :  <Badge status='default' text='已取消' />
         }
       </>},
-    { dataIndex: 'salesman_id', title: '销售' },
-    { dataIndex: 'operation_id', title: '计调' },
+    // @ts-ignore
+    { dataIndex: 'sale_id', title: '销售',render:recode=>memberList.find((item:any) => item.id === recode) ? memberList.find((item:any) => item.id === recode).name : '' },
+    // @ts-ignore
+    { dataIndex: 'operation_id', title: '计调' ,render:recode=>memberList.find((item:any) => item.id === recode) ? memberList.find((item:any) => item.id === recode).name : ''},
     {
       dataIndex: 'id', title: '操作', render: recode => <Fragment>
         <Link to={`/order/oneDay/${recode}`}>查看详情</Link>
@@ -76,6 +83,9 @@ const OneDayOrder: FC = (props) => {
   }, [page, size, params])
   useEffect(() => {
     getOrderList()
+    pointServices.getPointList().then(res=>{
+      setCarList(res)
+    })
   }, [getOrderList])
 
   //查询按钮点击事件
@@ -90,7 +100,7 @@ const OneDayOrder: FC = (props) => {
   return (
     <>
       <Row type='flex' align='middle'>
-        <OneDayOrderSearch initialValue={params} onSearch={handleSearch}/>
+        <OneDayOrderSearch memberList={memberList} initialValue={params} onSearch={handleSearch}/>
       </Row>
       <Table
         columns={columns}
@@ -101,6 +111,9 @@ const OneDayOrder: FC = (props) => {
         bordered={true}
         rowKey='id'
       />
+      <div style={{marginTop:-47}}>
+        <Button type='primary' style={{marginTop:-20}} >查看统计信息</Button>
+      </div>
     </>
   )
 }

@@ -110,7 +110,7 @@ const HomePage = () => {
                         {item.notice_title}
                       </div>
                       <div style={{width:'25%'}}>
-                        {moment(item.create_time).format('YYYY-MM-DD HH:mm:ss')}
+                        {moment(item.create_time).format('YYYY-MM-DD')}
                       </div>
                     </Row>
                   )
@@ -148,10 +148,8 @@ const HomePage = () => {
         footer={null}
       >
         <div style={{fontSize:18}}>{detail.notice_title}</div>
-        <div style={{fontSize:15,color:'#aaa',marginTop:10}}>发布时间{moment(detail.create_time).format('YYYY-MM-DD')}</div>
-        <div style={{fontSize:16,color:'#aaa',marginTop:10}}>>
-          {detail.notice_content}
-        </div>
+        <div style={{fontSize:15,color:'#aaa',marginTop:10}}>发布时间{moment(detail.create_time).format('YYYY-MM-DD HH:mm:ss')}</div>
+        <div style={{fontSize:16,color:'#aaa',marginTop:10}} dangerouslySetInnerHTML={{__html:detail.notice_content}} />
       </Modal>
     </>
   );

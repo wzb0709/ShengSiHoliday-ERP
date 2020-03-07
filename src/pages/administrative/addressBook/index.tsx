@@ -1,13 +1,17 @@
 import React, { FC, useCallback, useEffect, useState } from 'react'
 import { ColumnProps } from 'antd/lib/table'
-import { Table } from 'antd'
+import { Row, Table } from 'antd'
 
 import * as addressBookServices from '@/services/addressBook'
+import AddressBookSearch, { IAddressBookSearch } from '@/pages/administrative/addressBook/addressBookSearch'
 
 const AddressBook:FC = (props) => {
 
   //表格数据源
   const [dataSource, setDataSource] = useState<Array<any>>([])
+
+  //查询的相关参数
+  const [params, setParams] = useState<IAddressBookSearch>({ search:'' })
 
 
   const columns: ColumnProps<Object>[] = [
@@ -19,17 +23,25 @@ const AddressBook:FC = (props) => {
 
   //获取表格源数据
   const getAddressBookList = useCallback(() => {
-    addressBookServices.getAddressBookList()
+    addressBookServices.getAddressBookList(params.search)
       .then((res1: any) => {
         setDataSource(res1)
       })
-  }, [])
+  }, [params])
   useEffect(() => {
     getAddressBookList()
   }, [getAddressBookList])
 
+  //查询按钮点击事件
+  const handleSearch = (values: any) => {
+    setParams({ ...values })
+  }
+
   return (
     <>
+      <Row type='flex' align='middle'>
+        <AddressBookSearch initialValue={params} onSearch={handleSearch}/>
+      </Row>
       <Table
         columns={columns}
         dataSource={dataSource}

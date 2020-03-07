@@ -35,7 +35,17 @@ const config: IConfig = {
           ]
         },
         { path: '/order', component: './order/breadcrumb' ,routes:[
+            {path:'/order/get',component:'./order/get'},
             {path:'/order/oneDay',component:'./order/oneDay'},
+            {path:'/order/oneDay/:id',component:'./order/oneDay/detail'},
+            {path:'/order/car',component:'./order/car'},
+            {path:'/order/car/:id',component:'./order/car/detail'},
+            {path:'/order/shopping',component:'./order/shop'},
+            {path:'/order/shopping/:id',component:'./order/shop/detail'},
+            {path:'/order/party',component:'./order/party'},
+            {path:'/order/party/:id',component:'./order/party/detail'},
+            {path:'/order/reception',component:'./order/reception'},
+            {path:'/order/reception/:id',component:'./order/reception/detail'},
           ]
         },
         { path: '/product', component: './product/breadcrumb' ,routes:[

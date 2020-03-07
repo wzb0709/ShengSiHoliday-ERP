@@ -32,25 +32,26 @@ const OneDay: FC = (props) => {
   const [opList, setOpList] = useState<any>([])
 
   const columns: ColumnProps<Object>[] = [
-    { dataIndex: 'product_no', title: '产品编号' },
-    { dataIndex: 'product_title', title: '产品标题' },
-    { dataIndex: 'package_count', title: '套餐' },
-    { dataIndex: 'online_plan', title: '发团计划' },
-    { dataIndex: 'eval_count', title: '评价' },
+    { dataIndex: 'product_no', title: '产品编号' ,width:320},
+    { dataIndex: 'product_title', title: '产品标题' ,width:320},
+    { dataIndex: 'package_count', title: '套餐' ,width: 100},
+    { dataIndex: 'online_plan', title: '发团计划' ,width: 100,},
+    { dataIndex: 'eval_count', title: '评价' ,width: 100},
     {
       dataIndex: 'op_id',
       title: '计调',
+      width: 100,
       render: recode => saleList.find((item: any) => item.id === recode) ? saleList.find((item: any) => item.id === recode).name : '无对应计调',
     },
     {
       dataIndex: '', title: '上架状态', render: recode =>
         <Row type='flex'>
-          <div>{recode.status === 1 ? '已上架' : '未上架'}</div>
+          <div>{recode.is_show === 1 ? '已上架' : '未上架'}</div>
           <a
             style={{ marginLeft: 10 }}
-            onClick={() => handleChangeStatus(recode.id, recode.status)}
+            onClick={() => handleChangeStatus(recode.id, recode.is_show)}
           >
-            {recode.status === 1 ? '点击下架' : '点击上架'}
+            {recode.is_show === 1 ? '点击下架' : '点击上架'}
           </a>
         </Row>,
     },

@@ -108,6 +108,11 @@ export const menuList:Array<IMenuItem> = [
       children: [],
       id:13,
       path:'party',
+    },{
+      title: '一团一议',
+      children: [],
+      id:51,
+      path:'reception',
     }],
   },
   {

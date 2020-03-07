@@ -33,3 +33,13 @@ export function changeProduct(orderid:string,productid:string,dateid:string) {
   }
   return axios.put(`/groupOrder/changepro`,params)
 }
+
+export function getWaitOrderList(page:number,size:number) {
+  const params = {page,size}
+  return axios.get(`/groupOrder/wait`,{params})
+}
+
+export function getWaitOrder(orderid:string) {
+  const params = {orderid}
+  return axios.put(`/groupOrder/wait`,params)
+}

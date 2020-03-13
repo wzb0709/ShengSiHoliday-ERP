@@ -53,17 +53,62 @@ const PackageModal:FC<IProps> = (props) => {
           ],
         })(<Input placeholder='请输入套餐名称' style={{width:"90%"}} />)}
       </FormItem>
-      <FormItem label='套餐描述' {...formItemLayout}>
-        {getFieldDecorator('package_summary', {
-          initialValue:props.initialValue.package_summary,
-          rules: [
-            {
-              required: true,
-              message: '请输入套餐描述',
-            },
-          ],
-        })(<Input placeholder='请输入套餐描述' style={{width:"90%"}} />)}
-      </FormItem>
+      <Row>
+        <Col span={12}>
+          <FormItem label='出游时间' {...formItemLayout1}>
+            {getFieldDecorator('start_time', {
+              initialValue:props.initialValue.start_time,
+              rules: [
+                {
+                  required: true,
+                  message: '请选择出游时间',
+                },
+              ],
+            })(<TimePicker format='HH:mm' placeholder='请选择出游时间' style={{width:"90%"}} />)}
+          </FormItem>
+        </Col>
+        <Col span={12}>
+          <FormItem label='默认数量' {...formItemLayout}>
+            {getFieldDecorator('package_count', {
+              initialValue:props.initialValue.package_count,
+              rules: [
+                {
+                  required: true,
+                  message: '请输入默认数量',
+                },
+              ],
+            })(<InputNumber placeholder='请输入默认数量' style={{width:"80%"}} />)}
+          </FormItem>
+        </Col>
+      </Row>
+      <Row>
+        <Col span={12}>
+          <FormItem label='下单截止(小时)' {...formItemLayout1}>
+            {getFieldDecorator('advance_booking', {
+              initialValue:props.initialValue.advance_booking,
+              rules: [
+                {
+                  required: true,
+                  message: '请输入下单截止',
+                },
+              ],
+            })(<InputNumber placeholder='请输入下单截止' style={{width:"90%"}} />)}
+          </FormItem>
+        </Col>
+        <Col span={12}>
+          <FormItem label='订单暂留时间(小时)' {...formItemLayout}>
+            {getFieldDecorator('persistence_time', {
+              initialValue:props.initialValue.persistence_time,
+              rules: [
+                {
+                  required: true,
+                  message: '请输入订单暂留时间',
+                },
+              ],
+            })(<InputNumber placeholder='请输入订单暂留时间' style={{width:"80%"}} />)}
+          </FormItem>
+        </Col>
+      </Row>
       <Row>
         <Col span={12}>
           <FormItem label='默认套餐价格(成人)' {...formItemLayout1}>
@@ -120,49 +165,16 @@ const PackageModal:FC<IProps> = (props) => {
           </FormItem>
         </Col>
       </Row>
-      <FormItem label='默认数量' {...formItemLayout}>
-        {getFieldDecorator('package_count', {
-          initialValue:props.initialValue.package_count,
+      <FormItem label='套餐描述' {...formItemLayout}>
+        {getFieldDecorator('package_summary', {
+          initialValue:props.initialValue.package_summary,
           rules: [
             {
-              required: true,
-              message: '请输入默认数量',
+              required: false,
+              message: '请输入套餐描述',
             },
           ],
-        })(<InputNumber placeholder='请输入默认数量' style={{width:"90%"}} />)}
-      </FormItem>
-      <FormItem label='下单截止(小时)' {...formItemLayout}>
-        {getFieldDecorator('advance_booking', {
-          initialValue:props.initialValue.advance_booking,
-          rules: [
-            {
-              required: true,
-              message: '请输入下单截止',
-            },
-          ],
-        })(<InputNumber placeholder='请输入下单截止' style={{width:"90%"}} />)}
-      </FormItem>
-      <FormItem label='订单暂留时间(小时)' {...formItemLayout}>
-        {getFieldDecorator('persistence_time', {
-          initialValue:props.initialValue.persistence_time,
-          rules: [
-            {
-              required: true,
-              message: '请输入订单暂留时间',
-            },
-          ],
-        })(<InputNumber placeholder='请输入订单暂留时间' style={{width:"90%"}} />)}
-      </FormItem>
-      <FormItem label='出游时间' {...formItemLayout}>
-        {getFieldDecorator('start_time', {
-          initialValue:props.initialValue.start_time,
-          rules: [
-            {
-              required: true,
-              message: '请选择出游时间',
-            },
-          ],
-        })(<TimePicker format='HH:mm' placeholder='请选择出游时间' style={{width:"90%"}} />)}
+        })(<Input.TextArea rows={3} placeholder='请输入套餐描述' style={{width:"90%"}} />)}
       </FormItem>
     </Modal>
   )

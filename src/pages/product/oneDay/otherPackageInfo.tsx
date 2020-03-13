@@ -1,5 +1,5 @@
 import React, { FC, Fragment, useCallback, useEffect, useState } from 'react'
-import { Card, Divider, message, Modal, Row, Table } from 'antd'
+import { Card, Divider, message, Modal, Row, Statistic, Table } from 'antd'
 import { ColumnProps } from 'antd/lib/table'
 
 import * as oneDayServices from '@/services/onDay'
@@ -19,12 +19,12 @@ const OtherPackageInfo: FC<IProps> = (props) => {
 
   const columns: ColumnProps<Object>[] = props.canEdit ? [
     { dataIndex: 'package_title', title: '套餐名称' },
-    { dataIndex: 'package_price', title: '套餐价格' },
+    { dataIndex: 'package_price', title: '套餐价格' ,render:recode => <Row type='flex' align='middle'><Statistic valueStyle={{fontSize:14}} value={recode} precision={2} prefix='￥' /></Row> },
     { dataIndex: 'package_commission', title: '分销佣金' },
     {
       dataIndex: '', title: '上线状态', render: recode =>
         <Row type='flex'>
-          <div>{recode.is_show === 1 ? '已上线' : '未上线'}</div>
+          <div style={{color:recode.is_show === 1 ? '#00CD00' : 'red'}}>{recode.is_show === 1 ? '已上线' : '未上线'}</div>
           <a
             style={{ marginLeft: 10 }}
             onClick={() => handleChangeStatus(recode.id, recode.is_show)}
@@ -42,12 +42,12 @@ const OtherPackageInfo: FC<IProps> = (props) => {
     },
   ] : [
     { dataIndex: 'package_title', title: '套餐名称' },
-    { dataIndex: 'package_price', title: '套餐价格' },
+    { dataIndex: 'package_price', title: '套餐价格' ,render:recode => <Row type='flex' align='middle'><Statistic valueStyle={{fontSize:14}} value={recode} precision={2} prefix='￥' /></Row> },
     { dataIndex: 'package_commission', title: '分销佣金' },
     {
       dataIndex: '', title: '上线状态', render: recode =>
         <Row type='flex'>
-          <div>{recode.is_show === 1 ? '已上线' : '未上线'}</div>
+          <div style={{color:recode.is_show === 1 ? '#00CD00' : 'red'}}>{recode.is_show === 1 ? '已上线' : '未上线'}</div>
         </Row>,
     },
   ]
@@ -118,7 +118,7 @@ const OtherPackageInfo: FC<IProps> = (props) => {
   return (
     <Card
       title='附加套餐信息'
-      style={{ width:1200,margin:'20px auto 0'  }}
+      style={{marginTop:20}}
       extra={props.canEdit && <a onClick={handleAddPackage}>添加附加套餐</a>}
     >
       <Table

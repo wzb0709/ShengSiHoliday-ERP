@@ -28,10 +28,22 @@ const config: IConfig = {
         { path: '/', component: './index' },
         { path: '/login', component: './login/index' },
         { path: '/market', component: './market/breadcrumb' ,routes:[
+            {path:'/market/coupon',component:'./market/coupon'},
             {path:'/market/ad',component:'./market/ad/adLocation'},
             {path:'/market/ad/:id',component:'./market/ad/adInfo/adInfo'},
             {path:'/market/comment',component:'./market/comment'},
             {path:'/market/help',component:'./market/help'},
+            {path:'/market/question',component:'./market/question'},
+          ]
+        },
+        { path: '/money', component: './money/breadcrumb' ,routes:[
+            {path:'/money/collection',component:'./money/collection'},
+            {path:'/money/refund',component:'./money/refund'},
+            {path:'/money/withdraw',component:'./money/withdraw'},
+            {path:'/money/expense',component:'./money/expense'},
+            {path:'/money/expense/:id',component:'./money/expense/detail'},
+            {path:'/money/settle',component:'./money/settle'},
+            {path:'/money/settle/:id',component:'./money/settle/detail'},
           ]
         },
         { path: '/order', component: './order/breadcrumb' ,routes:[
@@ -51,7 +63,8 @@ const config: IConfig = {
         { path: '/product', component: './product/breadcrumb' ,routes:[
             {path:'/product/oneDay',component:'./product/oneDay/oneDay'},
             {path:'/product/oneDay/:id',component:'./product/oneDay/oneDayDetail'},
-            {path:'/product/oneDay/:id/plan',component:'./product/oneDayManager/datePlan'},
+            {path:'/product/oneDay/:id/plan',component:'./product/oneDayManager/datePlanDetail'},
+            {path:'/product/oneDay/:id/plan/add',component:'./product/oneDayManager/datePlan'},
             {path:'/product/oneDay/:id/edit',component:'./product/oneDay/oneDayEdit'},
             {path:'/product/oneDay/:id/img',component:'./imgList'},
             {path:'/product/oneDayManager',component:'./product/oneDayManager/oneDayManager'},
@@ -67,15 +80,26 @@ const config: IConfig = {
             {path:'/product/car',component:'./product/car/car'},
             {path:'/product/reception',component:'./product/reception'},
             {path:'/product/reception/:id',component:'./product/reception/detail'},
-            // {path:'/product/car/:id',component:'./product/car/car'}
           ]
         },
+        { path: '/distribution', component: './distribution/breadcrumb' ,routes:[
+            {path:'/distribution/manager',component:'./distribution/list'},
+            {path:'/distribution/manager/:id',component:'./distribution/list/detail'},
+          ]},
         { path: '/member', component: './member/breadcrumb' ,routes:[
             {path:'/member/manager',component:'./member/memberList'},
           ]},
         { path: '/administrative', component: './administrative/breadcrumb' ,routes:[
+            {path:'/administrative/todo',component:'./administrative/todo'},
             {path:'/administrative/notice',component:'./administrative/notice'},
             {path:'/administrative/addressBook',component:'./administrative/addressBook'},
+            {path:'/administrative/person',component:'./administrative/person'},
+          ]},
+        { path: '/team', component: './team/breadcrumb' ,routes:[
+            {path:'/team/manager',component:'./team/manager'},
+            {path:'/team/manager/:id',component:'./team/manager/detail'},
+            {path:'/team/guide',component:'./team/guide'},
+            {path:'/team/guide/:id',component:'./team/guide/detail'},
           ]},
         { path: '/basic', component: './basic/breadcrumb' ,routes:[
             {path:'/basic/bus',component:'./basic/bus'},
@@ -88,6 +112,7 @@ const config: IConfig = {
           ]},
         { path: '/system', component: './system/breadcrumb' ,routes:[
             {path:'/system/auth',component:'./system/auth'},
+            {path:'/system/setting',component:'./system/config'},
             {path:'/system/character',component:'./system/character'},
             {path:'/system/member',component:'./system/user'},
             {path:'/system/department',component:'./system/department'},

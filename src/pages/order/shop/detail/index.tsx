@@ -42,11 +42,9 @@ const ShoppingOrderDetail:FC<IProps> = (props) => {
         title='订单信息'
         extra={<>
           <a>跟踪记录</a>
-          <Divider type='vertical' />
-          <a>转让订单</a>
         </>}
       >
-        <OrderBasicInfo onRefresh={getBasicInfo} basicInfo={basicInfo}/>
+        <OrderBasicInfo type={2} showSale={false} onRefresh={getBasicInfo} basicInfo={basicInfo}/>
         <ShoppingProductInfo basicInfo={basicInfo} onRefresh={getBasicInfo}/>
         <ShoppingAddressInfo basicInfo={basicInfo} onRefresh={getBasicInfo}/>
         <ShoppingExpressInfo basicInfo={basicInfo} onRefresh={getBasicInfo}/>

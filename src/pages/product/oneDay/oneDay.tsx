@@ -6,6 +6,8 @@ import { Link, router } from 'umi'
 import * as oneDayServices from '@/services/onDay'
 import OneDayForm from '@/pages/product/oneDay/oneDayForm'
 import { getAllList, getOpList, getSaleList } from '@/utils/common'
+import { IMember } from '@/models/login'
+import { useSelector } from 'dva'
 
 const OneDay: FC = (props) => {
 
@@ -28,8 +30,8 @@ const OneDay: FC = (props) => {
   //控制模态框
   const [visible, setVisible] = useState<boolean>(false)
   const [initialValue] = useState({})
-  const [saleList, setSaleList] = useState<any>([])
-  const [opList, setOpList] = useState<any>([])
+
+  const memberList: Array<IMember> = useSelector((state: any) => state.login.memberList)
 
   const columns: ColumnProps<Object>[] = [
     { dataIndex: 'product_no', title: '产品编号' ,width:320},
@@ -41,7 +43,8 @@ const OneDay: FC = (props) => {
       dataIndex: 'op_id',
       title: '计调',
       width: 100,
-      render: recode => saleList.find((item: any) => item.id === recode) ? saleList.find((item: any) => item.id === recode).name : '无对应计调',
+      // @ts-ignore
+      render: recode => memberList.find((item: any) => item.id === recode) ? memberList.find((item: any) => item.id === recode).name : '无对应计调',
     },
     {
       dataIndex: '', title: '上架状态', render: recode =>
@@ -66,18 +69,12 @@ const OneDay: FC = (props) => {
   const getOneDayList = useCallback(() => {
     oneDayServices.getOneDayList({ ...params, page, size })
       .then((res: any) => {
-        getAllList().then(res1 => {
-          setSaleList(res1)
-          setDataSource(res.data)
-          setCount(res.count)
-        })
+        setDataSource(res.data)
+        setCount(res.count)
       })
   }, [page, size, params])
   useEffect(() => {
     getOneDayList()
-    getOpList().then(res=>{
-      setOpList(res)
-    })
   }, [getOneDayList])
 
   const handleChangeStatus = (id: string, status: number) => {
@@ -132,7 +129,7 @@ const OneDay: FC = (props) => {
         >
           新增一日游
         </Button>
-        <OneDaySearch opList={opList} initialValue={params} onSearch={handleSearch}/>
+        <OneDaySearch opList={memberList} initialValue={params} onSearch={handleSearch}/>
       </Row>
       <Table
         columns={columns}

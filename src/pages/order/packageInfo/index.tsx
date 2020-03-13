@@ -1,5 +1,5 @@
 import React, { FC, Fragment, useCallback, useEffect, useState } from 'react'
-import { Card, Divider, message, Modal, Table } from 'antd'
+import { Card, Divider, message, Modal, Row, Statistic, Table } from 'antd'
 import { ColumnProps } from 'antd/lib/table'
 import moment from 'moment'
 
@@ -24,12 +24,12 @@ const PackageInfo: FC<IProps> = (props) => {
     { dataIndex: 'package_title', title: '套餐名称' },
     { dataIndex: 'start_time', title: '出发时间' },
     { dataIndex: '', title: '套餐单价' ,render:recode => <>
-        <div>成人：￥{recode.adult_price}</div>
-        <div style={{marginTop:10}} >儿童：￥{recode.child_price}</div>
+        <Row type='flex' align='middle'>成人：<Statistic valueStyle={{fontSize:14}} value={recode.adult_price} precision={2} prefix='￥' /></Row>
+        <Row type='flex' align='middle'>儿童：<Statistic valueStyle={{fontSize:14}} value={recode.child_price} precision={2} prefix='￥' /></Row>
       </>},
     { dataIndex: '', title: '套餐数量' ,render:recode => <>
-        <div>成人{recode.adult_count}</div>
-        <div style={{marginTop:10}}>儿童{recode.child_count}</div>
+        <div>成人：{recode.adult_count}</div>
+        <div>儿童：{recode.child_count}</div>
       </>},
     { dataIndex: 'price', title: '套餐价格' },
     {

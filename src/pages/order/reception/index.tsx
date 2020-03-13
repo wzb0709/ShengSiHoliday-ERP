@@ -5,9 +5,11 @@ import { Link } from 'umi'
 import moment from 'moment'
 
 import * as receptionOrderServices from '@/services/order/reception'
-import OneDayOrderSearch, { IOneDayOrderSearch } from '@/pages/order/oneDay/oneDaySearch'
 import { IMember } from '@/models/login'
 import { useSelector } from 'dva'
+import PartyOrderSearch, { IPartyOrderSearch } from '@/pages/order/party/orderPartySearch'
+import OrderStatistical from '@/pages/order/statistical'
+import ReceptionOrderSearch from '@/pages/order/reception/receptionSearch'
 
 const ReceptionOrder: FC = (props) => {
   //表格的页数
@@ -19,7 +21,7 @@ const ReceptionOrder: FC = (props) => {
   //表格数据源
   const [dataSource, setDataSource] = useState<Array<any>>([])
   //查询的相关参数
-  const [params, setParams] = useState<IOneDayOrderSearch>({
+  const [params, setParams] = useState<IPartyOrderSearch>({
     search: '',
     status: -1,
     issettle: -1,
@@ -30,6 +32,9 @@ const ReceptionOrder: FC = (props) => {
   })
 
   const memberList: Array<IMember> = useSelector((state: any) => state.login.memberList)
+
+  const [visible,setVisible] = useState<boolean>(false)
+  const [orderParams,setOrderParams] = useState<any>({})
 
   const columns: ColumnProps<Object>[] = [
     { dataIndex: '', title: '订单信息' ,render:recode => <>
@@ -51,10 +56,8 @@ const ReceptionOrder: FC = (props) => {
       </>},
     { dataIndex: 'status', title: '订单状态' ,render:recode => <>
         {recode === 0 ? <Badge status='warning' text='待付款' />
-          : recode === 1 ?  <Badge status='processing' text='已付款' />
-            : recode === 2 ?  <Badge status='processing' text='已确认' />
-              : recode === 3 ? <Badge status='success' text='已出游' />
-                : recode === 4 ? <Badge status='success' text='已评价' />
+          : recode === 1 ?  <Badge status='processing' text='已确认' />
+            : recode === 2 ?  <Badge status='processing' text='已付款' />
                   :  <Badge status='default' text='已取消' />
         }
       </>},
@@ -90,10 +93,25 @@ const ReceptionOrder: FC = (props) => {
     setPage(page)
   }
 
+  const handleView = () => {
+    setOrderParams({
+      ...params,
+      order_type:5,
+    })
+    setVisible(true)
+  }
+
+
   return (
     <>
       <Row type='flex' align='middle'>
-        <OneDayOrderSearch memberList={memberList} initialValue={params} onSearch={handleSearch}/>
+        <Button
+          type='primary'
+          style={{ marginBottom: 24, marginRight: 20 }}
+        >
+          添加订单
+        </Button>
+        <ReceptionOrderSearch memberList={memberList} initialValue={params} onSearch={handleSearch}/>
       </Row>
       <Table
         columns={columns}
@@ -105,8 +123,14 @@ const ReceptionOrder: FC = (props) => {
         rowKey='id'
       />
       <div style={{marginTop:-47}}>
-        <Button type='primary' style={{marginTop:-20}} >查看统计信息</Button>
+        <Button onClick={handleView} type='primary' style={{marginTop:-20}} >查看统计信息</Button>
       </div>
+
+      {visible && <OrderStatistical
+        params={orderParams}
+        visible={visible}
+        onCancel={() => setVisible(false)}
+      />}
     </>
   )
 }

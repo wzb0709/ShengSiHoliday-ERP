@@ -32,3 +32,24 @@ export function deletePayment(id:string) {
 export function getPaymentSource() {
   return axios.get(`/payment/paymenysource`)
 }
+
+export function getAudit(type:number,status:number,start_time:string,end_time:string,page:number,size:number) {
+  const params = {
+    type,status,start_time,end_time,page,size
+  }
+  return axios.get(`/payment/audit`,{params})
+}
+
+export function judgePayment(item:any,id:string,type:number) {
+  const params = {
+    ...item,id
+  }
+  return axios.put(`/payment/audit/${type}`,item)
+}
+
+export function getStatistical(type:number,status:number,start_time:string,end_time:string) {
+  const params = {
+    type,status,start_time,end_time
+  }
+  return axios.get(`/payment/statistical`,{params})
+}

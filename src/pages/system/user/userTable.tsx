@@ -37,7 +37,9 @@ const UserTable: FC<IProps> = (props) => {
     },
     {
       title: '操作', dataIndex: 'id', render: recode => <>
-        <a onClick={() => props.onViewUserInfo(recode)}>编辑用户信息</a>
+        <a>发送密码</a>
+        <Divider type="vertical"/>
+        <a onClick={() => props.onViewUserInfo(recode)}>编辑</a>
         <Divider type="vertical"/>
         <a style={{ color: '#F60' }} onClick={() => props.onDeleteUser(recode)}>删除用户</a>
       </>,

@@ -31,7 +31,7 @@ export function addTourist(item:ITouristItem) {
 }
 
 export function deleteTourist(id:string) {
-  return axios.delete(`/orderTourists/${id}`)
+  return axios.delete(`/orderTourists?id=${id}`)
 }
 
 export function updateTouristStatus(id:string,status:number) {
@@ -40,4 +40,8 @@ export function updateTouristStatus(id:string,status:number) {
 
 export function uploadTouristFile(file:FormData,orderid:string) {
   return axios.post(`/orderTourists/file/${orderid}`,file)
+}
+
+export function changeAllTouristStatus(orderid:string,ids:string[]) {
+  return axios.put(`/orderTourists/batchexit/${orderid}`,ids)
 }

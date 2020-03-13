@@ -1,14 +1,18 @@
 import React, { FC, Fragment, useCallback, useEffect, useState } from 'react'
-import { Card, Divider, message, Modal, Row, Select, Table } from 'antd'
+import { Card, Divider, message, Modal, Row, Select, Statistic, Table } from 'antd'
 import { ColumnProps } from 'antd/lib/table'
 
 import * as planServices from '@/services/oneDayManager'
 import DatePlanModal from '@/pages/product/oneDayManager/datePlanModal'
 import * as oneDayServices from '@/services/onDay'
+import AddPlanPackageModal from '@/pages/product/oneDayManager/detail/detailModal'
+import { WrappedFormUtils } from 'antd/es/form/Form'
+import packageModal from '@/pages/product/oneDay/packageModal'
 
 interface IProps {
   id: string,
-  canEdit: boolean
+  canEdit: boolean,
+  packageList?:any
 }
 
 const PackageTable: FC<IProps> = (props) => {
@@ -18,6 +22,7 @@ const PackageTable: FC<IProps> = (props) => {
   const [id, setId] = useState<string>('')
   const [initialValue,setInitialValue] = useState<any>({})
   const [addVisible,setAddVisible] = useState<boolean>(false)
+  const [value, setValue] = useState<string>('')
   //
   // const [packageList, setPackageList] = useState<any>([])
   // const getTotalPackageList = useCallback(() => {
@@ -32,21 +37,21 @@ const PackageTable: FC<IProps> = (props) => {
 
 
   const columns: ColumnProps<Object>[] = props.canEdit ? [
-    { dataIndex: 'package_title', title: '套餐名称' },
+    { dataIndex: 'package_title', title: '套餐名称'},
     { dataIndex: 'start_time', title: '出发时间' },
     { dataIndex: '', title: '套餐价格' ,render:recode => <>
-        <div>成人：￥{recode.package_adult_price}</div>
-        <div style={{marginTop:10}} >儿童：￥{recode.package_child_price}</div>
+        <Row type='flex' align='middle'>成人：<Statistic valueStyle={{fontSize:14}} value={recode.package_adult_price} precision={2} prefix='￥' /></Row>
+        <Row type='flex' align='middle'>儿童：<Statistic valueStyle={{fontSize:14}} value={recode.package_child_price} precision={2} prefix='￥' /></Row>
       </>},
     { dataIndex: '', title: '分销佣金' ,render:recode => <>
-        <div>成人：￥{recode.package_adult_commission}</div>
-        <div style={{marginTop:10}}>儿童：￥{recode.package_child_commission}</div>
+        <Row type='flex' align='middle'>成人：<Statistic valueStyle={{fontSize:14}} value={recode.package_adult_commission} precision={2} prefix='￥' /></Row>
+        <Row type='flex' align='middle'>儿童：<Statistic valueStyle={{fontSize:14}} value={recode.package_child_commission} precision={2} prefix='￥' /></Row>
       </>},
     { dataIndex: 'package_count', title: '数量' },
     {
       dataIndex: '', title: '上线状态', render: recode =>
         <Row type='flex'>
-          <div>{recode.is_show === 1 ? '已上线' : '未上线'}</div>
+          <div style={{color:recode.is_show === 1 ? '#00CD00' : 'red'}}>{recode.is_show === 1 ? '已上线' : '未上线'}</div>
           <a
             style={{ marginLeft: 10 }}
             onClick={() => handleChangeStatus(recode.id, recode.is_show)}
@@ -66,18 +71,18 @@ const PackageTable: FC<IProps> = (props) => {
     { dataIndex: 'package_title', title: '套餐名称' },
     { dataIndex: 'start_time', title: '出发时间' },
     { dataIndex: '', title: '套餐价格',render:recode => <>
-        <div>成人：￥{recode.package_adult_price}</div>
-        <div style={{marginTop:10}} >儿童：￥{recode.package_child_price}</div>
+        <Row type='flex' align='middle'>成人：<Statistic valueStyle={{fontSize:14}} value={recode.package_adult_price} precision={2} prefix='￥' /></Row>
+        <Row type='flex' align='middle'>儿童：<Statistic valueStyle={{fontSize:14}} value={recode.package_child_price} precision={2} prefix='￥' /></Row>
       </> },
     { dataIndex: '', title: '分销佣金' ,render:recode => <>
-        <div>成人：￥{recode.package_adult_commission}</div>
-        <div style={{marginTop:10}}>儿童：￥{recode.package_child_commission}</div>
+        <Row type='flex' align='middle'>成人：<Statistic valueStyle={{fontSize:14}} value={recode.package_adult_commission} precision={2} prefix='￥' /></Row>
+        <Row type='flex' align='middle'>儿童：<Statistic valueStyle={{fontSize:14}} value={recode.package_child_commission} precision={2} prefix='￥' /></Row>
       </>},
     { dataIndex: 'package_count', title: '数量' },
     {
       dataIndex: '', title: '上线状态', render: recode =>
         <Row type='flex'>
-          <div>{recode.is_show === 1 ? '已上线' : '未上线'}</div>
+          <div style={{color:recode.is_show === 1 ? '#00CD00' : 'red'}}>{recode.is_show === 1 ? '已上线' : '未上线'}</div>
         </Row>,
     },
   ]
@@ -120,9 +125,20 @@ const PackageTable: FC<IProps> = (props) => {
   }
 
   const handleAddPackage = () => {
+    let count = 0
+    dataSource.forEach((item:any) => {
+      const index = props.packageList.findIndex((item1:any) => item1.id === item.package_id)
+      if(index > -1){
+        count++
+      }
+    })
+    if(count === props.packageList.length){
+      message.warning('没有可以添加的套餐')
+      return false
+    }
     setId('')
     setInitialValue({})
-    setVisible(true)
+    setAddVisible(true)
   }
 
 
@@ -146,6 +162,27 @@ const PackageTable: FC<IProps> = (props) => {
     })
   }
 
+  const handleSelect = (values:any) => {
+    values.keys.forEach((item:string,index:number) => {
+      const obj = {
+        package_count: values.package_count,
+        is_show: values.is_show,
+        package_adult_price: values.package_adult_price,
+        package_adult_commission: values.package_adult_commission,
+        package_child_price: values.package_child_price,
+        package_child_commission: values.package_child_commission,
+        date_id:props.id,
+        package_id:item
+      }
+      planServices.addPlanPackage({...obj}).then(() => {
+        if(index === values.keys.length -1){
+          message.success('操作成功!')
+          setAddVisible(false)
+          getPackageList()
+        }
+      })
+    })
+  }
   return (
     <Card
       title='套餐信息'
@@ -164,32 +201,13 @@ const PackageTable: FC<IProps> = (props) => {
         onOk={handleConfirm}
         initialValue={initialValue}
       />
-      {/*<Modal*/}
-      {/*  title='添加套餐'*/}
-      {/*  width={600}*/}
-      {/*  onCancel={() => setAddVisible(false)}*/}
-      {/*  destroyOnClose={true}*/}
-      {/*  visible={addVisible}*/}
-      {/*  onOk={handleAddPackage}*/}
-      {/*>*/}
-      {/*  <Row type='flex' align='middle'>*/}
-      {/*    <div>套餐名称</div>*/}
-      {/*    <Select*/}
-      {/*      placeholder='请选择套餐'*/}
-      {/*      style={{ marginLeft: 10, width: 300 }}*/}
-      {/*      mode="multiple"*/}
-      {/*      // onChange={handleSelectChange}*/}
-      {/*    >*/}
-      {/*      {packageList.map((item: any) => {*/}
-      {/*        return (*/}
-      {/*          <Select.Option key={item.id}>*/}
-      {/*            {item.package_title}*/}
-      {/*          </Select.Option>*/}
-      {/*        )*/}
-      {/*      })}*/}
-      {/*    </Select>*/}
-      {/*  </Row>*/}
-      {/*</Modal>*/}
+      {props.packageList && <AddPlanPackageModal
+        // @ts-ignore
+        packageList={props.packageList}
+        visible={addVisible}
+        onCancel={() => setAddVisible(false)}
+        onOk={handleSelect}
+      />}
     </Card>
   )
 }

@@ -16,7 +16,7 @@ const NotesInfo: FC<IProps> = (props) => {
 
   const handleConfirm = (values: any) => {
     commonServices.updateBasicOrderInfo({
-      ...values, id: props.basicInfo.id,
+      ...values, id: props.basicInfo.order_id,
     }).then(() => {
       message.success('编辑成功！')
       setVisible(false)

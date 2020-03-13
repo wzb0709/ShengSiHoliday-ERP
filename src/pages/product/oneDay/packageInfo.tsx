@@ -1,5 +1,5 @@
 import React, { FC, Fragment, useCallback, useEffect, useState } from 'react'
-import { Card, Divider, message, Modal, Row, Table } from 'antd'
+import { Card, Divider, message, Modal, Row, Table, Statistic } from 'antd'
 import { ColumnProps } from 'antd/lib/table'
 import moment from 'moment'
 
@@ -20,23 +20,23 @@ const PackageInfo: FC<IProps> = (props) => {
 
   const columns: ColumnProps<Object>[] = props.canEdit ? [
     { dataIndex: 'package_title', title: '套餐名称' },
-    { dataIndex: 'package_summary', title: '套餐描述' },
+    { dataIndex: 'package_summary', title: '套餐描述' ,width:300,render:recode => <div style={{width:300}} className='textOverFlow'>{recode}</div>},
     { dataIndex: '', title: '默认套餐价格' ,render:recode => <>
-        <div>成人：￥{recode.package_adult_price}</div>
-        <div style={{marginTop:10}} >儿童：￥{recode.package_child_price}</div>
+        <Row type='flex' align='middle'>成人：<Statistic valueStyle={{fontSize:14}} value={recode.package_adult_price} precision={2} prefix='￥' /></Row>
+        <Row type='flex' align='middle'>儿童：<Statistic valueStyle={{fontSize:14}} value={recode.package_child_price} precision={2} prefix='￥' /></Row>
       </>},
     { dataIndex: '', title: '默认分销佣金' ,render:recode => <>
-        <div>成人：￥{recode.package_adult_commission}</div>
-        <div style={{marginTop:10}}>儿童：￥{recode.package_child_commission}</div>
+        <Row type='flex' align='middle'>成人：<Statistic valueStyle={{fontSize:14}} value={recode.package_adult_commission} precision={2} prefix='￥' /></Row>
+        <Row type='flex' align='middle'>儿童：<Statistic valueStyle={{fontSize:14}} value={recode.package_child_commission} precision={2} prefix='￥' /></Row>
       </>},
     { dataIndex: 'package_count', title: '默认数量' },
-    { dataIndex: 'advance_booking', title: '下单截止' },
-    { dataIndex: 'persistence_time', title: '暂留时间' },
-    { dataIndex: 'start_time', title: '开始时间' },
+    { dataIndex: 'advance_booking', title: '下单截止' ,render:recode => `${recode}小时`},
+    { dataIndex: 'persistence_time', title: '暂留时间',render:recode => `${recode}小时` },
+    { dataIndex: 'start_time', title: '出发时间' },
     {
-      dataIndex: '', title: '上线状态', render: recode =>
+      dataIndex: '', title: '上架状态', render: recode =>
         <Row type='flex'>
-          <div>{recode.is_show === 1 ? '已上线' : '未上线'}</div>
+          <div style={{color:recode.is_show === 1 ? '#00CD00' : 'red'}}>{recode.is_show === 1 ? '已上线' : '未上线'}</div>
           <a
             style={{ marginLeft: 10 }}
             onClick={() => handleChangeStatus(recode.id, recode.is_show)}
@@ -54,23 +54,23 @@ const PackageInfo: FC<IProps> = (props) => {
     },
   ] : [
     { dataIndex: 'package_title', title: '套餐名称' },
-    { dataIndex: 'package_summary', title: '套餐描述' },
+    { dataIndex: 'package_summary', title: '套餐描述' ,width:300,render:recode => <div style={{width:300}} className='textOverFlow'>{recode}</div>},
     { dataIndex: '', title: '默认套餐价格' ,render:recode => <>
-        <div>成人：￥{recode.package_adult_price}</div>
-        <div style={{marginTop:10}} >儿童：￥{recode.package_child_price}</div>
+        <Row type='flex' align='middle'>成人：<Statistic valueStyle={{fontSize:14}} value={recode.package_adult_price} precision={2} prefix='￥' /></Row>
+        <Row type='flex' align='middle'>儿童：<Statistic valueStyle={{fontSize:14}} value={recode.package_child_price} precision={2} prefix='￥' /></Row>
       </>},
     { dataIndex: '', title: '默认分销佣金' ,render:recode => <>
-        <div>成人：￥{recode.package_adult_commission}</div>
-        <div style={{marginTop:10}}>儿童：￥{recode.package_child_commission}</div>
+        <Row type='flex' align='middle'>成人：<Statistic valueStyle={{fontSize:14}} value={recode.package_adult_commission} precision={2} prefix='￥' /></Row>
+        <Row type='flex' align='middle'>儿童：<Statistic valueStyle={{fontSize:14}} value={recode.package_child_commission} precision={2} prefix='￥' /></Row>
       </>},
     { dataIndex: 'package_count', title: '默认数量' },
-    { dataIndex: 'advance_booking', title: '下单截止' },
-    { dataIndex: 'persistence_time', title: '暂留时间' },
-    { dataIndex: 'start_time', title: '开始时间' },
+    { dataIndex: 'advance_booking', title: '下单截止' ,render:recode => `${recode}小时`},
+    { dataIndex: 'persistence_time', title: '暂留时间' ,render:recode => `${recode}小时`},
+    { dataIndex: 'start_time', title: '出发时间' },
     {
-      dataIndex: '', title: '上线状态', render: recode =>
+      dataIndex: '', title: '上架状态', render: recode =>
         <Row type='flex'>
-          <div>{recode.is_show === 1 ? '已上线' : '未上线'}</div>
+          <div style={{color:recode.is_show === 1 ? '#00CD00' : 'red'}}>{recode.is_show === 1 ? '已上线' : '未上线'}</div>
         </Row>,
     },
   ]
@@ -146,7 +146,7 @@ const PackageInfo: FC<IProps> = (props) => {
   return (
     <Card
       title='套餐信息'
-      style={{ width:1200,margin:'20px auto 0'  }}
+      style={{marginTop:20}}
       extra={props.canEdit && <a onClick={handleAddPackage}>添加套餐</a>}
     >
       <Table

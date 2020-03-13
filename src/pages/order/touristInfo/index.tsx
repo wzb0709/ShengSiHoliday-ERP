@@ -21,6 +21,7 @@ const TouristInfo: FC<IProps> = (props) => {
   const [page, setPage] = useState<number>(1)
   const [size] = useState<number>(10)
   const [count, setCount] = useState<number>(0)
+  const [keys,setKeys] = useState<string[]>([])
 
   const columns: ColumnProps<Object>[] = [
     { dataIndex: 'tourist_type', title: '类型' ,render:recode => recode === 1 ? '成人' : '儿童' },
@@ -29,15 +30,21 @@ const TouristInfo: FC<IProps> = (props) => {
     { dataIndex: 'tourist_birthday', title: '出生日期',render:recode=>moment(recode).format('YYYY-MM-DD') },
     { dataIndex: 'certification_type', title: '证件类型',render:recode => recode === 1 ? '身份证' : recode === 2 ? '护照' : '其他' },
     { dataIndex: 'certification_no', title: '证件号码' },
-    { dataIndex: 'status', title: '状态',render:recode => recode === 1 ? '正常' : '退团' },
+    { dataIndex: 'status', title: '状态',render:recode => <div style={{color:recode === 1 ? '#00CD00' : 'red'}}>{recode === 1 ? '正常' : '退团'}</div>  },
     {
       dataIndex: '', title: '操作', render: recode => <Fragment>
-        <a onClick={() => handleUpdate(recode.id)} >编辑</a>
-        <Divider type='vertical'/>
-        {recode.status === 1 && <a onClick={() => handleChangeStatus(recode.id,recode.status)} style={{ color: 'red' }}>退团</a>}
-        {recode.status === 2 && <a onClick={() => handleChangeStatus(recode.id,recode.status)}>加入</a>}
-        <Divider type='vertical'/>
-        <a onClick={() => handleDelete(recode.id)} style={{ color: 'red' }}>删除</a>
+        {recode.status === 1 &&
+          <>
+            <a onClick={() => handleUpdate(recode.id)} >编辑</a>
+            <Divider type='vertical'/>
+            <a onClick={() => handleChangeStatus(recode.id,recode.status)} style={{ color: 'red' }}>退团</a>
+          </>}
+        {recode.status === 2 &&
+          <>
+            <a onClick={() => handleChangeStatus(recode.id,recode.status)}>恢复</a>
+            <Divider type='vertical'/>
+            <a onClick={() => handleDelete(recode.id)} style={{ color: 'red' }}>删除</a>
+          </>}
       </Fragment>,
     },
   ]
@@ -123,10 +130,29 @@ const TouristInfo: FC<IProps> = (props) => {
     })
     return false
   }
-  //
-  // const handleChange = ({file}:any) => {
-  //   console.log(file)
-  // }
+
+
+  const rowSelection = {
+    onChange: (selectedRowKeys:any) => {
+      setKeys(selectedRowKeys)
+    },
+    getCheckboxProps: (record:any) => ({
+      disabled: record.status === 2 || record.status === 0, // Column configuration not to be checked
+    }),
+  };
+
+  const handleChangeAllStatus = () => {
+    Modal.confirm({
+      title:'提示',
+      content:'是否需要批量退团?',
+      onOk:() => {
+        touristServices.changeAllTouristStatus(props.id,keys).then(() => {
+          message.success('操作成功！')
+          getTouristList()
+        })
+      }
+    })
+  }
 
   return (
     <Card
@@ -140,7 +166,7 @@ const TouristInfo: FC<IProps> = (props) => {
           <Divider type='vertical' />
           <a>导出名单</a>
           <Divider type='vertical' />
-          <a style={{color:'red'}}>批量退团</a>
+          <a onClick={handleChangeAllStatus} style={{color:'red'}}>批量退团</a>
         </>
       }
     >
@@ -149,6 +175,7 @@ const TouristInfo: FC<IProps> = (props) => {
         dataSource={dataSource}
         pagination={{ pageSize: size, total: count, current: page, onChange: handlePageChange,hideOnSinglePage:true }}
         columns={columns}
+        rowSelection={rowSelection}
         rowKey='id'
       />
       <TouristModal

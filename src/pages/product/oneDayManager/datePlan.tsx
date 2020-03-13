@@ -5,6 +5,8 @@ import { ColumnProps } from 'antd/lib/table'
 import * as oneDayServices from '@/services/onDay'
 import * as planServices from '@/services/oneDayManager'
 import DatePlanModal from '@/pages/product/oneDayManager/datePlanModal'
+import moment from 'moment'
+import AddPlanPackageModal from '@/pages/product/oneDayManager/detail/detailModal'
 
 interface IProps {
   match: any
@@ -14,13 +16,13 @@ const DatePlan: FC<IProps> = (props) => {
 
   const [dateList, setDateList] = useState<Array<string>>([])
   const [dataSource, setDataSource] = useState<any>([])
-  const [value, setValue] = useState<Array<string>>([])
   const [visible, setVisible] = useState<boolean>(false)
   const [packageVisible, setPackageVisible] = useState<boolean>(false)
   const [packageList, setPackageList] = useState<any>([])
   const [initialValue, setInitialValue] = useState<any>({})
   const [id, setId] = useState<string>('')
   const [status, setStatus] = useState<number>(-1)
+  const [datePlan,setDataPlan] = useState<any>([])
 
   const getPackageList = useCallback(() => {
     oneDayServices.getPackageList(props.match.params.id).then(res => {
@@ -30,6 +32,17 @@ const DatePlan: FC<IProps> = (props) => {
   useEffect(() => {
     getPackageList()
   }, [getPackageList])
+
+  const getDatePlan = useCallback(() => {
+    oneDayServices.getPlan(props.match.params.id).then(res=>{
+      setDataPlan(res)
+    })
+  },[props.match.params.id])
+  useEffect(() => {
+    getDatePlan()
+  },[getDatePlan])
+
+
 
   const columns: ColumnProps<Object>[] = [
     { dataIndex: 'package_title', title: '套餐名称' },
@@ -65,15 +78,23 @@ const DatePlan: FC<IProps> = (props) => {
     setDateList(arr)
   }
 
-  const handleSelectChange = (val: Array<string>) => {
-    setValue(val)
-  }
 
-  const handleAddPackage = () => {
-    let arr: any = []
-    value.forEach(item => {
-      const obj = packageList.find((item1: any) => item1.id === item)
-      if (obj) arr.push(obj)
+  const handleAddPackage = (values:any) => {
+    let arr:any = []
+    values.keys.forEach((item:string,index:number) => {
+      const packageItem:any = packageList.find((item1:any) => item1.id === item)
+      const obj = {
+        package_count: values.package_count,
+        is_show: values.is_show,
+        package_adult_price: values.package_adult_price,
+        package_adult_commission: values.package_adult_commission,
+        package_child_price: values.package_child_price,
+        package_child_commission: values.package_child_commission,
+        package_id:item,
+        package_title:packageItem.package_title,
+        start_time:packageItem.start_time
+      }
+      arr.push(obj)
     })
     setDataSource(arr)
     setVisible(false)
@@ -137,12 +158,21 @@ const DatePlan: FC<IProps> = (props) => {
     })
   }
 
+  const handleRender = (date:any) => {
+    const a = datePlan.find((item:any) => date.format('YYYY-MM-DD') === moment(item.start_date).format('YYYY-MM-DD'))
+    if(a){
+      return true
+    }else{
+      return false
+    }
+  }
+
   return (
     <>
       <Card
         title='批量添加计划'
       >
-        <Calendar onSelect={handleSelect}/>
+        <Calendar onSelect={handleSelect} disabledDate={handleRender} />
         <Row type='flex' align='middle'>
           <div>已选时间：</div>
           {dateList.map(item => {
@@ -171,32 +201,39 @@ const DatePlan: FC<IProps> = (props) => {
           rowKey='id'
         />
       </Card>
-      <Modal
-        title='添加套餐'
-        width={600}
-        onCancel={() => setVisible(false)}
-        destroyOnClose={true}
+      {visible && <AddPlanPackageModal
+        // @ts-ignore
+        packageList={packageList}
         visible={visible}
+        onCancel={() => setVisible(false)}
         onOk={handleAddPackage}
-      >
-        <Row type='flex' align='middle'>
-          <div>套餐名称</div>
-          <Select
-            placeholder='请选择套餐'
-            style={{ marginLeft: 10, width: 300 }}
-            mode="multiple"
-            onChange={handleSelectChange}
-          >
-            {packageList.map((item: any) => {
-              return (
-                <Select.Option key={item.id}>
-                  {item.package_title}
-                </Select.Option>
-              )
-            })}
-          </Select>
-        </Row>
-      </Modal>
+      />}
+      {/*<Modal*/}
+      {/*  title='添加套餐'*/}
+      {/*  width={600}*/}
+      {/*  onCancel={() => setVisible(false)}*/}
+      {/*  destroyOnClose={true}*/}
+      {/*  visible={visible}*/}
+      {/*  onOk={handleAddPackage}*/}
+      {/*>*/}
+      {/*  <Row type='flex' align='middle'>*/}
+      {/*    <div>套餐名称</div>*/}
+      {/*    <Select*/}
+      {/*      placeholder='请选择套餐'*/}
+      {/*      style={{ marginLeft: 10, width: 300 }}*/}
+      {/*      mode="multiple"*/}
+      {/*      onChange={handleSelectChange}*/}
+      {/*    >*/}
+      {/*      {packageList.map((item: any) => {*/}
+      {/*        return (*/}
+      {/*          <Select.Option key={item.id}>*/}
+      {/*            {item.package_title}*/}
+      {/*          </Select.Option>*/}
+      {/*        )*/}
+      {/*      })}*/}
+      {/*    </Select>*/}
+      {/*  </Row>*/}
+      {/*</Modal>*/}
       <DatePlanModal
         onOk={handleConfirm}
         visible={packageVisible}

@@ -1,5 +1,5 @@
 import React, { FC, Fragment, useCallback, useEffect, useState } from 'react'
-import { Card, Divider, message, Modal, Row, Table } from 'antd'
+import { Card, Divider, message, Modal, Row, Statistic, Table } from 'antd'
 import { ColumnProps } from 'antd/lib/table'
 
 import * as shoppingServices from '@/services/shopping'
@@ -19,13 +19,13 @@ const ShoppingPackageInfo: FC<IProps> = (props) => {
 
   const columns: ColumnProps<Object>[] = props.canEdit ? [
     { dataIndex: 'package_title', title: '套餐名称' },
-    { dataIndex: 'package_price', title: '套餐价格' },
-    { dataIndex: 'package_commission', title: '分销佣金' },
+    { dataIndex: 'package_price', title: '套餐价格',render:recode => <Statistic valueStyle={{fontSize:14}} value={recode} precision={2} prefix='￥' /> },
+    { dataIndex: 'package_commission', title: '分销佣金',render:recode => <Statistic valueStyle={{fontSize:14}} value={recode} precision={2} prefix='￥' /> },
     { dataIndex: 'package_count', title: '套餐数量' },
     {
       dataIndex: '', title: '上线状态', render: recode =>
         <Row type='flex'>
-          <div>{recode.is_show === 1 ? '已上线' : '未上线'}</div>
+          <div style={{color:recode.is_show === 1 ? '#00CD00' : 'red'}}>{recode.is_show === 1 ? '已上线' : '未上线'}</div>
           <a
             style={{ marginLeft: 10 }}
             onClick={() => handleChangeStatus(recode.id, recode.is_show)}
@@ -43,13 +43,13 @@ const ShoppingPackageInfo: FC<IProps> = (props) => {
     },
   ] : [
     { dataIndex: 'package_title', title: '套餐名称' },
-    { dataIndex: 'package_price', title: '套餐价格' },
-    { dataIndex: 'package_commission', title: '分销佣金' },
+    { dataIndex: 'package_price', title: '套餐价格',render:recode => <Statistic valueStyle={{fontSize:14}} value={recode} precision={2} prefix='￥' /> },
+    { dataIndex: 'package_commission', title: '分销佣金',render:recode => <Statistic valueStyle={{fontSize:14}} value={recode} precision={2} prefix='￥' /> },
     { dataIndex: 'package_count', title: '套餐数量' },
     {
       dataIndex: '', title: '上线状态', render: recode =>
         <Row type='flex'>
-          <div>{recode.is_show === 1 ? '已上线' : '未上线'}</div>
+          <div style={{color:recode.is_show === 1 ? '#00CD00' : 'red'}}>{recode.is_show === 1 ? '已上线' : '未上线'}</div>
         </Row>,
     },
   ]

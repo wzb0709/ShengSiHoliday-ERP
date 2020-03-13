@@ -3,7 +3,7 @@ import { Modal, Form, Select, Input } from 'antd'
 import { WrappedFormUtils } from 'antd/es/form/Form'
 import { IUserInfo } from '@/services/user'
 import { IAuthItem } from '@/pages/system/auth/authTable'
-import FormUpload from '@/component/upload/formUpload'
+
 
 const FormItem = Form.Item
 const Option = Select.Option
@@ -91,17 +91,17 @@ const UserModal: FC<IProps> = (props) => {
           ],
         })(<Input placeholder='请输入用户账号' style={{ width: '70%' }}/>)}
       </FormItem>
-      <FormItem label="用户密码" {...formItemLayout}>
-        {getFieldDecorator('pwd', {
-          initialValue: props.initialValue.pwd,
-          rules: [
-            {
-              required: true,
-              message: '请输入用户密码',
-            },
-          ],
-        })(<Input placeholder='请输入用户密码' style={{ width: '70%' }}/>)}
-      </FormItem>
+      {/*<FormItem label="用户密码" {...formItemLayout}>*/}
+      {/*  {getFieldDecorator('pwd', {*/}
+      {/*    initialValue: props.initialValue.pwd,*/}
+      {/*    rules: [*/}
+      {/*      {*/}
+      {/*        required: true,*/}
+      {/*        message: '请输入用户密码',*/}
+      {/*      },*/}
+      {/*    ],*/}
+      {/*  })(<Input placeholder='请输入用户密码' style={{ width: '70%' }}/>)}*/}
+      {/*</FormItem>*/}
       <FormItem label="用户电话" {...formItemLayout}>
         {getFieldDecorator('phone', {
           initialValue: props.initialValue.phone,
@@ -139,28 +139,7 @@ const UserModal: FC<IProps> = (props) => {
           })}
         </Select>)}
       </FormItem>
-      <FormItem label='头像' {...formItemLayout}>
-        {getFieldDecorator('head_img', {
-          initialValue:props.initialValue.head_img,
-          normalize: value => {
-            if (typeof value === 'string') {
-              return value
-            } else if (Array.isArray(value)) {
-              return value.length > 0 ? value.slice(-1)[0] : ''
-            }
-          },
-          rules: [
-            {
-              required: true,
-              message: '请上传头像',
-            },
-          ],
-        })(<FormUpload
-          accept="image/jpeg,image/jpg,image/png"
-          action="https://pzyfile.oss-cn-hangzhou.aliyuncs.com"
-          listType={'picture'}
-        />)}
-      </FormItem>
+
     </Modal>
   )
 }

@@ -38,21 +38,6 @@ const PaymentModal:FC<IProps> = (props) => {
       destroyOnClose={true}
       onOk={handleConfirm}
     >
-      <FormItem label='来源' {...formItemLayout}>
-        {getFieldDecorator('payment_source', {
-          initialValue:props.initialValue.payment_source,
-          rules: [
-            {
-              required: true,
-              message: '请选择来源',
-            },
-          ],
-        })(<Select placeholder='请选择来源' style={{width:"70%"}} >
-          {props.source.map((item:any) => {
-            return <Option key={item.id}>{item.source_title}</Option>
-          })}
-        </Select>)}
-      </FormItem>
       <FormItem label='款项类型' {...formItemLayout}>
         {getFieldDecorator('pay_type', {
           initialValue:props.initialValue.pay_type,
@@ -67,6 +52,21 @@ const PaymentModal:FC<IProps> = (props) => {
           <Option value={2}>退款</Option>
         </Select>)}
       </FormItem>
+      {props.form.getFieldValue('pay_type') === 1 && <FormItem label='来源' {...formItemLayout}>
+        {getFieldDecorator('payment_source', {
+          initialValue:props.initialValue.payment_source,
+          rules: [
+            {
+              required: true,
+              message: '请选择来源',
+            },
+          ],
+        })(<Select placeholder='请选择来源' style={{width:"70%"}} >
+          {props.source.map((item:any) => {
+            return <Option key={item.id}>{item.source_title}</Option>
+          })}
+        </Select>)}
+      </FormItem>}
       <FormItem label='款项金额' {...formItemLayout}>
         {getFieldDecorator('payment_money', {
           initialValue:props.initialValue.payment_money,

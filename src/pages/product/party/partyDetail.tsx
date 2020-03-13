@@ -121,14 +121,27 @@ const PartyDetail: FC<IProps> = (props) => {
           <a onClick={handleDelete} style={{color:'red'}}>删除产品</a>
         </>}
       >
-        <Row style={{ marginBottom: 10 }}>产品标题：{basicInfo.travel_title}</Row>
-        <Row style={{ marginBottom: 10 }}>产品副标题：{basicInfo.travel_subtitle}</Row>
-        <Row style={{ marginBottom: 10 }}>产品标签：{basicInfo.travel_tags.map(item => {
-          return (<Tag key={item} color={tagColor[Math.floor((Math.random() * tagColor.length))]}>{item}</Tag>)
-        })}</Row>
-        <Row style={{ marginBottom: 10 }}>游玩人数：{basicInfo.travel_person}人</Row>
-        <Row style={{ marginBottom: 10 }}>预期价格：{basicInfo.travel_price}元</Row>
-        <Row style={{ marginBottom: 10 }}>推荐理由：{basicInfo.travel_recommend}</Row>
+        <Row>
+          <Col span={12}>
+            <Row style={{ marginBottom: 10 }}>产品标题：{basicInfo.travel_title}</Row>
+            <Row style={{ marginBottom: 10 }}>产品副标题：{basicInfo.travel_subtitle}</Row>
+            <Row style={{ marginBottom: 10 }}>产品标签：{basicInfo.travel_tags.map(item => {
+              return (<Tag key={item} color={tagColor[Math.floor((Math.random() * tagColor.length))]}>{item}</Tag>)
+            })}</Row>
+            <Row style={{ marginBottom: 10 }}>游玩人数：{basicInfo.travel_person}人</Row>
+            <Row style={{ marginBottom: 10 }}>预期价格：{basicInfo.travel_price}元</Row>
+            <Row style={{ marginBottom: 10 }}>推荐理由：{basicInfo.travel_recommend}</Row>
+          </Col>
+          <Col span={12}>
+            {basicInfo.travel_pics.map((item,index)=>{
+              return item !=='' && (
+                <Col span={6} key={index} >
+                  <img src={item} alt="" style={{objectFit:'cover',width:'95%'}} />
+                </Col>
+              )
+            })}
+          </Col>
+        </Row>
       </Card>
       <Card
         title='计调信息'

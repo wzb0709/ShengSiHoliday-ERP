@@ -38,9 +38,20 @@ const TouristModal:FC<IProps> = (props) => {
       destroyOnClose={true}
       onOk={handleConfirm}
     >
+      <FormItem label='姓名' {...formItemLayout}>
+        {getFieldDecorator('tourist_name', {
+          initialValue:props.initialValue.tourist_name,
+          rules: [
+            {
+              required: true,
+              message: '请填写姓名',
+            },
+          ],
+        })(<Input placeholder='请填写姓名' style={{width:"70%"}} />)}
+      </FormItem>
       <FormItem label='人员类型' {...formItemLayout}>
         {getFieldDecorator('tourist_type', {
-          initialValue:props.initialValue.tourist_type,
+          initialValue:props.initialValue.tourist_type || 1,
           rules: [
             {
               required: true,
@@ -54,7 +65,7 @@ const TouristModal:FC<IProps> = (props) => {
       </FormItem>
       <FormItem label='性别' {...formItemLayout}>
         {getFieldDecorator('tourist_sex', {
-          initialValue:props.initialValue.tourist_sex,
+          initialValue:props.initialValue.tourist_sex || 1,
           rules: [
             {
               required: true,
@@ -66,20 +77,9 @@ const TouristModal:FC<IProps> = (props) => {
           <Option value={2}>女</Option>
         </Select>)}
       </FormItem>
-      <FormItem label='姓名' {...formItemLayout}>
-        {getFieldDecorator('tourist_name', {
-          initialValue:props.initialValue.tourist_name,
-          rules: [
-            {
-              required: true,
-              message: '请填写姓名',
-            },
-          ],
-        })(<Input placeholder='请填写姓名' style={{width:"70%"}} />)}
-      </FormItem>
       <FormItem label='生日' {...formItemLayout}>
         {getFieldDecorator('tourist_birthday', {
-          initialValue:props.initialValue.tourist_birthday ? moment(props.initialValue.tourist_birthday) : undefined,
+          initialValue:props.initialValue.tourist_birthday ? moment(props.initialValue.tourist_birthday) : moment('1990-01-01'),
           rules: [
             {
               required: true,
@@ -93,7 +93,7 @@ const TouristModal:FC<IProps> = (props) => {
           initialValue:props.initialValue.certification_type,
           rules: [
             {
-              required: true,
+              required: false,
               message: '请选择证件类型',
             },
           ],
@@ -108,7 +108,7 @@ const TouristModal:FC<IProps> = (props) => {
           initialValue:props.initialValue.certification_no,
           rules: [
             {
-              required: true,
+              required: false,
               message: '请填写证件号',
             },
           ],

@@ -9,7 +9,9 @@ import * as commonServices from '@/services/common'
 
 interface IProps {
   basicInfo:any,
-  onRefresh:any
+  onRefresh:any,
+  showSale:boolean,
+  type:number
 }
 
 const OrderBasicInfo:FC<IProps> = (props) => {
@@ -28,19 +30,18 @@ const OrderBasicInfo:FC<IProps> = (props) => {
     })
   }
 
-  const handleCancelOrder = () => {
+  const handleChangeOrder = (status:number) => {
     Modal.confirm({
       title:'提示',
-      content:'是否要取消该订单?',
+      content:'是否要进行该操作?',
       onOk:() => {
-        commonServices.updateOrderStatus(props.basicInfo.id,9).then(res=>{
+        commonServices.updateOrderStatus(props.basicInfo.id,status).then(res=>{
           message.success('操作成功！')
           props.onRefresh()
         })
       }
     })
   }
-
 
   return (
     <>
@@ -58,33 +59,77 @@ const OrderBasicInfo:FC<IProps> = (props) => {
               </Row>
               <a>发送短信</a>
             </Row>
-            <Row style={{marginTop:10}} type='flex' align='middle' justify='space-between'>
+            {props.type === 1 && <Row style={{marginTop:10}} type='flex' align='middle' justify='space-between'>
               <div>订单状态：{props.basicInfo.status === 0 ? <Badge status='warning' text='待付款' />
                 : props.basicInfo.status === 1 ?  <Badge status='processing' text='已付款' />
                   : props.basicInfo.status === 2 ?  <Badge status='processing' text='已确认' />
-                    : props.basicInfo.status === 3 ? <Badge status='success' text='已出游' />
+                      : props.basicInfo.status === 3 ? <Badge status='success' text='已评价' />
+                        :  <Badge status='default' text='已取消' />
+              }</div>
+              {(props.basicInfo.status === 1) && <a style={{marginRight:10}} onClick={() => handleChangeOrder(2)}>确认订单</a>}
+              {(props.basicInfo.status === 0 || props.basicInfo.status === 1 || props.basicInfo.status === 2) && <a style={{color:'red'}} onClick={() => handleChangeOrder(9)}>取消订单</a>}
+            </Row>}
+            {props.type === 2 && <Row style={{marginTop:10}} type='flex' align='middle' justify='space-between'>
+              <div>订单状态：{props.basicInfo.status === 0 ? <Badge status='warning' text='待付款' />
+                : props.basicInfo.status === 1 ?  <Badge status='processing' text='已付款' />
+                  : props.basicInfo.status === 2 ?  <Badge status='processing' text='已发货' />
+                    : props.basicInfo.status === 3 ? <Badge status='success' text='确认收货' />
                       : props.basicInfo.status === 4 ? <Badge status='success' text='已评价' />
                         :  <Badge status='default' text='已取消' />
               }</div>
-              <a style={{color:'red'}} onClick={handleCancelOrder}>取消订单</a>
-            </Row>
+              {(props.basicInfo.status === 1) && <a style={{marginRight:10}} onClick={() => handleChangeOrder(2)}>订单发货</a>}
+              {(props.basicInfo.status === 0 || props.basicInfo.status === 1) && <a style={{color:'red'}} onClick={() => handleChangeOrder(9)}>取消订单</a>}
+            </Row>}
+            {props.type === 3 && <Row style={{marginTop:10}} type='flex' align='middle' justify='space-between'>
+              <div>订单状态：{props.basicInfo.status === 0 ? <Badge status='warning' text='待付款' />
+                : props.basicInfo.status === 1 ?  <Badge status='processing' text='已付款' />
+                  : props.basicInfo.status === 2 ?  <Badge status='processing' text='已确认' />
+                    : props.basicInfo.status === 3 ? <Badge status='success' text='已评价' />
+                      :  <Badge status='default' text='已取消' />
+              }</div>
+              {(props.basicInfo.status === 1) && <a style={{marginRight:10}} onClick={() => handleChangeOrder(2)}>确认订单</a>}
+              {(props.basicInfo.status === 0 || props.basicInfo.status === 1 || props.basicInfo.status === 2) && <a style={{color:'red'}} onClick={() => handleChangeOrder(9)}>取消订单</a>}
+            </Row>}
+            {props.type === 4 && <Row style={{marginTop:10}} type='flex' align='middle' justify='space-between'>
+              <div>订单状态：{props.basicInfo.status === 0 ? <Badge status='warning' text='待付款' />
+                : props.basicInfo.status === 1 ?  <Badge status='processing' text='已付款' />
+                  : props.basicInfo.status === 3 ?  <Badge status='processing' text='已确认' />
+                    : props.basicInfo.status === 4 ?  <Badge status='processing' text='已提车' />
+                      : props.basicInfo.status === 5 ? <Badge status='processing' text='已还车' />
+                        : props.basicInfo.status === 6 ? <Badge status='success' text='订单完成' />
+                          :  <Badge status='default' text='已取消' />
+              }</div>
+              {(props.basicInfo.status === 1) && <a style={{marginRight:10}} onClick={() => handleChangeOrder(3)}>确认订单</a>}
+              {(props.basicInfo.status === 3) && <a style={{marginRight:10}} onClick={() => handleChangeOrder(4)}>提车</a>}
+              {(props.basicInfo.status === 4) && <a style={{marginRight:10}} onClick={() => handleChangeOrder(5)}>还车</a>}
+              {(props.basicInfo.status === 0 || props.basicInfo.status === 1 || props.basicInfo.status === 3) && <a style={{color:'red'}} onClick={() => handleChangeOrder(9)}>取消订单</a>}
+            </Row>}
+            {props.type === 5 && <Row style={{marginTop:10}} type='flex' align='middle' justify='space-between'>
+              <div>订单状态：{props.basicInfo.status === 0 ? <Badge status='warning' text='待付款' />
+                : props.basicInfo.status === 1 ?  <Badge status='processing' text='已确认' />
+                  : props.basicInfo.status === 2 ?  <Badge status='processing' text='已付款' />
+                    :  <Badge status='default' text='已取消' />
+              }</div>
+              {(props.basicInfo.status === 1) && <a style={{marginRight:10}} onClick={() => handleChangeOrder(2)}>确认订单</a>}
+              {(props.basicInfo.status === 0 || props.basicInfo.status === 1 || props.basicInfo.status === 2) && <a style={{color:'red'}} onClick={() => handleChangeOrder(9)}>取消订单</a>}
+            </Row>}
           </div>
         </Col>
         <Col span={8}>
           <div style={{border:'1px solid #eee',height:125,boxSizing:'border-box',padding:20}}>
             <div>订单编号：{props.basicInfo.order_no}</div>
             <div style={{marginTop:10}}>下单时间：{moment(props.basicInfo.create_time).format('YYYY-MM-DD HH:mm:ss')}</div>
-            <div style={{marginTop:10}}>操作：{
+            {props.showSale && <div style={{marginTop:10}}>销售：{
               // @ts-ignore
-              memberList.find(item => item.id === props.basicInfo.operation_id) ? memberList.find(item => item.id === props.basicInfo.operation_id).name : ''
-            }</div>
+              memberList.find(item => item.id === props.basicInfo.sale_id) ? memberList.find(item => item.id === props.basicInfo.sale_id).name : ''
+            }</div>}
           </div>
         </Col>
         <Col span={8}>
           <div style={{border:'1px solid #eee',height:125,boxSizing:'border-box',padding:20}}>
             <div style={{display:'flex',alignItems:'center'}}>营业款：<Statistic prefix='￥' valueStyle={{fontSize:16}} value={props.basicInfo.total_price} /></div>
             <div style={{display:'flex',alignItems:'center',marginTop:8}}>已收款：<Statistic prefix='￥' valueStyle={{fontSize:16,color:'#00CD00'}} value={props.basicInfo.paid} /></div>
-            <div style={{display:'flex',alignItems:'center',marginTop:8}}>未收款：<Statistic prefix='￥' valueStyle={{fontSize:16,color:'red'}} value={props.basicInfo.unpaid} /></div>
+            <div style={{display:'flex',alignItems:'center',marginTop:8}}>未收款：<Statistic prefix='￥' valueStyle={{fontSize:16,color:'red'}} value={props.basicInfo.total_price - props.basicInfo.paid} /></div>
           </div>
         </Col>
       </Row>

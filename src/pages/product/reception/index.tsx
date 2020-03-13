@@ -9,6 +9,8 @@ import PartyModal from '@/pages/product/party/partyModal'
 import ReceptionSearch, { IReceptionSearch } from '@/pages/product/reception/receptionSearch'
 import ReceptionModal from '@/pages/product/reception/receptionModal'
 import { getAllList, getOpList } from '@/utils/common'
+import { IMember } from '@/models/login'
+import { useSelector } from 'dva'
 
 const Reception:FC = (props) => {
 
@@ -26,17 +28,17 @@ const Reception:FC = (props) => {
   const [visible,setVisible] = useState<boolean>(false)
   const [initialValue,setInitialValue] = useState({})
 
-  const [saleList, setSaleList] = useState<any>([])
-  const [opList, setOpList] = useState<any>([])
+  const memberList: Array<IMember> = useSelector((state: any) => state.login.memberList)
 
   const columns: ColumnProps<Object>[] = [
     { dataIndex: 'product_no', title: '产品编号' },
     { dataIndex: 'product_title', title: '产品标题' },
-    { dataIndex: 'order_count', title: '订单' },
+    { dataIndex: 'order_count', title: '订单' ,width:100,render:recode => <div style={{width:100,color:'#00CD00'}}>{recode}</div> },
     {
       dataIndex: 'op_id',
       title: '计调' ,
-      render: recode => saleList.find((item: any) => item.id === recode) ? saleList.find((item: any) => item.id === recode).name : '无对应计调',
+      // @ts-ignore
+      render: recode => memberList.find((item: any) => item.id === recode) ? memberList.find((item: any) => item.id === recode).name : '无对应计调',
     },
     {
       dataIndex: 'id', title: '操作', render: recode => <Fragment>
@@ -49,18 +51,12 @@ const Reception:FC = (props) => {
   const getReceptionList = useCallback(() => {
     receptionServices.getReception(params.search,params.op_id,page,size)
       .then((res: any) => {
-        getAllList().then(res1 => {
-          setSaleList(res1)
-          setDataSource(res.data)
-          setCount(res.count)
-        })
+        setDataSource(res.data)
+        setCount(res.count)
       })
   }, [page, size, params])
   useEffect(() => {
     getReceptionList()
-    getOpList().then(res=>{
-      setOpList(res)
-    })
   }, [getReceptionList])
 
 
@@ -94,7 +90,7 @@ const Reception:FC = (props) => {
     <>
       <Row type='flex' align='middle'>
         <Button onClick={handleAddModal} type='primary' style={{ marginBottom: 24, marginRight: 20 }}>新增一团一议</Button>
-        <ReceptionSearch opList={opList} initialValue={params} onSearch={handleSearch}/>
+        <ReceptionSearch opList={memberList} initialValue={params} onSearch={handleSearch}/>
       </Row>
       <Table
         columns={columns}

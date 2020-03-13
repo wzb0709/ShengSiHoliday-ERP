@@ -49,7 +49,7 @@ const OneDayOrderDetail:FC<IProps> = (props) => {
           <a>查看合同</a>
         </>}
       >
-        <OrderBasicInfo onRefresh={getBasicInfo} basicInfo={basicInfo}/>
+        <OrderBasicInfo type={1} showSale={true} onRefresh={getBasicInfo} basicInfo={basicInfo}/>
         <CarPoint basicInfo={basicInfo} onRefresh={getBasicInfo}/>
         <ProductInfo basicInfo={basicInfo} onRefresh={getBasicInfo}/>
         <SalesmanInfo basicInfo={basicInfo} onRefresh={getBasicInfo}/>

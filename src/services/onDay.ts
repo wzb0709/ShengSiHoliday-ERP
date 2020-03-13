@@ -114,3 +114,10 @@ export function copyProduct(id:string) {
   return axios.put(`/product/copy`,params)
 }
 
+export function getPlan(productid:string,month?:number) {
+  const params = {
+    productid,month
+  }
+  return axios.get('/productDate',{params})
+}
+

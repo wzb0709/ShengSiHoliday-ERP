@@ -120,10 +120,10 @@ const CarOrderSearch:FC<IProps> = (props) => {
           <Option value={-1}>全部订单状态</Option>
           <Option value={0}>待付款</Option>
           <Option value={1}>已付款</Option>
-          <Option value={2}>已提车</Option>
-          <Option value={3}>已还车</Option>
-          <Option value={4}>已退押金</Option>
-          <Option value={4}>订单完成</Option>
+          <Option value={3}>已确认</Option>
+          <Option value={4}>已提车</Option>
+          <Option value={5}>已还车</Option>
+          <Option value={6}>订单完成</Option>
           <Option value={9}>已取消</Option>
         </Select>)}
       </FormItem>

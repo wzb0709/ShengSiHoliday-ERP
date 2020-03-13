@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Modal, Form, Input, Select } from 'antd'
+import { Modal, Form, Input, Select, Col, Row } from 'antd'
 import { WrappedFormUtils } from 'antd/es/form/Form'
 import BDMap from '@/component/map'
 
@@ -92,28 +92,36 @@ class PointModal extends Component<IProps, {}> {
               ],
             })(<Input.TextArea onBlur={this.handleBlur} rows={3} placeholder='请输入点位地址' style={{ width: '70%' }}/>)}
           </FormItem>
-          <FormItem label='经度' {...formItemLayout}>
-            {getFieldDecorator('lgt', {
-              initialValue: this.props.initialValue.lgt,
-              rules: [
-                {
-                  required: true,
-                  message: '请输入经度',
-                },
-              ],
-            })(<Input placeholder='请输入经度' style={{ width: '70%' }}/>)}
-          </FormItem>
-          <FormItem label='纬度' {...formItemLayout}>
-            {getFieldDecorator('lat', {
-              initialValue: this.props.initialValue.lat,
-              rules: [
-                {
-                  required: true,
-                  message: '请输入纬度',
-                },
-              ],
-            })(<Input placeholder='请输入纬度' style={{ width: '70%' }}/>)}
-          </FormItem>
+          <Row>
+            <Col span={12}>
+              <FormItem label='经度' {...formItemLayout}>
+                {getFieldDecorator('lgt', {
+                  initialValue: this.props.initialValue.lgt,
+                  rules: [
+                    {
+                      required: true,
+                      message: '请输入经度',
+                    },
+                  ],
+                })(<Input disabled={true} placeholder='请输入经度' style={{ width: '70%' }}/>)}
+              </FormItem>
+            </Col>
+            <Col span={12}>
+              <FormItem label='纬度' {...formItemLayout}>
+                {getFieldDecorator('lat', {
+                  initialValue: this.props.initialValue.lat,
+                  rules: [
+                    {
+                      required: true,
+                      message: '请输入纬度',
+                    },
+                  ],
+                })(<Input disabled={true} placeholder='请输入纬度' style={{ width: '70%' }}/>)}
+              </FormItem>
+            </Col>
+          </Row>
+
+
           <BDMap
             onRef={this.onRef}
             lat={this.props.initialValue.lat}

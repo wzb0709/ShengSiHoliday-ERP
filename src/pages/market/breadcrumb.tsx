@@ -10,6 +10,7 @@ const BreadcrumbLayout: FC = (props) => {
     { path: '/market/coupon', name: '优惠券管理' },
     { path: '/market/help', name: '小贴士管理' },
     { path: '/market/comment', name: '评价管理' },
+    { path: '/market/question', name: '常见问题' },
   ]
 
   return (

@@ -1,12 +1,13 @@
 import React, { FC } from 'react'
 import { WrappedFormUtils } from 'antd/es/form/Form'
 import { Button, Form, Input, Select } from 'antd'
+import { IMember } from '@/models/login'
 
 interface IProps {
   form:WrappedFormUtils
   initialValue:IReceptionSearch
   onSearch:(values:IReceptionSearch) => void
-  opList:any
+  opList:IMember[]
 }
 
 export interface IReceptionSearch {
@@ -50,8 +51,8 @@ const ReceptionSearch:FC<IProps> = (props) => {
             },
           ],
         })(<Select placeholder='请选择计调' style={{width:200}} >
-          {props.opList.map((item:any)=>{
-            return(
+          {props.opList.map(item=>{
+            return item.is_op && (
               <Option key={item.id}>{item.name}</Option>
             )
           })}

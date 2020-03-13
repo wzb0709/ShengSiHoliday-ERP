@@ -1,11 +1,6 @@
 import axios from 'axios'
 
-export function getPlan(productid:string,month:number) {
-  const params = {
-    productid,month
-  }
-  return axios.get('/productDate',{params})
-}
+
 
 interface IPlanItem {
   date_array:Array<string>

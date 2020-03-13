@@ -133,6 +133,7 @@ const HelpModal: FC<IProps> = (props) => {
           }]
         })(<BraftEditor
           media={{uploadFn: myUploadFn}}
+          style={{border:'1px solid #ccc'}}
         />)}
       </FormItem>
     </Modal>

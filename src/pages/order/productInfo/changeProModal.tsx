@@ -47,7 +47,15 @@ const ChangeProModal:FC<IProps> = (props) => {
               message: '请选择要更换的产品名称',
             },
           ],
-        })(<Select placeholder='请选择要更换的产品名称' style={{width:"70%"}} >
+        })(<Select
+          placeholder='请选择要更换的产品名称'
+          style={{width:"70%"}}
+          filterOption={(input, option) =>
+            // @ts-ignore
+            option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+          }
+          showSearch={true}
+        >
           {props.proList.map((item:any) => {
             return(
               <Option key={item.id}>{item.product_title}</Option>

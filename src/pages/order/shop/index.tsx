@@ -6,6 +6,7 @@ import moment from 'moment'
 
 import * as shopOrderServices from '@/services/order/shopping'
 import ShoppingOrderSearch, { IShoppingOrderSearch } from '@/pages/order/shop/shopSearch'
+import OrderStatistical from '@/pages/order/statistical'
 
 const ShoppingOrder: FC = (props) => {
   //表格的页数
@@ -23,6 +24,9 @@ const ShoppingOrder: FC = (props) => {
     start_time:'',
     end_time:'',
   })
+
+  const [visible,setVisible] = useState<boolean>(false)
+  const [orderParams,setOrderParams] = useState<any>({})
 
   const columns: ColumnProps<Object>[] = [
     { dataIndex: '', title: '订单信息' ,render:recode => <>
@@ -81,6 +85,15 @@ const ShoppingOrder: FC = (props) => {
     setPage(page)
   }
 
+  const handleView = () => {
+    setOrderParams({
+      ...params,
+      order_type:2,
+    })
+    setVisible(true)
+  }
+
+
   return (
     <>
       <Row type='flex' align='middle'>
@@ -96,8 +109,14 @@ const ShoppingOrder: FC = (props) => {
         rowKey='id'
       />
       <div style={{marginTop:-47}}>
-        <Button type='primary' style={{marginTop:-20}} >查看统计信息</Button>
+        <Button onClick={handleView} type='primary' style={{marginTop:-20}} >查看统计信息</Button>
       </div>
+
+      {visible && <OrderStatistical
+        params={orderParams}
+        visible={visible}
+        onCancel={() => setVisible(false)}
+      />}
     </>
   )
 }

@@ -48,10 +48,18 @@ const ChangeDateModal:FC<IProps> = (props) => {
               message: '请选择要更换的发团日期',
             },
           ],
-        })(<Select placeholder='请选择要更换的发团日期' style={{width:"70%"}} >
+        })(<Select
+          placeholder='请选择要更换的发团日期'
+          style={{width:"70%"}}
+          filterOption={(input, option) =>
+            // @ts-ignore
+            option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+          }
+          showSearch={true}
+        >
           {props.dateList.map((item:any) => {
             return(
-              <Option key={item.product_date_id}>{`${item.product_title} ${moment(item.start_date).format('YYYY-MM-DD')}`}</Option>
+              <Option key={item.id}>{`${moment(item.start_date).format('YYYY-MM-DD')}`}</Option>
             )
           })}
         </Select>)}

@@ -4,10 +4,10 @@ import { Link, router } from 'umi'
 import * as oneDayServices from '@/services/onDay'
 import PackageInfo from '@/pages/product/oneDay/packageInfo'
 import OtherPackageInfo from '@/pages/product/oneDay/otherPackageInfo'
-import { getAllList } from '@/utils/common'
-import { IUserInfo } from '@/models/login'
+import { IMember, IUserInfo } from '@/models/login'
 import { useSelector } from 'dva'
 import ChangeMember from '@/component/changeMember'
+import moment from 'moment'
 
 interface IProps {
   match: any
@@ -38,8 +38,10 @@ const OneDayDetail: FC<IProps> = (props) => {
     travel_person:0,
     create_id:''
   })
-  const [memberList,setMemberList] = useState<any>([])
+  const memberList: Array<IMember> = useSelector((state: any) => state.login.memberList)
+
   const [changeVisible,setChangeVisible] = useState<boolean>(false)
+  const [datePlan,setDataPlan] = useState<any>([])
 
   const userInfo: IUserInfo = useSelector((state: any) => state.login.userInfo)
 
@@ -49,12 +51,12 @@ const OneDayDetail: FC<IProps> = (props) => {
       res.product_img = JSON.parse(res.product_img)
       setBasicInfo(res)
     })
+    oneDayServices.getPlan(props.match.params.id).then(res=>{
+      setDataPlan(res)
+    })
   },[props.match.params.id])
   useEffect(() => {
     getBasicInfo()
-    getAllList().then(res=>{
-      setMemberList(res)
-    })
   }, [getBasicInfo])
 
 
@@ -83,6 +85,18 @@ const OneDayDetail: FC<IProps> = (props) => {
     })
   }
 
+  const handleRender = (date:any) => {
+    const a = datePlan.find((item:any) => date.format('YYYY-MM-DD') === moment(item.start_date).format('YYYY-MM-DD'))
+    if(a){
+      return <>
+        <div style={{color:'#F60'}}>￥{a.min_price}</div>
+        <div>数量：{a.site}</div>
+      </>
+    }else{
+      return <></>
+    }
+  }
+
   return (
     <>
       <Card
@@ -102,8 +116,8 @@ const OneDayDetail: FC<IProps> = (props) => {
         </>}
       >
         <Row>
-          <Col span={13}>
-            <Calendar  />
+          <Col span={11}>
+            <Calendar className='plan' dateCellRender={handleRender}  />
           </Col>
           <Col span={9} style={{marginTop:70}}>
             <Row style={{ marginBottom: 20 }}>产品标题：{basicInfo.product_title}</Row>
@@ -130,8 +144,12 @@ const OneDayDetail: FC<IProps> = (props) => {
         style={{ marginTop: 20 }}
       >
         <Row style={{ marginBottom: 20 }}>
-          <Col span={12} >计调姓名：{memberList.find((item:any) => item.id === basicInfo.create_id) ? memberList.find((item:any) => item.id === basicInfo.create_id).name : ''}</Col>
-          <Col span={12} >联系方式：{memberList.find((item:any) => item.id === basicInfo.create_id) ? memberList.find((item:any) => item.id === basicInfo.create_id).phone : ''}</Col>
+          <Col span={12} >计调姓名：{
+            // @ts-ignore
+            memberList.find((item:any) => item.id === basicInfo.create_id) ? memberList.find((item:any) => item.id === basicInfo.create_id).name : ''}</Col>
+          <Col span={12} >联系方式：{
+            // @ts-ignore
+            memberList.find((item:any) => item.id === basicInfo.create_id) ? memberList.find((item:any) => item.id === basicInfo.create_id).phone : ''}</Col>
         </Row>
       </Card>
 

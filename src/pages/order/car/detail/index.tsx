@@ -41,12 +41,10 @@ const CarOrderDetail:FC<IProps> = (props) => {
         extra={<>
           <a>跟踪记录</a>
           <Divider type='vertical' />
-          <a>转让订单</a>
-          <Divider type='vertical' />
           <a>查看合同</a>
         </>}
       >
-        <OrderBasicInfo onRefresh={getBasicInfo} basicInfo={basicInfo}/>
+        <OrderBasicInfo type={4} showSale={false} onRefresh={getBasicInfo} basicInfo={basicInfo}/>
         <CarInfo basicInfo={basicInfo} onRefresh={getBasicInfo}/>
         <RentalInfo basicInfo={basicInfo} onRefresh={getBasicInfo}/>
         <PointInfo basicInfo={basicInfo} onRefresh={getBasicInfo}/>

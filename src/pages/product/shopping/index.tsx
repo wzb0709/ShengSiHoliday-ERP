@@ -24,9 +24,9 @@ const Shopping:FC = (props) => {
 
   const columns: ColumnProps<Object>[] = [
     { dataIndex: 'product_no', title: '产品编号' },
-    { dataIndex: 'product_title', title: '产品标题' },
-    { dataIndex: 'package_count', title: '套餐' },
-    { dataIndex: 'eval_count', title: '评价' },
+    { dataIndex: 'product_title', title: '产品标题',width:350},
+    { dataIndex: 'package_count',width:100, title: '套餐',render:recode => <div style={{width:100,color:'#1890FF'}}>{recode}</div> },
+    { dataIndex: 'eval_count', width:100,title: '评价' ,render:recode => <div style={{width:100,color:'#1890FF'}}>{recode}</div>},
     {
       dataIndex: '', title: '上架状态', render: recode =>
         <Row type='flex'>

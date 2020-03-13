@@ -4,7 +4,7 @@ import moment from 'moment'
 
 import * as homeServices from '@/services/home'
 import Table, { ColumnProps } from 'antd/lib/table'
-import { Link } from 'umi'
+import OperationChart from '@/component/chart/operationChart'
 
 const HomePage = () => {
 
@@ -17,18 +17,24 @@ const HomePage = () => {
   const [dataSource,setDataSource] = useState<any>([])
   const [detailVisible,setDetailVisible] = useState<boolean>(false)
   const [detail,setDetail] = useState<any>({})
+  const [count,setCount] = useState<number>(0)
 
   const getTodo = useCallback(() => {
-    homeServices.getTodo(localStorage.getItem('id')).then(res=>{
+    homeServices.getTodo().then((res:any)=>{
+      let count = 0
+      res.forEach((item:any)=>{
+        if(item.type === 1) count++
+      })
       setTodo(res)
+      setCount(count)
     })
-  },[localStorage.getItem('id')])
+  },[])
 
   const getUnpaid = useCallback(() => {
-    homeServices.getUnPaid(localStorage.getItem('id')).then((res:any)=>{
+    homeServices.getUnPaid().then((res:any)=>{
       setUnpaid(res)
     })
-  },[localStorage.getItem('id')])
+  },[])
 
   const getShowList = useCallback(() => {
     homeServices.showNotice(1,3).then(res=>{
@@ -81,6 +87,10 @@ const HomePage = () => {
             <div style={{display:'flex',flexDirection:'column',justifyContent:'center',height:100}} >
               <div style={{fontSize:18}}>我的待办事项</div>
               {todo.length === 0 && <div style={{fontSize:22,fontWeight:'bold',marginTop:20}}>暂无待办事项</div>}
+              {todo.length !== 0 && <Row justify='space-between' type='flex' style={{fontSize:22,fontWeight:'bold',marginTop:20}}>
+                {todo.length}项
+                <span style={{color:'red'}}>{count}项紧急</span>
+              </Row>}
             </div>
           </Card>
         </Col>
@@ -122,6 +132,9 @@ const HomePage = () => {
           </Card>
         </Col>
       </Row>
+
+      <OperationChart />
+      {/*<OrderChart />*/}
 
       <Modal
         title='公告列表'

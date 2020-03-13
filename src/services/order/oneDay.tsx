@@ -9,7 +9,8 @@ interface IParams {
   start_time:string,
   end_time:string,
   page:number,
-  size:number
+  size:number,
+  car_point_id:string
 }
 
 export function getOneDayOrderList(params:IParams) {

@@ -22,8 +22,7 @@ const FeeInfo: FC<IProps> = (props) => {
   const [count, setCount] = useState<number>(0)
 
   const columns: ColumnProps<Object>[] = [
-    { dataIndex: 'fee_price', title: '金额'},
-    { dataIndex: 'fee_type', title: '类型' ,render:recode => recode === 1 ? '增加' : '减少' },
+    { dataIndex: '', title: '金额',render:recode=><div style={{color:recode.fee_type === 1 ? '#00cd00' : 'red'}}>{recode.fee_type === 1 ? `+${recode.fee_price}` : '-${recode.fee_price}'}</div>},
     { dataIndex: 'fee_summary', title: '备注' },
     { dataIndex: 'create_time', title: '操作时间',render:recode=>moment(recode).format('YYYY-MM-DD HH:mm:ss') },
     {

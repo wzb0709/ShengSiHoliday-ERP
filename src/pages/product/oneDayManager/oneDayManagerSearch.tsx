@@ -2,12 +2,13 @@ import React, { FC } from 'react'
 import { WrappedFormUtils } from 'antd/es/form/Form'
 import { Button, Form, Input, Select,DatePicker } from 'antd'
 import moment from 'moment'
+import { IMember } from '@/models/login'
 
 interface IProps {
   form:WrappedFormUtils
   initialValue:IOneDayManagerSearch
   onSearch:(values:IOneDayManagerSearch) => void
-  opList:any
+  opList:IMember[]
 }
 
 export interface IOneDayManagerSearch {
@@ -88,8 +89,8 @@ const OneDayManagerSearch:FC<IProps> = (props) => {
             },
           ],
         })(<Select placeholder='请选择计调' style={{width:150}} >
-          {props.opList.map((item:any)=>{
-            return(
+          {props.opList.map(item=>{
+            return item.is_op && (
               <Option key={item.id}>{item.name}</Option>
             )
           })}

@@ -1,10 +1,9 @@
 import React, { FC, Fragment, useCallback, useEffect, useState } from 'react'
-import { Card, Divider, message, Modal, Table, Upload, Button, Icon, Badge } from 'antd'
+import { Card, Divider, message, Modal, Table,Badge, Row, Statistic } from 'antd'
 import { ColumnProps } from 'antd/lib/table'
 import moment from 'moment'
 
 import * as paymentServices from '@/services/order/payment'
-import FeeModal from '@/pages/order/feeInfo/feeModal'
 import PaymentModal from '@/pages/order/payment/paymentModal'
 
 interface IProps {
@@ -23,10 +22,10 @@ const PaymentInfo: FC<IProps> = (props) => {
   const [source,setSource] = useState<any>([])
 
   const columns: ColumnProps<Object>[] = [
-    { dataIndex: 'payment_money', title: '金额'},
-    { dataIndex: 'pay_type', title: '类型' ,render:recode => recode === 1 ? '收款' : '退款' },
-    { dataIndex: 'source_title', title: '来源'},
-    { dataIndex: 'remark', title: '备注' },
+    { dataIndex: 'payment_money', title: '金额',render:recode => <Row type='flex' align='middle'><Statistic valueStyle={{fontSize:14}} value={recode} precision={2} prefix='￥' /></Row>},
+    { dataIndex: 'pay_type', title: '类型' ,render:recode => <div  style={{color:recode === 1 ? '#00cd00' : 'red'}}>{recode === 1 ? '收款' : '退款'}</div> },
+    { dataIndex: 'source_title', title: '来源',render:recode => recode === '' ? '-' : recode},
+    { dataIndex: 'remark', title: '备注',width:300 },
     { dataIndex: 'create_time', title: '操作时间',render:recode=>moment(recode).format('YYYY-MM-DD HH:mm:ss') },
     { dataIndex: 'status', title: '状态' ,render:recode =>
         recode === 0 ? <Badge status='warning' text='待处理' />

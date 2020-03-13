@@ -72,8 +72,12 @@ const OneDayEdit: FC<IProps> = (props) => {
         />}
       </Card>
 
-      <PackageInfo id={props.match.params.id} canEdit={true}/>
-      <OtherPackageInfo id={props.match.params.id} canEdit={true}/>
+      <div style={{ width:1200,margin:'0 auto'  }} >
+        <PackageInfo id={props.match.params.id} canEdit={true}/>
+      </div>
+      <div style={{ width:1200,margin:'0 auto'  }} >
+        <OtherPackageInfo id={props.match.params.id} canEdit={true}/>
+      </div>
     </>
   )
 }

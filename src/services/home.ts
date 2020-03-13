@@ -1,11 +1,11 @@
 import axios from 'axios'
 
-export function getTodo(id:string | null) {
-  return axios.get(`/main/todo/${id}`)
+export function getTodo() {
+  return axios.get(`/main/todo`)
 }
 
-export function getUnPaid(id:string | null) {
-  return axios.get(`/main/unpaid/${id}`)
+export function getUnPaid() {
+  return axios.get(`/main/unpaid`)
 }
 
 export function showNotice(page:number,size:number) {

@@ -40,14 +40,17 @@ const SalesmanInfo: FC<IProps> = (props) => {
         style={{ marginTop: 20 }}
       >
         <Row type='flex' align='middle'>
-          <div>业务员姓名：{
-            // @ts-ignore
-            memberList.find(item => item.id === props.basicInfo.salesman_id) ? memberList.find(item => item.id === props.basicInfo.salesman_id).name : ''}
-          </div>
-          <div style={{marginLeft:20}}>业务员联系方式：{
-            // @ts-ignore
-            memberList.find(item => item.id === props.basicInfo.salesman_id) ? memberList.find(item => item.id === props.basicInfo.salesman_id).phone : ''}
-          </div>
+          {props.basicInfo.salesman_id !== '' && <>
+            <div>业务员姓名：{
+              // @ts-ignore
+              memberList.find(item => item.id === props.basicInfo.salesman_id) ? memberList.find(item => item.id === props.basicInfo.salesman_id).name : ''}
+            </div>
+            <div style={{marginLeft:20}}>业务员联系方式：{
+              // @ts-ignore
+              memberList.find(item => item.id === props.basicInfo.salesman_id) ? memberList.find(item => item.id === props.basicInfo.salesman_id).phone : ''}
+            </div>
+          </>}
+          {props.basicInfo.salesman_id !== '' && <div>暂无业务员</div>}
         </Row>
       </Card>
 

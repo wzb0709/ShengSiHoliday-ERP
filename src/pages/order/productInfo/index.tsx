@@ -28,10 +28,15 @@ const ProductInfo:FC<IProps> = (props) => {
     oneDayServices.getOneDayList({page:1,size:10000,search:'',op_id:'',start_time:'',end_time:'',status:-1}).then(res=>{
       setProList(res.data)
     })
-    oneDayManagerServices.getPlanList('',-1,'','','',1,10000).then(res=>{
-      setDateList(res.data)
-    })
   },[])
+
+  useEffect(() => {
+    if(props.basicInfo.product_id){
+      oneDayServices.getPlan(props.basicInfo.product_id).then(res=>{
+        setDateList(res)
+      })
+    }
+  },[props.basicInfo])
 
   const handleConfirmDate = (values:any) => {
     oneDayOrderServices.changeProduct(props.basicInfo.id,'',values.date_id).then(() => {
@@ -70,6 +75,10 @@ const ProductInfo:FC<IProps> = (props) => {
           <div style={{marginTop:20}}>产品计调：{
             // @ts-ignore
             memberList.find(item => item.id === props.basicInfo.sale_id) ? memberList.find(item => item.id === props.basicInfo.sale_id).name : ''}
+          </div>
+          <div style={{marginTop:20,marginLeft:20}}>联系方式：{
+            // @ts-ignore
+            memberList.find(item => item.id === props.basicInfo.sale_id) ? memberList.find(item => item.id === props.basicInfo.sale_id).phone : ''}
           </div>
         </Row>
       </Card>

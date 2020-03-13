@@ -1,5 +1,5 @@
 import React, { FC, Fragment, useCallback, useEffect, useState } from 'react'
-import { Card, Divider, message, Modal, Table } from 'antd'
+import { Card, Divider, message, Modal, Statistic, Table } from 'antd'
 import { ColumnProps } from 'antd/lib/table'
 
 import * as oneDayServices from '@/services/order/otherPackage'
@@ -22,7 +22,7 @@ const OtherPackageInfo: FC<IProps> = (props) => {
   const columns: ColumnProps<Object>[] = [
     { dataIndex: 'package_title', title: '套餐名称' },
     { dataIndex: 'count', title: '套餐数量'},
-    { dataIndex: 'price', title: '套餐价格' },
+    { dataIndex: 'price', title: '套餐价格' ,render:recode=> <Statistic valueStyle={{fontSize:14}} value={recode} precision={2} prefix='￥' />},
     {
       dataIndex: 'id', title: '操作', render: recode => <Fragment>
         <a onClick={() => handleUpdatePackage(recode)} >编辑</a>
@@ -95,9 +95,9 @@ const OtherPackageInfo: FC<IProps> = (props) => {
 
   return (
     <Card
-      title='套餐信息'
+      title='附加套餐信息'
       style={{marginTop:20}}
-      extra={<a onClick={handleAddPackage}>添加套餐</a>}
+      extra={<a onClick={handleAddPackage}>添加附加套餐</a>}
     >
       <Table
         bordered={true}

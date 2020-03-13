@@ -50,3 +50,11 @@ export function getExpressList() {
 export function getExpressInfo(expressno :string) {
   return axios.get(`/express/${expressno}`)
 }
+
+export function getOrderStatistical(item:any) {
+  return axios.post(`/orderStatistical`,item)
+}
+
+export function getDistributionList() {
+  return axios.get(`/sysConfig/distribution`)
+}

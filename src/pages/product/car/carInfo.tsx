@@ -62,7 +62,7 @@ const CarInfoModal:FC<IProps> = (props) => {
           </Col>
           <Col span={19} style={{marginLeft:20}} >
             <div>车型名称：{props.basicInfo.car_title}</div>
-            <div style={{marginTop:20}}>座位数：{props.basicInfo.car_title}座</div>
+            <div style={{marginTop:20}}>座位数：{props.basicInfo.car_site}座</div>
           </Col>
         </Row>
       </Card>

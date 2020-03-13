@@ -1,5 +1,6 @@
 import React, { FC, useCallback, useEffect, useState } from 'react'
 import * as planServices from '@/services/oneDayManager'
+import * as oneDayServices from '@/services/onDay'
 import { Card, Col, Row } from 'antd'
 import moment from  'moment'
 import PackageTable from '@/pages/product/oneDayManager/detail/packageTable'
@@ -27,11 +28,15 @@ const OneDayManagerDetail:FC<IProps> = (props) => {
     status:-1,
     op_id:''
   })
+  const [packageList,setPackageList] = useState<any>([])
 
 
   const getBasicInfo = useCallback(() => {
     planServices.getPlanInfo(props.match.params.id).then((res:any)=>{
       setBasicInfo(res)
+      oneDayServices.getPackageList(res.product_id).then(res=>{
+        setPackageList(res)
+      })
     })
   },[props.match.params.id])
   useEffect(() =>{
@@ -60,7 +65,7 @@ const OneDayManagerDetail:FC<IProps> = (props) => {
           </Col>
         </Row>
       </Card>
-      <PackageTable id={props.match.params.id} canEdit={true}/>
+      <PackageTable packageList={packageList} id={props.match.params.id} canEdit={true}/>
     </>
   )
 }

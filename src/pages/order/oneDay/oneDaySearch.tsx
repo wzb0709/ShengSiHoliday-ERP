@@ -9,6 +9,7 @@ interface IProps {
   initialValue:IOneDayOrderSearch
   onSearch:(values:IOneDayOrderSearch) => void
   memberList:Array<IMember>
+  carList:any
 }
 
 export interface IOneDayOrderSearch {
@@ -18,7 +19,8 @@ export interface IOneDayOrderSearch {
   opid:string,
   issettle:number,
   start_time:string,
-  end_time:string
+  end_time:string,
+  car_point_id:string,
 }
 
 const FormItem = Form.Item
@@ -61,8 +63,7 @@ const OneDayOrderSearch:FC<IProps> = (props) => {
           <Option value={0}>待付款</Option>
           <Option value={1}>已付款</Option>
           <Option value={2}>已确认</Option>
-          <Option value={3}>已出游</Option>
-          <Option value={4}>已评价</Option>
+          <Option value={3}>已评价</Option>
           <Option value={9}>已取消</Option>
         </Select>)}
       </FormItem>
@@ -108,6 +109,23 @@ const OneDayOrderSearch:FC<IProps> = (props) => {
           {props.memberList.map(item=>{
             return item.is_op && (
               <Option key={item.id}>{item.name}</Option>
+            )
+          })}
+        </Select>)}
+      </FormItem>
+      <FormItem style={{width:150,marginLeft:20}}>
+        {getFieldDecorator('car_point_id', {
+          initialValue:props.initialValue.car_point_id === '' ? undefined : props.initialValue.car_point_id,
+          rules: [
+            {
+              required: false,
+            },
+          ],
+        })(<Select placeholder='请选择上车点' style={{width:150}} >
+          <Option value={undefined}>全部上车点</Option>
+          {props.carList.map((item:any)=>{
+            return (
+              <Option key={item.id}>{item.point_title}</Option>
             )
           })}
         </Select>)}

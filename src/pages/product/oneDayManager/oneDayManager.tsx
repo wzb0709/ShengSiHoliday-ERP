@@ -1,12 +1,13 @@
 import React, { FC, Fragment, useCallback, useEffect, useState } from 'react'
 import { ColumnProps } from 'antd/lib/table'
-import { Button, message, Row, Table } from 'antd'
+import { message, Row, Table } from 'antd'
 import { Link } from 'umi'
 import moment from 'moment'
 
 import * as planServices from '@/services/oneDayManager'
 import OneDayManagerSearch, { IOneDayManagerSearch } from '@/pages/product/oneDayManager/oneDayManagerSearch'
-import { getAllList, getOpList } from '@/utils/common'
+import { IMember } from '@/models/login'
+import { useSelector } from 'dva'
 
 const OneDayManager: FC = (props) => {
 
@@ -20,23 +21,24 @@ const OneDayManager: FC = (props) => {
   const [dataSource, setDataSource] = useState<Array<any>>([])
   //查询的相关参数
   const [params, setParams] = useState<IOneDayManagerSearch>({ search: '', status: -1, start_time: '', end_time: '', op_id: '' })
-  const [saleList, setSaleList] = useState<any>([])
-  const [opList, setOpList] = useState<any>([])
+
+  const memberList: Array<IMember> = useSelector((state: any) => state.login.memberList)
 
   const columns: ColumnProps<Object>[] = [
-    { dataIndex: 'product_title', title: '产品标题' },
+    { dataIndex: 'product_title', title: '产品标题' ,width:300},
     { dataIndex: 'start_date', title: '发团时间', render:recode => <>{moment(recode).format('YYYY-MM-DD')}</>},
-    { dataIndex: 'package_count', title: '套餐数' },
-    { dataIndex: 'plan_count', title: '计划数' },
-    { dataIndex: 'order_count', title: '订单' },
-    { dataIndex: 'take_count', title: '已收' },
+    { dataIndex: 'package_count', title: '套餐数',width:100,render:recode => <div style={{width:100,color:'#1890FF'}}>{recode}</div>},
+    { dataIndex: 'plan_count', title: '计划数',width:100,render:recode => <div style={{width:100,color:'#1890FF'}}>{recode}</div>},
+    { dataIndex: 'order_count', title: '订单' ,width:100,render:recode => <div style={{width:100,color:'#1890FF'}}>{recode}</div>},
+    { dataIndex: 'take_count', title: '已收',width:100,render:recode => <div style={{width:100,color:'#00CD00'}}>{recode}</div> },
     {
       dataIndex: 'op_id',
       title: '计调' ,
-      render: recode => saleList.find((item: any) => item.id === recode) ? saleList.find((item: any) => item.id === recode).name : '无对应计调',
+      // @ts-ignore
+      render: recode => memberList.find((item: any) => item.id === recode) ? memberList.find((item: any) => item.id === recode).name : '无对应计调',
     },
     {
-      dataIndex: '', title: '上架状态', render: recode =>
+      dataIndex: '', title: '上架状态',width:300, render: recode =>
         <Row type='flex'>
           <div>{recode.is_show === 1 ? '已上架' : '未上架'}</div>
           <a style={{ marginLeft: 10 }} onClick={() => handleChangeStatus(recode.product_date_id, recode.is_show)}>
@@ -53,18 +55,12 @@ const OneDayManager: FC = (props) => {
 
   const getPlanList = useCallback(() => {
     planServices.getPlanList(params.search,params.status,params.start_time,params.end_time,params.op_id,page,size).then((res:any)=>{
-      getAllList().then(res1 => {
-        setSaleList(res1)
-        setDataSource(res.data)
-        setCount(res.count)
-      })
+      setDataSource(res.data)
+      setCount(res.count)
     })
   },[page,size,params])
   useEffect(() => {
     getPlanList()
-    getOpList().then(res=>{
-      setOpList(res)
-    })
   },[getPlanList])
 
   const handleChangeStatus = (id: string, status: number) => {
@@ -89,7 +85,7 @@ const OneDayManager: FC = (props) => {
   return (
     <>
       <Row type='flex' align='middle'>
-        <OneDayManagerSearch opList={opList} initialValue={params} onSearch={handleSearch}/>
+        <OneDayManagerSearch opList={memberList} initialValue={params} onSearch={handleSearch}/>
       </Row>
       <Table
         columns={columns}

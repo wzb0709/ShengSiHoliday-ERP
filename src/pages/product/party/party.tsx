@@ -6,6 +6,8 @@ import * as partyServices from '@/services/party'
 import PartySearch, { IPartySearch } from '@/pages/product/party/partySearch'
 import PartyModal from '@/pages/product/party/partyModal'
 import { getAllList, getOpList } from '@/utils/common'
+import { IMember } from '@/models/login'
+import { useSelector } from 'dva'
 
 const Party:FC = (props) => {
 
@@ -23,16 +25,13 @@ const Party:FC = (props) => {
   const [visible,setVisible] = useState<boolean>(false)
   const [initialValue,setInitialValue] = useState({})
 
-  const [saleList, setSaleList] = useState<any>([])
-  const [opList, setOpList] = useState<any>([])
-
-
+  const memberList: Array<IMember> = useSelector((state: any) => state.login.memberList)
 
   const columns: ColumnProps<Object>[] = [
-    { dataIndex: 'product_no', title: '产品编号' },
-    { dataIndex: 'product_title', title: '产品标题' },
-    { dataIndex: 'eval_count', title: '评价数' },
-    { dataIndex: 'order_count', title: '订单数' },
+    { dataIndex: 'product_no', title: '产品编号',width:300 },
+    { dataIndex: 'product_title', title: '产品标题',width:300  },
+    { dataIndex: 'eval_count', title: '评价数',width:100,render:recode => <div style={{width:100,color:'#1890FF'}}>{recode}</div> },
+    { dataIndex: 'order_count', title: '订单数' ,width:100,render:recode => <div style={{width:100,color:'#1890FF'}}>{recode}</div>},
     {
       dataIndex: '', title: '上架状态', render: recode =>
         <Row type='flex'>
@@ -43,7 +42,9 @@ const Party:FC = (props) => {
     {
       dataIndex: 'op_id',
       title: '计调',
-      render: recode => saleList.find((item: any) => item.id === recode) ? saleList.find((item: any) => item.id === recode).name : '无对应计调',
+      width:100,
+      // @ts-ignore
+      render: recode => memberList.find((item: any) => item.id === recode) ? memberList.find((item: any) => item.id === recode).name : '无对应计调',
     },
     {
       dataIndex: 'id', title: '操作', render: recode => <Fragment>
@@ -56,18 +57,12 @@ const Party:FC = (props) => {
   const getPartyList = useCallback(() => {
     partyServices.getCustomerList(params.search,params.status,params.opid,page,size)
       .then((res: any) => {
-        getAllList().then(res1 => {
-          setSaleList(res1)
-          setDataSource(res.data)
-          setCount(res.count)
-        })
+        setDataSource(res.data)
+        setCount(res.count)
       })
   }, [page, size, params])
   useEffect(() => {
     getPartyList()
-    getOpList().then(res=>{
-      setOpList(res)
-    })
   }, [getPartyList])
 
   const handleChangeStatus = (id:string,status:number) => {
@@ -110,7 +105,7 @@ const Party:FC = (props) => {
   <>
     <Row type='flex' align='middle'>
       <Button onClick={handleAddModal} type='primary' style={{ marginBottom: 24, marginRight: 20 }}>新增定制游</Button>
-      <PartySearch opList={opList} initialValue={params} onSearch={handleSearch}/>
+      <PartySearch opList={memberList} initialValue={params} onSearch={handleSearch}/>
     </Row>
     <Table
       columns={columns}

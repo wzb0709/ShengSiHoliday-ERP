@@ -27,7 +27,7 @@ export const menuList:Array<IMenuItem> = [
         title: '待办事项',
         children: [],
         id:47,
-        path:'upcoming',
+        path:'todo',
       },{
         title: '公告管理',
         children: [],
@@ -38,6 +38,11 @@ export const menuList:Array<IMenuItem> = [
         children: [],
         id:49,
         path:'addressBook',
+      },{
+        title: '个人资料',
+        children: [],
+        id:54,
+        path:'person',
       }
     ],
   },
@@ -152,6 +157,11 @@ export const menuList:Array<IMenuItem> = [
       children: [],
       id:20,
       path:'comment',
+    },{
+      title: '常见问题',
+      children: [],
+      id:53,
+      path:'question',
     }]
   },
   {
@@ -175,10 +185,15 @@ export const menuList:Array<IMenuItem> = [
       id:24,
       path:'withdraw',
     },{
+      title: '报销管理',
+      children: [],
+      id:55,
+      path:'expense',
+    },{
       title: '三清单',
       children: [],
       id:25,
-      path:'threeList',
+      path:'settle',
     }]
   },{
     title: '分销中心',
@@ -213,7 +228,7 @@ export const menuList:Array<IMenuItem> = [
     id:31,
     path:'team',
     children: [{
-      title: '导游排团',
+      title: '导游管理',
       children: [],
       id:32,
       path:'guide',
@@ -222,6 +237,11 @@ export const menuList:Array<IMenuItem> = [
       children: [],
       id:33,
       path:'manager',
+    },{
+      title: '导游日历',
+      children: [],
+      id:52,
+      path:'calendar',
     }]
   },{
     title: '基础数据',

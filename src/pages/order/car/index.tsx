@@ -8,6 +8,7 @@ import * as carOrderServices from '@/services/order/car'
 import * as pointServices from '@/services/point'
 import * as carServices from '@/services/car'
 import CarOrderSearch, { ICarSearch } from '@/pages/order/car/carSearch'
+import OrderStatistical from '@/pages/order/statistical'
 
 const CarOrder: FC = (props) => {
   //表格的页数
@@ -34,6 +35,9 @@ const CarOrder: FC = (props) => {
   const [carList,setCarList] = useState<any>([])
   const [carTypeList,setCarTypeList] = useState<any>([])
 
+  const [visible,setVisible] = useState<boolean>(false)
+  const [orderParams,setOrderParams] = useState<any>({})
+
   const columns: ColumnProps<Object>[] = [
     { dataIndex: '', title: '订单信息' ,render:recode => <>
         <div>{recode.order_no}</div>
@@ -54,11 +58,11 @@ const CarOrder: FC = (props) => {
     { dataIndex: 'status', title: '订单状态' ,render:recode => <>
         {recode === 0 ? <Badge status='warning' text='待付款' />
           : recode === 1 ?  <Badge status='processing' text='已付款' />
-            : recode === 2 ?  <Badge status='processing' text='已提车' />
-              : recode === 3 ? <Badge status='processing' text='已还车' />
-                : recode === 4 ? <Badge status='success' text='已退押金' />
-                  : recode === 5 ? <Badge status='success' text='订单完成' />
-                    :  <Badge status='default' text='已取消' />
+            : recode === 3 ?  <Badge status='processing' text='已确认' />
+              : recode === 4 ?  <Badge status='processing' text='已提车' />
+                : recode === 5 ? <Badge status='processing' text='已还车' />
+                    : recode === 6 ? <Badge status='success' text='订单完成' />
+                      :  <Badge status='default' text='已取消' />
         }
       </>},
     {
@@ -95,6 +99,15 @@ const CarOrder: FC = (props) => {
     setPage(page)
   }
 
+  const handleView = () => {
+    setOrderParams({
+      ...params,
+      order_type:4,
+    })
+    setVisible(true)
+  }
+
+
   return (
     <>
       <Row type='flex' align='middle'>
@@ -115,8 +128,14 @@ const CarOrder: FC = (props) => {
         rowKey='id'
       />
       <div style={{marginTop:-47}}>
-        <Button type='primary' style={{marginTop:-20}} >查看统计信息</Button>
+        <Button onClick={handleView} type='primary' style={{marginTop:-20}} >查看统计信息</Button>
       </div>
+
+      {visible && <OrderStatistical
+        params={orderParams}
+        visible={visible}
+        onCancel={() => setVisible(false)}
+      />}
     </>
   )
 }

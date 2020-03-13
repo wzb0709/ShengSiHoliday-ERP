@@ -44,7 +44,7 @@ const ReceptionOrderDetail:FC<IProps> = (props) => {
           <a>转让订单</a>
         </>}
       >
-        <OrderBasicInfo onRefresh={getBasicInfo} basicInfo={basicInfo}/>
+        <OrderBasicInfo type={5} showSale={true} onRefresh={getBasicInfo} basicInfo={basicInfo}/>
         <ProductInfo basicInfo={basicInfo} onRefresh={getBasicInfo}/>
         <SalesmanInfo basicInfo={basicInfo} onRefresh={getBasicInfo}/>
         {basicInfo.id && <>

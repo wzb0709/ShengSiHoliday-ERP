@@ -101,13 +101,26 @@ const ShoppingDetail: FC<IProps> = (props) => {
           <a onClick={handleDelete} style={{color:'red'}}>删除产品</a>
         </>}
       >
-        <Row style={{ marginBottom: 10 }}>产品标题：{basicInfo.shop_title}</Row>
-        <Row style={{ marginBottom: 10 }}>产品副标题：{basicInfo.shop_subtitle}</Row>
-        <Row style={{ marginBottom: 10 }}>产品标签：{basicInfo.shop_tags.map(item => {
-          return (<Tag key={item} color={tagColor[Math.floor((Math.random() * tagColor.length))]}>{item}</Tag>)
-        })}</Row>
-        <Row style={{ marginBottom: 10 }}>购买人数：{basicInfo.buy_person}人</Row>
-        <Row style={{ marginBottom: 10 }}>温馨提示：{basicInfo.warm_prompt}</Row>
+        <Row>
+          <Col span={12}>
+            <Row style={{ marginBottom: 10 }}>产品标题：{basicInfo.shop_title}</Row>
+            <Row style={{ marginBottom: 10 }}>产品副标题：{basicInfo.shop_subtitle}</Row>
+            <Row style={{ marginBottom: 10 }}>产品标签：{basicInfo.shop_tags.map(item => {
+              return (<Tag key={item} color={tagColor[Math.floor((Math.random() * tagColor.length))]}>{item}</Tag>)
+            })}</Row>
+            <Row style={{ marginBottom: 10 }}>购买人数：{basicInfo.buy_person}人</Row>
+            <Row style={{ marginBottom: 10 }}>温馨提示：{basicInfo.warm_prompt}</Row>
+          </Col>
+          <Col span={12}>
+            {basicInfo.shop_pics.map((item,index)=>{
+              return item !=='' && (
+                <Col span={6} key={index} >
+                  <img src={item} alt="" style={{objectFit:'cover',width:'95%'}} />
+                </Col>
+              )
+            })}
+          </Col>
+        </Row>
       </Card>
       <Card
         title='计调信息'

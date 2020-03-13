@@ -21,6 +21,15 @@ body {
   border-bottom: 1px solid #e8e8e8;
 }
 
-.ant-fullcalendar-fullscreen .ant-fullcalendar-month, .ant-fullcalendar-fullscreen .ant-fullcalendar-date{
+.plan  .ant-fullcalendar-date{
   height: 80px !important;
+}
+.plan .ant-fullcalendar-month{
+  height: 80px !important;
+}
+
+.textOverFlow{
+  overflow: hidden;
+  text-overflow:ellipsis;
+  white-space: nowrap;
 }

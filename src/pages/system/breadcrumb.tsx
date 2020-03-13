@@ -9,6 +9,7 @@ const BreadcrumbLayout: FC = (props) => {
     { path: '/system/department', name: '部门管理' },
     { path: '/system/character', name: '角色管理' },
     { path: '/system/user', name: '用户管理' },
+    { path: '/system/config', name: '配置管理' },
   ]
 
   return (

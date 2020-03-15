@@ -58,3 +58,7 @@ export function getOrderStatistical(item:any) {
 export function getDistributionList() {
   return axios.get(`/sysConfig/distribution`)
 }
+
+export function clearSalesman(id:string) {
+  return axios.put(`/baseOrder/cleansalesman?id=${id}`)
+}

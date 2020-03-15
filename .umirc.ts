@@ -95,6 +95,10 @@ const config: IConfig = {
             {path:'/administrative/addressBook',component:'./administrative/addressBook'},
             {path:'/administrative/person',component:'./administrative/person'},
           ]},
+        { path: '/data', component: './data/breadcrumb' ,routes:[
+            {path:'/data/order',component:'./data/order'},
+            {path:'/data/operation',component:'./data/operation'},
+          ]},
         { path: '/team', component: './team/breadcrumb' ,routes:[
             {path:'/team/manager',component:'./team/manager'},
             {path:'/team/manager/:id',component:'./team/manager/detail'},

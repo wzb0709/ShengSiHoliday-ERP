@@ -53,3 +53,10 @@ export function getStatistical(type:number,status:number,start_time:string,end_t
   }
   return axios.get(`/payment/statistical`,{params})
 }
+
+export function excelExport(type:number,search:string,sourceid:string,status:number,start_time:string,end_time:string) {
+  const params = {
+    search,status,start_time,end_time,sourceid,type
+  }
+  return axios.get(`/report/expense`,{params})
+}

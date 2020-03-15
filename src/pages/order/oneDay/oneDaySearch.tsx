@@ -50,7 +50,7 @@ const OneDayOrderSearch:FC<IProps> = (props) => {
           ],
         })(<Input placeholder='搜索关键词' style={{width:150}} />)}
       </FormItem>
-      <FormItem style={{width:150,marginLeft:20}}>
+      <FormItem style={{width:150,marginLeft:20,marginRight:20}}>
         {getFieldDecorator('status', {
           initialValue:props.initialValue.status,
           rules: [
@@ -67,7 +67,7 @@ const OneDayOrderSearch:FC<IProps> = (props) => {
           <Option value={9}>已取消</Option>
         </Select>)}
       </FormItem>
-      <FormItem style={{width:150,marginLeft:20}}>
+      <FormItem style={{width:150,marginRight:20}}>
         {getFieldDecorator('issettle', {
           initialValue:props.initialValue.issettle,
           rules: [
@@ -81,7 +81,7 @@ const OneDayOrderSearch:FC<IProps> = (props) => {
           <Option value={1}>已结算</Option>
         </Select>)}
       </FormItem>
-      <FormItem style={{width:150,marginLeft:20}}>
+      <FormItem style={{width:150,marginRight:20}}>
         {getFieldDecorator('salesid', {
           initialValue:props.initialValue.salesid === '' ? undefined : props.initialValue.salesid,
           rules: [
@@ -97,7 +97,7 @@ const OneDayOrderSearch:FC<IProps> = (props) => {
           })}
         </Select>)}
       </FormItem>
-      <FormItem style={{width:150,marginLeft:20}}>
+      <FormItem style={{width:150,marginRight:20}}>
         {getFieldDecorator('opid', {
           initialValue:props.initialValue.opid === '' ? undefined : props.initialValue.opid,
           rules: [
@@ -113,7 +113,7 @@ const OneDayOrderSearch:FC<IProps> = (props) => {
           })}
         </Select>)}
       </FormItem>
-      <FormItem style={{width:150,marginLeft:20}}>
+      <FormItem style={{width:150,marginRight:20}}>
         {getFieldDecorator('car_point_id', {
           initialValue:props.initialValue.car_point_id === '' ? undefined : props.initialValue.car_point_id,
           rules: [
@@ -130,7 +130,7 @@ const OneDayOrderSearch:FC<IProps> = (props) => {
           })}
         </Select>)}
       </FormItem>
-      <FormItem style={{width:150,marginLeft:20}} >
+      <FormItem style={{width:150,marginRight:20}} >
         {getFieldDecorator('start_time', {
           initialValue:props.initialValue.start_time === '' ? undefined : moment(props.initialValue.start_time),
           rules: [
@@ -140,7 +140,7 @@ const OneDayOrderSearch:FC<IProps> = (props) => {
           ],
         })(<DatePicker  placeholder='请选择开始时间' style={{width:150}} />)}
       </FormItem>
-      <FormItem style={{width:150,marginLeft:20}} >
+      <FormItem style={{width:150,marginRight:20}} >
         {getFieldDecorator('end_time', {
           initialValue:props.initialValue.end_time === '' ? undefined : moment(props.initialValue.end_time),
           rules: [
@@ -150,7 +150,7 @@ const OneDayOrderSearch:FC<IProps> = (props) => {
           ],
         })(<DatePicker placeholder='请选择结束时间' style={{width:150}} />)}
       </FormItem>
-      <Button type='primary' style={{marginBottom:24,marginLeft:20}} onClick={handleConfirm}>查询</Button>
+      <Button type='primary' style={{marginBottom:24,marginRight:20}} onClick={handleConfirm}>查询</Button>
     </>
   )
 }

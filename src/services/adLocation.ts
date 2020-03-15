@@ -20,5 +20,5 @@ export function updateAdvertisingLocationStatus({status,id}:{status:number,id:st
 }
 
 export function deleteAdvertisingLocation({id}:{id:string}) {
-  return axios.put(`/ad/advertisingLocation/${id}`)
+  return axios.put(`/advertisingLocation/${id}`)
 }

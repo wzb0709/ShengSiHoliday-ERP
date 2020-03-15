@@ -25,7 +25,7 @@ const TeamOrderModal:FC<IProps> = (props) => {
   const [keys,setKeys] = useState<Array<string>>([])
 
   const [params, setParams] = useState<ITeamOrderSearch>({
-    ordertype: 0,
+    ordertype: 1,
     trave_date: moment().format('YYYY-MM-DD'),
   })
 

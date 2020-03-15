@@ -48,9 +48,9 @@ const ReceptionOrderDetail:FC<IProps> = (props) => {
         <ProductInfo basicInfo={basicInfo} onRefresh={getBasicInfo}/>
         <SalesmanInfo basicInfo={basicInfo} onRefresh={getBasicInfo}/>
         {basicInfo.id && <>
-          <TouristInfo id={basicInfo.id}/>
-          <FeeInfo id={basicInfo.id}/>
-          <PaymentInfo id={basicInfo.id}/>
+          <TouristInfo id={basicInfo.order_id}/>
+          <FeeInfo id={basicInfo.order_id}/>
+          <PaymentInfo id={basicInfo.order_id}/>
         </>}
         <NotesInfo basicInfo={basicInfo} onRefresh={getBasicInfo}/>
       </Card>

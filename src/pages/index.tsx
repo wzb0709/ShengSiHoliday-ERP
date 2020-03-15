@@ -5,6 +5,8 @@ import moment from 'moment'
 import * as homeServices from '@/services/home'
 import Table, { ColumnProps } from 'antd/lib/table'
 import OperationChart from '@/component/chart/operationChart'
+import { router } from 'umi'
+import OrderChart from '@/component/chart/orderChart'
 
 const HomePage = () => {
 
@@ -18,15 +20,19 @@ const HomePage = () => {
   const [detailVisible,setDetailVisible] = useState<boolean>(false)
   const [detail,setDetail] = useState<any>({})
   const [count,setCount] = useState<number>(0)
+  const [count1,setCount1] = useState<number>(0)
 
   const getTodo = useCallback(() => {
     homeServices.getTodo().then((res:any)=>{
       let count = 0
+      let count1 = 0
       res.forEach((item:any)=>{
-        if(item.type === 1) count++
+        count1 += item.count
+        if(item.type === 1) count += item.count
       })
       setTodo(res)
       setCount(count)
+      setCount1(count1)
     })
   },[])
 
@@ -83,12 +89,13 @@ const HomePage = () => {
         <Col span={8}>
           <Card
             style={{width:'95%'}}
+            onClick={() => router.push('/administrative/todo')}
           >
             <div style={{display:'flex',flexDirection:'column',justifyContent:'center',height:100}} >
               <div style={{fontSize:18}}>我的待办事项</div>
               {todo.length === 0 && <div style={{fontSize:22,fontWeight:'bold',marginTop:20}}>暂无待办事项</div>}
               {todo.length !== 0 && <Row justify='space-between' type='flex' style={{fontSize:22,fontWeight:'bold',marginTop:20}}>
-                {todo.length}项
+                {count1}项
                 <span style={{color:'red'}}>{count}项紧急</span>
               </Row>}
             </div>
@@ -115,7 +122,7 @@ const HomePage = () => {
               </Row>
                 {showList.map((item:any,index:number)=>{
                   return(
-                    <Row key={index} type='flex' align='middle' style={{marginTop:20}} >
+                    <Row onClick={() => handleViewDetail(item)} key={index} type='flex' align='middle' style={{marginTop:20}} >
                       <div style={{width:'75%',overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>
                         {item.notice_title}
                       </div>
@@ -133,8 +140,8 @@ const HomePage = () => {
         </Col>
       </Row>
 
-      <OperationChart />
-      {/*<OrderChart />*/}
+      {/*<OperationChart id='' />*/}
+      <OrderChart />
 
       <Modal
         title='公告列表'

@@ -8,6 +8,7 @@ import ExpenseSearch, { IExpenseSearch } from '@/pages/money/expense/expenseSear
 import { Link } from 'umi'
 import { IMember } from '@/models/login'
 import { useSelector } from 'dva'
+import * as paymentServices from '@/services/order/payment'
 
 const Expense:FC = (props) => {
 
@@ -88,6 +89,26 @@ const Expense:FC = (props) => {
     })
   }
 
+  const handleExport = () => {
+    // if(params.start_time === '' || params.end_time === ''){
+    //   message.warning('请选择日期')
+    //   return false
+    // }
+    expenseServices.excelExport(params.search,params.status,params.start_time,params.end_time)
+      .then((res:any)=>{
+        let blob = new Blob([res])
+        let url = window.URL.createObjectURL(blob)
+        let a = document.createElement("a")
+        document.body.appendChild(a)
+        let fileName = '报销报表.xls'
+        a.href = url
+        a.download = fileName //命名下载名称
+        a.click() //点击触发下载
+        document.body.removeChild(a)
+        window.URL.revokeObjectURL(url)
+      })
+  }
+
   return (
     <>
       {/*<Row type='flex' align='middle'>*/}
@@ -97,7 +118,7 @@ const Expense:FC = (props) => {
       <Row type='flex' align='middle'>
         <Button onClick={handleAddModal} type='primary' style={{ marginBottom: 24, marginRight: 20 }}>新增报销</Button>
         <ExpenseSearch initialValue={params} onSearch={handleSearch}/>
-        <Button type='primary' style={{marginLeft:20,marginBottom:24}}>导出excel</Button>
+        <Button onClick={handleExport} type='primary' style={{marginLeft:20,marginBottom:24}}>导出excel</Button>
       </Row>
       <Table
         columns={columns}

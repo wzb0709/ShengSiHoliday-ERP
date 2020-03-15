@@ -1,6 +1,7 @@
 import axios from 'axios'
 
 export function getAddressBookList(search:string) {
-  return axios.get('/sysConfig/employees')
+  const params = {search}
+  return axios.get('/sysConfig/employees',{params})
 }
 

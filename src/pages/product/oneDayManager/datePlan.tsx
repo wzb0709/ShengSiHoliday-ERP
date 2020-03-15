@@ -7,6 +7,7 @@ import * as planServices from '@/services/oneDayManager'
 import DatePlanModal from '@/pages/product/oneDayManager/datePlanModal'
 import moment from 'moment'
 import AddPlanPackageModal from '@/pages/product/oneDayManager/detail/detailModal'
+import { router } from 'umi'
 
 interface IProps {
   match: any
@@ -153,8 +154,11 @@ const DatePlan: FC<IProps> = (props) => {
       product_id:props.match.params.id,
       packages:dataSource
     }
+    console.log(planItem)
+    return  false
     planServices.addPlan(planItem).then(() => {
       message.success('操作成功!')
+      router.replace('/product/oneDayManager')
     })
   }
 

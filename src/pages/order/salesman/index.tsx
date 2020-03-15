@@ -1,5 +1,5 @@
 import React, { FC, useState } from 'react'
-import { Card, message, Row } from 'antd'
+import { Card, Divider, message, Modal, Row } from 'antd'
 import { IMember } from '@/models/login'
 import { useSelector } from 'dva'
 
@@ -19,11 +19,24 @@ const SalesmanInfo: FC<IProps> = (props) => {
 
   const handleConfirm = (values: any) => {
     commonServices.updateBasicOrderInfo({
-      ...values, id: props.basicInfo.id,
+      ...values, id: props.basicInfo.order_id,
     }).then(() => {
       message.success('编辑成功！')
       setVisible(false)
       props.onRefresh()
+    })
+  }
+
+  const handleDeleteSalesman = () => {
+    Modal.confirm({
+      title:'提示',
+      content:'是否要清空业务员？',
+      onOk:() => {
+        commonServices.clearSalesman(props.basicInfo.order_id).then(() => {
+          message.success('操作成功！')
+          props.onRefresh()
+        })
+      }
     })
   }
 
@@ -35,6 +48,10 @@ const SalesmanInfo: FC<IProps> = (props) => {
         extra={
           <>
             <a onClick={() => setVisible(true)}>更换业务员</a>
+            {props.basicInfo.salesman_id !== '' &&<>
+              <Divider type='vertical' />
+              <a onClick={handleDeleteSalesman} style={{color:'red'}}>清空业务员</a>
+            </>}
           </>
         }
         style={{ marginTop: 20 }}
@@ -50,7 +67,7 @@ const SalesmanInfo: FC<IProps> = (props) => {
               memberList.find(item => item.id === props.basicInfo.salesman_id) ? memberList.find(item => item.id === props.basicInfo.salesman_id).phone : ''}
             </div>
           </>}
-          {props.basicInfo.salesman_id !== '' && <div>暂无业务员</div>}
+          {props.basicInfo.salesman_id === '' && <div>暂无业务员</div>}
         </Row>
       </Card>
 

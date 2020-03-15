@@ -2,6 +2,7 @@ import React, { FC, Fragment, useCallback, useEffect, useState } from 'react'
 import { Card, Divider, message, Modal, Table, Upload, Button, Icon } from 'antd'
 import { ColumnProps } from 'antd/lib/table'
 import moment from 'moment'
+import axios from 'axios'
 
 import * as touristServices from '@/services/order/tourist'
 import TouristModal from '@/pages/order/touristInfo/touristModal'
@@ -154,6 +155,21 @@ const TouristInfo: FC<IProps> = (props) => {
     })
   }
 
+  const handleExport = () => {
+    axios.get(`/report/ordertourists?orderid=${props.id}`).then((res:any)=>{
+      let blob = new Blob([res])
+      let url = window.URL.createObjectURL(blob)
+      let a = document.createElement("a")
+      document.body.appendChild(a)
+      let fileName = '名单报表.xls'
+      a.href = url
+      a.download = fileName //命名下载名称
+      a.click() //点击触发下载
+      document.body.removeChild(a)
+      window.URL.revokeObjectURL(url)
+    })
+  }
+
   return (
     <Card
       title='名单信息'
@@ -164,7 +180,7 @@ const TouristInfo: FC<IProps> = (props) => {
           <Divider type='vertical' />
           <a onClick={() => setFileVisible(true)}>导入名单</a>
           <Divider type='vertical' />
-          <a>导出名单</a>
+          <a onClick={handleExport}>导出名单</a>
           <Divider type='vertical' />
           <a onClick={handleChangeAllStatus} style={{color:'red'}}>批量退团</a>
         </>

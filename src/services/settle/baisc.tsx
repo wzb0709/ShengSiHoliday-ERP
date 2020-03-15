@@ -37,3 +37,17 @@ export function getWaitSettleOrder(ordertype:number,search:string,page:number,si
 export function deleteSettle(id:string) {
   return axios.delete(`/settle/${id}`)
 }
+
+export function getStatistical(search:string,status:number,opid:string,settle_date:string) {
+  const params = {
+    search,status,opid,settle_date
+  }
+  return axios.get(`/settle/statistical`,{params})
+}
+
+export function excelExport(search:string,status:number,opid:string,settle_date:string) {
+  const params = {
+    search,status,opid,settle_date
+  }
+  return axios.get(`/report/settle`,{params})
+}

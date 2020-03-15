@@ -40,11 +40,8 @@ const SettleOrderSearch: FC<IProps> = (props) => {
             },
           ],
         })(<Select placeholder='请选择订单类型' style={{ width: 150 }}>
-          <Option value={0}>全部订单</Option>
           <Option value={1}>一日游</Option>
-          <Option value={2}>当地购物</Option>
           <Option value={3}>定制游</Option>
-          <Option value={4}>汽车租赁</Option>
           <Option value={5}>一团一议</Option>
         </Select>)}
       </FormItem>

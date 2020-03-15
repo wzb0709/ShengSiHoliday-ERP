@@ -5,6 +5,8 @@ import * as settleServices from '@/services/settle/baisc'
 import * as settleOrderServices from '@/services/settle/order'
 import moment from 'moment'
 import SettleOrderSearch, { ISettleOrderSearch } from '@/pages/money/settle/order/orderSearch'
+import { IMember } from '@/models/login'
+import { useSelector } from 'dva'
 
 interface IProps{
   readonly visible:boolean,
@@ -26,9 +28,11 @@ const SettleOrderModal:FC<IProps> = (props) => {
   const [keys,setKeys] = useState<Array<string>>([])
 
   const [params, setParams] = useState<ISettleOrderSearch>({
-    ordertype: 0,
+    ordertype: 1,
     search:'',
   })
+
+  const memberList: Array<IMember> = useSelector((state: any) => state.login.memberList)
 
   const columns: ColumnProps<Object>[] = [
     { dataIndex: '', title: '订单信息' ,render:recode => <>

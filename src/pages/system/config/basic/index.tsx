@@ -41,6 +41,7 @@ const ConfigBasic:FC<IProps> = (props) => {
                   {
                     required: true,
                     message: '请填写联系电话',
+                    pattern:/^1[3456789]\d{9}$/
                   },
                 ],
               })(<Input placeholder='请填写联系电话' style={{width:"70%"}} />)}

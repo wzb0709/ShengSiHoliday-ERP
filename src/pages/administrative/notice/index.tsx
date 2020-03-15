@@ -39,8 +39,8 @@ const Notice:FC = (props) => {
     {
       dataIndex: '', title: '显示状态', render: recode =>
         <Row type='flex'>
-          <div>{recode.is_show === 1 ? '已上架' : '未上架'}</div>
-          <a style={{marginLeft:10}} onClick={() => handleChangeStatus(recode.id, recode.is_show)}>{recode.is_show === 1 ? '点击下架' : '点击上架'}</a>
+          <div>{recode.is_show === 1 ? '已显示' : '未隐藏'}</div>
+          <a style={{marginLeft:10}} onClick={() => handleChangeStatus(recode.id, recode.is_show)}>{recode.is_show === 1 ? '点击显示' : '点击隐藏'}</a>
         </Row>,
     },
     {

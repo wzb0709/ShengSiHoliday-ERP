@@ -31,7 +31,11 @@ const PersonInfo: FC = (props) => {
   },[getBasicInfo])
 
   const handleConfirmBasicInfo = (values:any) => {
-    axios.post(`/main/userdata`,{...values}).then(() => {
+    const params = {
+      ...values,
+      birth_day:values.birth_day.format('YYYY-MM-DD')
+    }
+    axios.post(`/main/userdata`,{...params}).then(() => {
       message.success('编辑成功！')
       setVisible(false)
       getBasicInfo()
@@ -39,6 +43,10 @@ const PersonInfo: FC = (props) => {
   }
 
   const handleConfirmPassword = (values:any) => {
+    if(values.repeatPwd !== values.newpwd){
+      message.warning('两次密码输入不一致!')
+      return false
+    }
     axios.post(`/main/updatepwd`,{...values}).then(() => {
       message.success('编辑成功！')
       setPwdVisible(false)
@@ -77,10 +85,10 @@ const PersonInfo: FC = (props) => {
       </Row>
       <Row style={{marginTop:20}}>
         <Col span={4}>
-          <Button type='primary'>编辑资料</Button>
+          <Button type='primary' onClick={() => setVisible(true)}>编辑资料</Button>
         </Col>
         <Col span={4}>
-          <Button type='primary'>修改密码</Button>
+          <Button type='primary' onClick={() => setPwdVisible(true)}>修改密码</Button>
         </Col>
       </Row>
 

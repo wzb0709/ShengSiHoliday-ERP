@@ -40,9 +40,9 @@ const TeamOrderSearch: FC<IProps> = (props) => {
             },
           ],
         })(<Select placeholder='请选择订单类型' style={{ width: 150 }}>
-          <Option value={0}>全部订单</Option>
           <Option value={1}>一日游</Option>
           <Option value={3}>定制游</Option>
+          <Option value={5}>一团一议</Option>
         </Select>)}
       </FormItem>
       <FormItem style={{ width: 150, marginLeft: 20 }}>

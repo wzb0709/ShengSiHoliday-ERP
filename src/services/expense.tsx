@@ -54,9 +54,16 @@ export function updateDetailInfo(item:any,id:string) {
 
 export function addDetailInfo(item:any) {
   const params = {...item}
-  return axios.post(`/expenseDetail`,item)
+  return axios.post(`/expenseDetail`,params)
 }
 
 export function deleteDetailInfo(id:string) {
   return axios.delete(`/expenseDetail/${id}`)
+}
+
+export function excelExport(search:string,status:number,start_time:string,end_time:string) {
+  const params = {
+    search,status,start_time,end_time
+  }
+  return axios.get(`/report/expense`,{params})
 }

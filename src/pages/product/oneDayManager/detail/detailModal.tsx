@@ -145,15 +145,15 @@ class AddPlanPackageModal extends Component<IProps, IState> {
           </Row>
           <Row>
             <Col span={12}>
-              <FormItem label='默认套餐价格(儿童)' {...formItemLayout}>
+              <FormItem label='套餐价格(儿童)' {...formItemLayout}>
                 {getFieldDecorator('package_child_price', {
                   rules: [
                     {
                       required: true,
-                      message: '请输入默认套餐价格(儿童)',
+                      message: '请输入套餐价格(儿童)',
                     },
                   ],
-                })(<InputNumber placeholder='请输入默认套餐价格(儿童)' style={{width:"90%"}} />)}
+                })(<InputNumber placeholder='请输入套餐价格(儿童)' style={{width:"90%"}} />)}
               </FormItem>
             </Col>
             <Col span={12}>

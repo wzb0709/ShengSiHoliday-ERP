@@ -39,7 +39,7 @@ const OneDayOrder: FC = (props) => {
   const [orderParams,setOrderParams] = useState<any>({})
 
   const columns: ColumnProps<Object>[] = [
-    { dataIndex: '', title: '订单信息' ,render:recode => <>
+    { dataIndex: '', title: '订单信息' ,width:180,render:recode => <>
         <div>{recode.order_no}</div>
         <div>{recode.adult_count}成人 {recode.child_count}儿童</div>
       </>},

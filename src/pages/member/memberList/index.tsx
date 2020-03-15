@@ -1,15 +1,28 @@
 import React, { FC, useCallback, useEffect, useState } from 'react'
-import MemberSearch from '@/pages/member/memberList/memberSearch'
-import { Divider, message, Modal, Radio, Table } from 'antd'
+import MemberSearch, { IMemberSearch } from '@/pages/member/memberList/memberSearch'
+import { Table } from 'antd'
 import * as memberServices from '@/services/member'
 import { ColumnProps } from 'antd/lib/table'
+import moment from 'moment'
 
 const MemberList: FC = (props) => {
 
   const columns: ColumnProps<Object>[] = [
-    { title: '昵称', dataIndex: 'nick_name' },
-    { title: '姓名', dataIndex: 'name' },
-    { title: '电话', dataIndex: 'phone' },
+    { title: '会员信息', dataIndex: '' ,render:recode => <>
+        <div>{recode.nick_name}</div>
+        <div>{recode.member_no}</div>
+      </>},
+    { title: '真实信息',  dataIndex: '' ,render:recode => <>
+        <div>{recode.name}</div>
+        <div>{recode.phone}</div>
+      </> },
+    { title: '订单数', dataIndex: 'order_count' },
+    { title: '优惠券', dataIndex: 'coupon_count' },
+    { title: '评价数', dataIndex: 'eva_count' },
+    { title: '创建信息',  dataIndex: '' ,render:recode => <>
+        <div>{moment(recode.create_time).format('YYYY-MM-DD HH:mm:ss')}</div>
+        <div>{recode.source_summary}</div>
+      </> },
     {
       title: '操作', dataIndex: '', render: recode => <>
         <a>赠送优惠券</a>
@@ -19,24 +32,29 @@ const MemberList: FC = (props) => {
 
   const [page, setPage] = useState<number>(1)
   const [size] = useState<number>(10)
-  const [search, setSearch] = useState<string>('')
+  const [params, setParams] = useState<IMemberSearch>({
+    search:'',
+    start_time:'',
+    end_time:'',
+  })
   const [count, setCount] = useState<number>(0)
   const [dataSource, setDataSource] = useState([])
 
   const getMemberList = useCallback(() => {
-    memberServices.getMemberList({search, size, page }).then((res: any) => {
+    memberServices.getMemberList({...params, size, page,sourceid:'' }).then((res: any) => {
       setDataSource(res.data)
       setCount(res.count)
     })
-  }, [page, size, search])
+  }, [page, size, params])
 
   useEffect(() => {
     getMemberList()
   }, [getMemberList])
 
   const handleSearch = (values: any) => {
-    setPage(1)
-    setSearch(values.search)
+    if(values.start_time)values.start_time = values.start_time.format('YYYY-MM-DD')
+    if(values.end_time)values.end_time = values.end_time.format('YYYY-MM-DD')
+    setParams({...values})
   }
 
   const handlePageChange = (page: number) => {
@@ -47,7 +65,7 @@ const MemberList: FC = (props) => {
   return (
     <div>
       <MemberSearch
-        params={{ search }}
+        params={params}
         onSearch={handleSearch}
       />
       <Table

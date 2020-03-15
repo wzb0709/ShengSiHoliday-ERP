@@ -28,3 +28,10 @@ export function getStatistical(search:string,status:number,start_time:string,end
   }
   return axios.get(`/withdrawal/statistical`,{params})
 }
+
+export function excelExport(search:string,status:number,start_time:string,end_time:string) {
+  const params = {
+    search,status,start_time,end_time
+  }
+  return axios.get(`/report/withdrawal`,{params})
+}

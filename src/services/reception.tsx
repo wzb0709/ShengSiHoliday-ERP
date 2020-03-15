@@ -32,6 +32,5 @@ export function deleteReception(id:string) {
 }
 
 export function copyProduct(id:string) {
-  const params = {id}
-  return axios.put(`/receptionProduct/copy`,params)
+  return axios.put(`/receptionProduct/copy?id=${id}`)
 }

@@ -43,7 +43,6 @@ const Coupon:FC = (props) => {
     { dataIndex: '', title: '使用时间' ,render:recode => <>
       {moment(recode.start_time).format('YYYY-MM-DD')} ~ {moment(recode.end_time).format('YYYY-MM-DD')}
       </> },
-    { dataIndex: 'score', title: '评分' },
     {
       dataIndex: '', title: '上架状态', render: recode =>
         <Row type='flex'>

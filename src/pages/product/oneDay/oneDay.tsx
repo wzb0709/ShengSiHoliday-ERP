@@ -34,7 +34,7 @@ const OneDay: FC = (props) => {
   const memberList: Array<IMember> = useSelector((state: any) => state.login.memberList)
 
   const columns: ColumnProps<Object>[] = [
-    { dataIndex: 'product_no', title: '产品编号' ,width:320},
+    { dataIndex: 'product_no', title: '产品编号' ,width:180},
     { dataIndex: 'product_title', title: '产品标题' ,width:320},
     { dataIndex: 'package_count', title: '套餐' ,width: 100},
     { dataIndex: 'online_plan', title: '发团计划' ,width: 100,},

@@ -16,7 +16,7 @@ interface IBasicInfo {
   product_title:string,
   start_date:string,
   package_count:number,
-  status:number,
+  is_show:number,
   op_id:string
 }
 
@@ -27,7 +27,7 @@ const DetailEdit:FC<IProps> = (props) => {
     product_title:'',
     start_date:'',
     package_count:0,
-    status:-1,
+    is_show:-1,
     op_id:''
   })
   const [memberList,setMemberList] = useState<any>([])
@@ -83,7 +83,7 @@ const DetailEdit:FC<IProps> = (props) => {
             发团时间：{basicInfo.start_date !== '' ? moment(basicInfo.start_date).format('YYYY-MM-DD') : ''}
           </Col>
           <Col span={12}>
-            上架状态：{basicInfo.status === 1 ? '已上架' : '未上架'}
+            上架状态：{basicInfo.is_show === 1 ? '已上架' : '未上架'}
           </Col>
         </Row>
       </Card>

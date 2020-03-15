@@ -69,6 +69,7 @@ const GuideModal:FC<IProps> = (props) => {
             {
               required: true,
               message: '请输入联系方式',
+              pattern:/^1[3456789]\d{9}$/
             },
           ],
         })(<Input placeholder='请输入联系方式' style={{width:"90%"}} />)}

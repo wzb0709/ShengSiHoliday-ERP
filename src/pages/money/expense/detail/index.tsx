@@ -100,18 +100,21 @@ const ExpenseDetail:FC<IProps> = (props) => {
   const handleConfirmList = (values:any) => {
     const params = {
       ...values,
+      expense_id:props.match.params.id
     }
     if(id === ''){
       expenseServices.addDetailInfo({...params}).then(() => {
         message.success('操作成功!')
-        setVisible(false)
+        setDetailVisible(false)
         getListInfo()
+        getBasicInfo()
       })
     }else{
       expenseServices.updateDetailInfo({...params},id).then(() => {
         message.success('操作成功!')
-        setVisible(false)
+        setDetailVisible(false)
         getListInfo()
+        getBasicInfo()
       })
     }
   }

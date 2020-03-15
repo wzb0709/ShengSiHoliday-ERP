@@ -22,10 +22,7 @@ export function getOneDayOrderInfo(id:string) {
 }
 
 export function changeCarPoint(id:string,carpointid:string) {
-  const params = {
-    id,carpointid
-  }
-  return axios.put(`/groupOrder/carpoint`,params)
+  return axios.put(`/groupOrder/carpoint?id=${id}&carpointid=${carpointid}`)
 }
 
 export function changeProduct(orderid:string,productid:string,dateid:string) {

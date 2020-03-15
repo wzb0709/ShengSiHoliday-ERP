@@ -2,7 +2,7 @@ import React, { FC, useCallback, useEffect, useState } from 'react'
 import { ColumnProps } from 'antd/lib/table'
 import { Badge, Button, message, Row, Statistic, Table } from 'antd'
 import { Link } from 'umi'
-import moment from 'moment'
+import axios from 'axios'
 
 import * as settleServices from '@/services/settle/baisc'
 import { IMember } from '@/models/login'
@@ -27,16 +27,17 @@ const Settle: FC = (props) => {
     settle_date:''
   })
   const [visible,setVisible] = useState<boolean>(false)
+  const [statistical,setStatistical] = useState<any>({})
 
   const memberList: Array<IMember> = useSelector((state: any) => state.login.memberList)
 
   const columns: ColumnProps<Object>[] = [
-    { dataIndex: 'settle_no', title: '三清单编号'},
+    { dataIndex: 'settle_no', title: '三清单编号',width:180},
     { dataIndex: 'settle_title', title: '三清单标题'},
     { dataIndex: 'total_revenue', title: '营业收入',render:recode => <Statistic prefix='￥' valueStyle={{fontSize:16}} value={recode} />},
     { dataIndex: 'total_cost', title: '营业成本',render:recode => <Statistic prefix='￥' valueStyle={{fontSize:16}} value={recode} />},
     { dataIndex: 'total_profit', title: '营业毛利',render:recode => <Statistic prefix='￥' valueStyle={{fontSize:16}} value={recode} />},
-    { dataIndex: '', title: '毛利率',render:recode => <Statistic suffix='%' valueStyle={{fontSize:16}} value={(recode.total_profit / recode.total_cost === 0 ? 1 : recode.total_cost).toFixed(2)} />},
+    { dataIndex: 'profit_rate', title: '毛利率',render:recode => <Statistic suffix='%' valueStyle={{fontSize:16}} value={recode} />},
     // @ts-ignore
     { dataIndex: 'operation_id', width:100,title: '计调' ,render:recode=>memberList.find((item:any) => item.id === recode) ? memberList.find((item:any) => item.id === recode).name : ''},
     { dataIndex: 'status', title: '状态',width:100,render:recode => <div style={{width:100}}>
@@ -63,11 +64,14 @@ const Settle: FC = (props) => {
   }, [page, size, params])
   useEffect(() => {
     getSettleList()
+    settleServices.getStatistical(params.search,params.status,params.opid,params.settle_date).then(res=>{
+      setStatistical(res)
+    })
   }, [getSettleList])
 
   //查询按钮点击事件
   const handleSearch = (values: any) => {
-    if(values.settle_date) values.settle_date = values.settle_date.format('YYYY-MM-DD')
+    if(values.settle_date) values.settle_date = values.settle_date.format('YYYY-MM')
     setParams({ ...values })
   }
   //监听表格页数变更
@@ -83,11 +87,37 @@ const Settle: FC = (props) => {
     })
   }
 
+  const handleExport = () => {
+    // if(params.settle_date === ''){
+    //   message.warning('请选择日期')
+    //   return false
+    // }
+    settleServices.excelExport(params.search,params.status,params.opid,params.settle_date).then((res:any)=>{
+      let blob = new Blob([res])
+      let url = window.URL.createObjectURL(blob)
+      let a = document.createElement("a")
+      document.body.appendChild(a)
+      let fileName = '三清单报表.xls'
+      a.href = url
+      a.download = fileName //命名下载名称
+      a.click() //点击触发下载
+      document.body.removeChild(a)
+      window.URL.revokeObjectURL(url)
+    })
+  }
+
   return (
     <>
       <Row type='flex' align='middle'>
+        总收入：<Statistic style={{marginRight:20}} valueStyle={{fontSize:14}} value={statistical.total_revenue} precision={2} prefix='￥' />
+        总成本：<Statistic valueStyle={{fontSize:14,marginRight:20}} value={statistical.total_cost} precision={2} prefix='￥' />
+        总毛利：<Statistic valueStyle={{fontSize:14,marginRight:20}} value={statistical.total_profit} precision={2} prefix='￥' />
+        毛利率：<Statistic valueStyle={{fontSize:14}} value={statistical.profit_rate} precision={2} suffix='%' />
+      </Row>
+      <Row type='flex' align='middle'>
         <Button onClick={() => setVisible(true)} type='primary' style={{ marginBottom: 24, marginRight: 20 }}>新增三清单</Button>
         <SettleSearch memberList={memberList} initialValue={params} onSearch={handleSearch}/>
+        <Button onClick={handleExport} type='primary' style={{ marginBottom: 24, marginLeft: 20 }}>导出excel</Button>
       </Row>
       <Table
         columns={columns}

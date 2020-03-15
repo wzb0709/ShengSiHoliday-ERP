@@ -20,7 +20,7 @@ const OtherPackageInfo: FC<IProps> = (props) => {
   const columns: ColumnProps<Object>[] = props.canEdit ? [
     { dataIndex: 'package_title', title: '套餐名称' },
     { dataIndex: 'package_price', title: '套餐价格' ,render:recode => <Row type='flex' align='middle'><Statistic valueStyle={{fontSize:14}} value={recode} precision={2} prefix='￥' /></Row> },
-    { dataIndex: 'package_commission', title: '分销佣金' },
+    { dataIndex: 'package_commission', title: '分销佣金' ,render:recode => <Row type='flex' align='middle'><Statistic valueStyle={{fontSize:14}} value={recode} precision={2} prefix='￥' /></Row> },
     {
       dataIndex: '', title: '上线状态', render: recode =>
         <Row type='flex'>
@@ -43,7 +43,7 @@ const OtherPackageInfo: FC<IProps> = (props) => {
   ] : [
     { dataIndex: 'package_title', title: '套餐名称' },
     { dataIndex: 'package_price', title: '套餐价格' ,render:recode => <Row type='flex' align='middle'><Statistic valueStyle={{fontSize:14}} value={recode} precision={2} prefix='￥' /></Row> },
-    { dataIndex: 'package_commission', title: '分销佣金' },
+    { dataIndex: 'package_commission', title: '分销佣金' ,render:recode => <Row type='flex' align='middle'><Statistic valueStyle={{fontSize:14}} value={recode} precision={2} prefix='￥' /></Row> },
     {
       dataIndex: '', title: '上线状态', render: recode =>
         <Row type='flex'>

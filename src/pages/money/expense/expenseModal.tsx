@@ -65,8 +65,8 @@ class ExpenseModal extends Component<IProps,{}> {
   }
 
   handleConfirm = () => {
-    if(this.state.dataSource.length === 0){
-      message.success('请添加明细')
+    if(this.state.dataSource.length === 0 && this.props.type === 1){
+      message.warning('请添加明细')
       return false
     }
     this.props.form.validateFields((err,values)=>{

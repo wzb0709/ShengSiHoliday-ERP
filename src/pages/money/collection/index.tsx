@@ -75,6 +75,7 @@ const Collection:FC = (props) => {
   const handleView = (values:any) => {
     setInitialValue(values)
     setId(values.id)
+    setInfoVisible(true)
   }
 
   const handleConfirm = (values:any) => {
@@ -100,6 +101,26 @@ const Collection:FC = (props) => {
     })
   }
 
+  const handleExport = () => {
+    // if(params.start_time === '' || params.end_time === ''){
+    //   message.warning('请选择日期')
+    //   return false
+    // }
+    paymentServices.excelExport(1,'','',params.status,params.start_time,params.end_time)
+      .then((res:any)=>{
+        let blob = new Blob([res])
+        let url = window.URL.createObjectURL(blob)
+        let a = document.createElement("a")
+        document.body.appendChild(a)
+        let fileName = '收款报表.xls'
+        a.href = url
+        a.download = fileName //命名下载名称
+        a.click() //点击触发下载
+        document.body.removeChild(a)
+        window.URL.revokeObjectURL(url)
+      })
+  }
+
   return (
     <>
       <Row type='flex' align='middle'>
@@ -108,7 +129,7 @@ const Collection:FC = (props) => {
       </Row>
       <Row type='flex' align='middle'>
         <CollectionSearch initialValue={params} onSearch={handleSearch}/>
-        <Button type='primary' style={{marginLeft:20,marginBottom:24}}>导出excel</Button>
+        <Button onClick={handleExport} type='primary' style={{marginLeft:20,marginBottom:24}}>导出excel</Button>
       </Row>
       <Table
         columns={columns}
@@ -124,11 +145,13 @@ const Collection:FC = (props) => {
         onCancel={() => setInfoVisible(false)}
         footer={null}
         title='收款详情'
+        width={800}
       >
         <Card
           extra={<>
             <a onClick={handleConfirm1}>通过</a>
-            <a onClick={() => setVisible(true)} style={{marginRight:20,color:'red'}}>拒绝</a>
+            <Divider type='vertical' />
+            <a onClick={() => setVisible(true)} style={{color:'red'}}>拒绝</a>
           </>}
         >
           <Row style={{ marginBottom: 10 }}>
@@ -141,7 +164,7 @@ const Collection:FC = (props) => {
               提交人：{initialValue.create_id}
             </Col>
             <Col span={12}>
-              提交时间：{initialValue.create_time}
+              提交时间：{moment(initialValue.create_time).format('YYYY-MM-DD HH:mm:ss')}
             </Col>
           </Row>
           <Row style={{ marginBottom: 10 }}>

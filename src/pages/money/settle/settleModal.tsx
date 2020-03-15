@@ -1,6 +1,7 @@
 import React, { FC } from 'react'
 import { Modal, Form, Input, DatePicker } from 'antd'
 import { WrappedFormUtils } from 'antd/es/form/Form'
+import moment from 'moment'
 
 interface IProps{
   readonly visible:boolean,
@@ -49,7 +50,7 @@ const SettleModal:FC<IProps> = (props) => {
       </FormItem>
       <FormItem label='结算月份' {...formItemLayout}>
         {getFieldDecorator('settle_date', {
-          initialValue:props.initialValue.settle_date,
+          initialValue:props.initialValue.settle_date ? moment(props.initialValue.settle_date) : undefined,
           rules: [
             {
               required: true,
@@ -58,6 +59,17 @@ const SettleModal:FC<IProps> = (props) => {
           ],
         })(<DatePicker.MonthPicker placeholder='请输入结算月份' style={{width:"70%"}} />)}
       </FormItem>
+      {props.initialValue.settle_title && <FormItem label='毛利说明' {...formItemLayout}>
+        {getFieldDecorator('settle_notes', {
+          initialValue:props.initialValue.settle_notes,
+          rules: [
+            {
+              required: true,
+              message: '请输入毛利说明',
+            },
+          ],
+        })(<Input placeholder='请输入毛利说明' style={{width:"70%"}} />)}
+      </FormItem>}
     </Modal>
   )
 }

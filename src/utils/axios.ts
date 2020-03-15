@@ -14,6 +14,7 @@ function axiosConfig() {
     if(error.response){
       if(error.response.status === 401){
         router.replace('/login')
+        message.destroy()
         message.error('登陆授权已过期!请重新登陆')
       }
       if(error.response.data){

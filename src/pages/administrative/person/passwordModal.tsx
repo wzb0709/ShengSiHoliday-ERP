@@ -44,7 +44,7 @@ const PasswordModal:FC<IProps> = (props) => {
               message: '请输入旧密码',
             },
           ],
-        })(<Input placeholder='请输入旧密码' style={{width:"70%"}} />)}
+        })(<Input type='password' placeholder='请输入旧密码' style={{width:"70%"}} />)}
       </FormItem>
       <FormItem label='新密码' {...formItemLayout}>
         {getFieldDecorator('newpwd', {
@@ -54,7 +54,17 @@ const PasswordModal:FC<IProps> = (props) => {
               message: '请输入新密码',
             },
           ],
-        })(<Input placeholder='请输入新密码' style={{width:"70%"}} />)}
+        })(<Input type='password' placeholder='请输入新密码' style={{width:"70%"}} />)}
+      </FormItem>
+      <FormItem label='确认密码' {...formItemLayout}>
+        {getFieldDecorator('repeatPwd', {
+          rules: [
+            {
+              required: true,
+              message: '请输入确认密码',
+            },
+          ],
+        })(<Input type='password' placeholder='请输入确认密码' style={{width:"70%"}} />)}
       </FormItem>
     </Modal>
   )

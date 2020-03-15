@@ -5,7 +5,7 @@ export function getConfig() {
 }
 
 export function updateConfig(item:any) {
-  return axios.put(`/config`)
+  return axios.put(`/config`,item)
 }
 
 export function getBack() {

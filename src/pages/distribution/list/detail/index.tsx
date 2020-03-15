@@ -7,6 +7,8 @@ import DistributionModal from '@/pages/distribution/list/distributionModal'
 import * as distributionServices from '@/services/distribution'
 import * as couponServices from '@/services/coupon'
 import CardModal from '@/pages/distribution/list/detail/cardModal'
+import OperationChart from '@/component/chart/operationChart'
+import OrderChart from '@/component/chart/orderChart'
 
 
 interface IProps {
@@ -122,6 +124,7 @@ const DistributionDetail:FC<IProps> = (props) => {
   const handleConfirmCard = (values:any) => {
     const params = {
       ...values,
+      distribution_id:props.match.params.id
     }
     if(id === ''){
       distributionServices.addCardInfo({...params}).then(() => {
@@ -201,6 +204,10 @@ const DistributionDetail:FC<IProps> = (props) => {
           rowKey='id'
         />
       </Card>
+
+      <OrderChart/>
+
+
       <DistributionModal
         visible={visible}
         onCancel={() => setVisible(false)}

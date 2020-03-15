@@ -72,3 +72,7 @@ export function updatePlanPackageStatus(id:string,status:number) {
 export function addPlanPackage(item:any) {
   return axios.post(`/productDate/addpackage`,item)
 }
+
+export function copy() {
+  // return axios.put()
+}

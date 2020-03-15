@@ -26,7 +26,7 @@ const OneDayManager: FC = (props) => {
 
   const columns: ColumnProps<Object>[] = [
     { dataIndex: 'product_title', title: '产品标题' ,width:300},
-    { dataIndex: 'start_date', title: '发团时间', render:recode => <>{moment(recode).format('YYYY-MM-DD')}</>},
+    { dataIndex: 'start_date', title: '发团时间',width:150, render:recode => <>{moment(recode).format('YYYY-MM-DD')}</>},
     { dataIndex: 'package_count', title: '套餐数',width:100,render:recode => <div style={{width:100,color:'#1890FF'}}>{recode}</div>},
     { dataIndex: 'plan_count', title: '计划数',width:100,render:recode => <div style={{width:100,color:'#1890FF'}}>{recode}</div>},
     { dataIndex: 'order_count', title: '订单' ,width:100,render:recode => <div style={{width:100,color:'#1890FF'}}>{recode}</div>},
@@ -34,11 +34,12 @@ const OneDayManager: FC = (props) => {
     {
       dataIndex: 'op_id',
       title: '计调' ,
+      width: 150,
       // @ts-ignore
       render: recode => memberList.find((item: any) => item.id === recode) ? memberList.find((item: any) => item.id === recode).name : '无对应计调',
     },
     {
-      dataIndex: '', title: '上架状态',width:300, render: recode =>
+      dataIndex: '', title: '上架状态',width:150, render: recode =>
         <Row type='flex'>
           <div>{recode.is_show === 1 ? '已上架' : '未上架'}</div>
           <a style={{ marginLeft: 10 }} onClick={() => handleChangeStatus(recode.product_date_id, recode.is_show)}>
@@ -47,7 +48,7 @@ const OneDayManager: FC = (props) => {
         </Row>,
     },
     {
-      dataIndex: 'product_date_id', title: '操作', render: recode => <Fragment>
+      dataIndex: 'product_date_id', title: '操作',width:100, render: recode => <Fragment>
         <Link to={`/product/oneDayManager/${recode}`}>查看详情</Link>
       </Fragment>,
     },

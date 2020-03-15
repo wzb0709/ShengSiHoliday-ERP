@@ -66,6 +66,7 @@ const DistributionModal:FC<IProps> = (props) => {
             {
               required: true,
               message: '请输入联系方式',
+              pattern:/^1[3456789]\d{9}$/
             },
           ],
         })(<Input placeholder='请输入联系方式' style={{width:"90%"}} />)}
@@ -80,17 +81,6 @@ const DistributionModal:FC<IProps> = (props) => {
             },
           ],
         })(<Input placeholder='请输入账号' style={{width:"90%"}} />)}
-      </FormItem>
-      <FormItem label='密码' {...formItemLayout}>
-        {getFieldDecorator('login_pwd', {
-          initialValue:props.initialValue.login_pwd,
-          rules: [
-            {
-              required: true,
-              message: '请输入密码',
-            },
-          ],
-        })(<Input placeholder='请输入密码' style={{width:"90%"}} />)}
       </FormItem>
     </Modal>
   )

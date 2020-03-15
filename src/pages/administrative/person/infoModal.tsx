@@ -1,7 +1,8 @@
 import React, { FC } from 'react'
-import { Modal, Form, Input } from 'antd'
+import { Modal, Form, Input,DatePicker } from 'antd'
 import { WrappedFormUtils } from 'antd/es/form/Form'
 import FormUpload from '@/component/upload/formUpload'
+import moment from 'moment'
 
 interface IProps{
   readonly visible:boolean,
@@ -67,9 +68,21 @@ const InfoModal:FC<IProps> = (props) => {
             {
               required: true,
               message: '请输入用户电话',
+              pattern:/^1[3456789]\d{9}$/
             },
           ],
         })(<Input placeholder='请输入用户电话' style={{ width: '70%' }}/>)}
+      </FormItem>
+      <FormItem label="生日" {...formItemLayout}>
+        {getFieldDecorator('birth_day', {
+          initialValue: props.initialValue.birth_day ? moment(props.initialValue.birth_day) : undefined,
+          rules: [
+            {
+              required: true,
+              message: '请选择生日',
+            },
+          ],
+        })(<DatePicker placeholder='请选择生日' style={{ width: '70%' }}/>)}
       </FormItem>
       <FormItem label='头像' {...formItemLayout}>
         {getFieldDecorator('head_img', {

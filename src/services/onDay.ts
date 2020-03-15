@@ -110,8 +110,7 @@ export function deleteOtherPackage(id:string) {
 }
 
 export function copyProduct(id:string) {
-  const params = {id}
-  return axios.put(`/product/copy`,params)
+  return axios.put(`/product/copy?id=${id}`)
 }
 
 export function getPlan(productid:string,month?:number) {

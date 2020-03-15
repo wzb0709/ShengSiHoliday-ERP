@@ -44,6 +44,5 @@ export function getCustomerDetails(id:string) {
 }
 
 export function copyProduct(id:string) {
-  const params = {id}
-  return axios.put(`/costomerTravel/copy`,params)
+  return axios.put(`/costomerTravel/copy?id=${id}`)
 }

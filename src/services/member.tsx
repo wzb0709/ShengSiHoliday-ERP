@@ -1,7 +1,13 @@
 import axios from 'axios'
 
-export function getMemberList({search,size,page}:{search:string,size:number,page:number}) {
-  return axios.get(`/member/${page}/${size}?search=${search}`)
+export function getMemberList(
+  {search,start_time,end_time,sourceid,size,page}
+  :
+    {search:string,size:number,page:number,start_time:string,end_time:string,sourceid:string}) {
+  const params = {
+    search,sourceid,start_time,end_time,page,size
+  }
+  return axios.get(`/member`,{params})
 }
 
 export function getMemberInfo({id}:{id:string}) {

@@ -92,27 +92,29 @@ const Settle: FC = (props) => {
     //   message.warning('请选择日期')
     //   return false
     // }
-    settleServices.excelExport(params.search,params.status,params.opid,params.settle_date).then((res:any)=>{
-      let blob = new Blob([res])
-      let url = window.URL.createObjectURL(blob)
-      let a = document.createElement("a")
-      document.body.appendChild(a)
-      let fileName = '三清单报表.xls'
-      a.href = url
-      a.download = fileName //命名下载名称
-      a.click() //点击触发下载
-      document.body.removeChild(a)
-      window.URL.revokeObjectURL(url)
-    })
+    window.open(`http://test.allentravel.cn/api/report/settle?search=${params.search}&status=${params.status}&opid=${params.opid}&settle_date=${params.settle_date}`)
+    //
+    // settleServices.excelExport(params.search,params.status,params.opid,params.settle_date).then((res:any)=>{
+    //   let blob = new Blob([res])
+    //   let url = window.URL.createObjectURL(blob)
+    //   let a = document.createElement("a")
+    //   document.body.appendChild(a)
+    //   let fileName = '三清单报表.xls'
+    //   a.href = url
+    //   a.download = fileName //命名下载名称
+    //   a.click() //点击触发下载
+    //   document.body.removeChild(a)
+    //   window.URL.revokeObjectURL(url)
+    // })
   }
 
   return (
     <>
       <Row type='flex' align='middle'>
-        总收入：<Statistic style={{marginRight:20}} valueStyle={{fontSize:14}} value={statistical.total_revenue} precision={2} prefix='￥' />
-        总成本：<Statistic valueStyle={{fontSize:14,marginRight:20}} value={statistical.total_cost} precision={2} prefix='￥' />
-        总毛利：<Statistic valueStyle={{fontSize:14,marginRight:20}} value={statistical.total_profit} precision={2} prefix='￥' />
-        毛利率：<Statistic valueStyle={{fontSize:14}} value={statistical.profit_rate} precision={2} suffix='%' />
+        总收入：<Statistic style={{marginRight:20}} valueStyle={{fontSize:24}} value={statistical.total_revenue} precision={2} prefix='￥' />
+        总成本：<Statistic valueStyle={{fontSize:24,marginRight:20,color:"red"}} value={statistical.total_cost} precision={2} prefix='￥' />
+        总毛利：<Statistic valueStyle={{fontSize:24,marginRight:20,color:"#00cd00"}} value={statistical.total_profit} precision={2} prefix='￥' />
+        毛利率：<Statistic valueStyle={{fontSize:24,color:"#00cd00"}} value={statistical.profit_rate} precision={2} suffix='%' />
       </Row>
       <Row type='flex' align='middle'>
         <Button onClick={() => setVisible(true)} type='primary' style={{ marginBottom: 24, marginRight: 20 }}>新增三清单</Button>

@@ -12,7 +12,11 @@ const Config:FC = (props) => {
   const [couponList,setCouponList] = useState<any>([])
 
   const getBasicInfo = useCallback(() => {
-    configServices.getConfig().then(res=>{
+    configServices.getConfig().then((res:any)=>{
+      if(res.register_coupons !== '') res.register_coupons = JSON.parse(res.register_coupons)
+      if(res.group_order_coupons !== '') res.group_order_coupons = JSON.parse(res.group_order_coupons)
+      if(res.shop_order_coupons !== '') res.shop_order_coupons = JSON.parse(res.shop_order_coupons)
+      if(res.car_order_coupons !== '') res.car_order_coupons = JSON.parse(res.car_order_coupons)
       setBasicInfo(res)
     })
   },[])
@@ -25,6 +29,10 @@ const Config:FC = (props) => {
 
 
   const handleConfirm = (values:any) => {
+    if(values.register_coupons) values.register_coupons = JSON.stringify(values.register_coupons)
+    if(values.group_order_coupons) values.group_order_coupons = JSON.stringify(values.group_order_coupons)
+    if(values.shop_order_coupons) values.shop_order_coupons = JSON.stringify(values.shop_order_coupons)
+    if(values.car_order_coupons) values.car_order_coupons = JSON.stringify(values.car_order_coupons)
     configServices.updateConfig({...values}).then(() => {
       message.success('操作成功！')
       getBasicInfo()

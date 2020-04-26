@@ -60,8 +60,8 @@ const CarModal:FC<IProps> = (props) => {
         })(<InputNumber placeholder='请输入座位数' style={{width:"70%"}} />)}
       </FormItem>
       <FormItem label='按天计价(天/小时)' {...formItemLayout}>
-        {getFieldDecorator('time_price', {
-          initialValue:props.initialValue.time_price || 0,
+        {getFieldDecorator('day_price', {
+          initialValue:props.initialValue.day_price || 0,
           rules: [
             {
               required: true,
@@ -71,8 +71,8 @@ const CarModal:FC<IProps> = (props) => {
         })(<InputNumber placeholder='请输入按天计价(天/小时)' style={{width:"70%"}} />)}
       </FormItem>
       <FormItem label='按时计价(元/小时)' {...formItemLayout}>
-        {getFieldDecorator('day_price', {
-          initialValue:props.initialValue.day_price || 0 ,
+        {getFieldDecorator('time_price', {
+          initialValue:props.initialValue.time_price || 0 ,
           rules: [
             {
               required: true,
@@ -80,6 +80,28 @@ const CarModal:FC<IProps> = (props) => {
             },
           ],
         })(<InputNumber placeholder='请输入按时计价(元/小时)' style={{width:"70%"}} />)}
+      </FormItem>
+      <FormItem label='按天佣金' {...formItemLayout}>
+        {getFieldDecorator('day_commission', {
+          initialValue:props.initialValue.day_commission || 0,
+          rules: [
+            {
+              required: true,
+              message: '请输入按天佣金',
+            },
+          ],
+        })(<InputNumber placeholder='请输入按天佣金' style={{width:"70%"}} />)}
+      </FormItem>
+      <FormItem label='按时佣金' {...formItemLayout}>
+        {getFieldDecorator('time_commission', {
+          initialValue:props.initialValue.time_commission || 0 ,
+          rules: [
+            {
+              required: true,
+              message: '请输入按时佣金',
+            },
+          ],
+        })(<InputNumber placeholder='请输入按时佣金' style={{width:"70%"}} />)}
       </FormItem>
       <FormItem label='汽车图片' {...formItemLayout}>
         {getFieldDecorator('car_pic', {

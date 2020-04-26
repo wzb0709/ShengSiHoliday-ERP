@@ -8,6 +8,7 @@ import * as planServices from '@/services/oneDayManager'
 import OneDayManagerSearch, { IOneDayManagerSearch } from '@/pages/product/oneDayManager/oneDayManagerSearch'
 import { IMember } from '@/models/login'
 import { useSelector } from 'dva'
+import OrderTable from '@/component/table/orderTable'
 
 const OneDayManager: FC = (props) => {
 
@@ -23,18 +24,19 @@ const OneDayManager: FC = (props) => {
   const [params, setParams] = useState<IOneDayManagerSearch>({ search: '', status: -1, start_time: '', end_time: '', op_id: '' })
 
   const memberList: Array<IMember> = useSelector((state: any) => state.login.memberList)
-
+  const [visible,setVisible] = useState<boolean>(false)
+  const [id, setId] = useState<string>('')
   const columns: ColumnProps<Object>[] = [
-    { dataIndex: 'product_title', title: '产品标题' ,width:300},
-    { dataIndex: 'start_date', title: '发团时间',width:150, render:recode => <>{moment(recode).format('YYYY-MM-DD')}</>},
-    { dataIndex: 'package_count', title: '套餐数',width:100,render:recode => <div style={{width:100,color:'#1890FF'}}>{recode}</div>},
-    { dataIndex: 'plan_count', title: '计划数',width:100,render:recode => <div style={{width:100,color:'#1890FF'}}>{recode}</div>},
-    { dataIndex: 'order_count', title: '订单' ,width:100,render:recode => <div style={{width:100,color:'#1890FF'}}>{recode}</div>},
-    { dataIndex: 'take_count', title: '已收',width:100,render:recode => <div style={{width:100,color:'#00CD00'}}>{recode}</div> },
+    { dataIndex: 'product_title', title: '产品标题' ,width:250},
+    { dataIndex: 'start_date', title: '发团时间',width:120, render:recode => <>{moment(recode).format('YYYY-MM-DD')}</>},
+    { dataIndex: 'package_count', title: '套餐数',width:80,render:recode => <div style={{width:100,color:'#1890FF'}}>{recode}</div>},
+    { dataIndex: 'plan_count', title: '计划数',width:80,render:recode => <div style={{width:100,color:'#1890FF'}}>{recode}</div>},
+    { dataIndex: '', title: '订单' ,width:80,render:recode => <a onClick={() => handleShowOrder(recode.product_date_id)}>{recode.order_count}</a>},
+    { dataIndex: 'take_count', title: '已收',width:80,render:recode => <div style={{width:100,color:'#00CD00'}}>{recode}</div> },
     {
       dataIndex: 'op_id',
       title: '计调' ,
-      width: 150,
+      width: 100,
       // @ts-ignore
       render: recode => memberList.find((item: any) => item.id === recode) ? memberList.find((item: any) => item.id === recode).name : '无对应计调',
     },
@@ -53,6 +55,11 @@ const OneDayManager: FC = (props) => {
       </Fragment>,
     },
   ]
+
+  const handleShowOrder = (id:string) => {
+    setId(id)
+    setVisible(true)
+  }
 
   const getPlanList = useCallback(() => {
     planServices.getPlanList(params.search,params.status,params.start_time,params.end_time,params.op_id,page,size).then((res:any)=>{
@@ -97,6 +104,8 @@ const OneDayManager: FC = (props) => {
         bordered={true}
         rowKey='product_date_id'
       />
+
+      {visible && <OrderTable visible={visible} onCancel={() => setVisible(false)} dateId={id}/>}
     </>
   )
 }

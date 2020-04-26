@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react'
+import React, { FC, Fragment, useEffect, useState } from 'react'
 import { Card, message, Row } from 'antd'
 
 import * as commonServices from '@/services/order/shopping'
@@ -8,7 +8,8 @@ import ProductInfoModal from '@/pages/order/shop/productInfo/productInfoModal'
 
 interface IProps {
   basicInfo: any,
-  onRefresh: any
+  onRefresh: any,
+  cantEdit?:boolean,
 }
 
 const ShoppingProductInfo: FC<IProps> = (props) => {
@@ -37,8 +38,8 @@ const ShoppingProductInfo: FC<IProps> = (props) => {
     <>
       <Card
         title={<div>商品信息</div>}
-        extra={
-          <>
+        extra={!props.cantEdit &&
+        <>
             <a onClick={() => setVisible(true)}>更换商品</a>
           </>
         }

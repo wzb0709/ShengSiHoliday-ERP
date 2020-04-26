@@ -1,5 +1,5 @@
 import React, { FC, useCallback, useEffect, useState } from 'react'
-import { Calendar, Card, Row, Radio, Table, Divider, Modal, Select, Button, message } from 'antd'
+import { Calendar, Card, Row, Radio, Table, Divider, Modal, Select, Button, message, Badge } from 'antd'
 import { ColumnProps } from 'antd/lib/table'
 
 import * as oneDayServices from '@/services/onDay'
@@ -154,11 +154,11 @@ const DatePlan: FC<IProps> = (props) => {
       product_id:props.match.params.id,
       packages:dataSource
     }
-    console.log(planItem)
-    return  false
+    // console.log(planItem)
+    // return  false
     planServices.addPlan(planItem).then(() => {
       message.success('操作成功!')
-      router.replace('/product/oneDayManager')
+      router.goBack()
     })
   }
 
@@ -171,6 +171,15 @@ const DatePlan: FC<IProps> = (props) => {
     }
   }
 
+  const handleDeleteTime = (item:any) => {
+    const arr = [...dateList]
+    const index = arr.findIndex((item1:any) => item1 === item)
+    if(index !== -1){
+      arr.splice(index,1)
+    }
+    setDateList(arr)
+  }
+
   return (
     <>
       <Card
@@ -181,7 +190,11 @@ const DatePlan: FC<IProps> = (props) => {
           <div>已选时间：</div>
           {dateList.map(item => {
             return (
-              <Card style={{ marginRight: 20, marginBottom: 20 }} key={item}>{item}</Card>
+              <a key={item} onClick={() => handleDeleteTime(item)}>
+                <Badge count={'X'} style={{marginRight:20}}>
+                  <Card style={{ marginRight: 20, marginBottom: 20 }}>{item}</Card>
+                </Badge>
+              </a>
             )
           })}
         </Row>

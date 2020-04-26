@@ -79,6 +79,7 @@ const ShoppingDetail: FC<IProps> = (props) => {
       onOk:() => {
         shoppingServices.copyProduct(props.match.params.id).then(() => {
           message.success('操作成功！')
+          router.replace('/product/shopping')
         })
       }
     })

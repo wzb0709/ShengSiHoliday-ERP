@@ -7,6 +7,7 @@ import NotesModal from '@/pages/order/notes/notesModal'
 interface IProps {
   basicInfo: any,
   onRefresh: any
+  cantEdit?:boolean
 }
 
 const NotesInfo: FC<IProps> = (props) => {
@@ -29,7 +30,7 @@ const NotesInfo: FC<IProps> = (props) => {
     <>
       <Card
         title={<div>订单备注</div>}
-        extra={
+        extra={!props.cantEdit &&
           <>
             <a onClick={() => setVisible(true)}>编辑备注</a>
           </>

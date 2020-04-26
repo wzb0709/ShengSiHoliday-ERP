@@ -7,7 +7,8 @@ import * as carServices from '@/services/car'
 
 interface IProps {
   basicInfo: any,
-  onRefresh: any
+  onRefresh: any,
+  cantEdit?:boolean
 }
 
 const CarInfo: FC<IProps> = (props) => {
@@ -35,7 +36,7 @@ const CarInfo: FC<IProps> = (props) => {
     <>
       <Card
         title={<div>车型信息</div>}
-        extra={
+        extra={!props.cantEdit &&
           <>
             <a onClick={() => setVisible(true)}>更换车型</a>
           </>

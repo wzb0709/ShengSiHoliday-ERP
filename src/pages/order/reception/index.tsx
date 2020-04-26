@@ -1,6 +1,6 @@
 import React, { FC, Fragment, useCallback, useEffect, useState } from 'react'
 import { ColumnProps } from 'antd/lib/table'
-import { Badge, Row, Table, Statistic, Button } from 'antd'
+import { Badge, Row, Table, Statistic, Button, message } from 'antd'
 import { Link } from 'umi'
 import moment from 'moment'
 
@@ -10,6 +10,9 @@ import { useSelector } from 'dva'
 import PartyOrderSearch, { IPartyOrderSearch } from '@/pages/order/party/orderPartySearch'
 import OrderStatistical from '@/pages/order/statistical'
 import ReceptionOrderSearch from '@/pages/order/reception/receptionSearch'
+import ChangeProModal from '@/pages/order/productInfo/changeProModal'
+import ReceptionModal from '@/pages/order/reception/receptionModal'
+import * as receptionServices from '@/services/reception'
 
 const ReceptionOrder: FC = (props) => {
   //表格的页数
@@ -34,7 +37,9 @@ const ReceptionOrder: FC = (props) => {
   const memberList: Array<IMember> = useSelector((state: any) => state.login.memberList)
 
   const [visible,setVisible] = useState<boolean>(false)
+  const [orderVisible,setOrderVisible] = useState<boolean>(false)
   const [orderParams,setOrderParams] = useState<any>({})
+  const [proList,setProList] = useState<any>([])
 
   const columns: ColumnProps<Object>[] = [
     { dataIndex: '', title: '订单信息' ,render:recode => <>
@@ -67,7 +72,7 @@ const ReceptionOrder: FC = (props) => {
     { dataIndex: 'operation_id', title: '计调' ,render:recode=>memberList.find((item:any) => item.id === recode) ? memberList.find((item:any) => item.id === recode).name : ''},
     {
       dataIndex: 'id', title: '操作', render: recode => <Fragment>
-        <Link to={`/order/party/${recode}`}>查看详情</Link>
+        <Link to={`/order/reception/${recode}`}>查看详情</Link>
       </Fragment>,
     },
   ]
@@ -82,6 +87,9 @@ const ReceptionOrder: FC = (props) => {
   }, [page, size, params])
   useEffect(() => {
     getOrderList()
+    receptionServices.getReception('','',1,10000).then(res=>{
+      setProList(res.data)
+    })
   }, [getOrderList])
 
   //查询按钮点击事件
@@ -101,6 +109,14 @@ const ReceptionOrder: FC = (props) => {
     setVisible(true)
   }
 
+  const handleConfirmPro = (values:any) => {
+    receptionOrderServices.addReception({...values}).then(() =>{
+      message.success('添加成功！')
+      setOrderVisible(false)
+      getOrderList()
+    })
+  }
+
 
   return (
     <>
@@ -108,6 +124,7 @@ const ReceptionOrder: FC = (props) => {
         <Button
           type='primary'
           style={{ marginBottom: 24, marginRight: 20 }}
+          onClick={() => setOrderVisible(true)}
         >
           添加订单
         </Button>
@@ -130,6 +147,13 @@ const ReceptionOrder: FC = (props) => {
         params={orderParams}
         visible={visible}
         onCancel={() => setVisible(false)}
+      />}
+
+      {orderVisible && <ReceptionModal
+        visible={orderVisible}
+        onOk={handleConfirmPro}
+        onCancel={() => setOrderVisible(false)}
+        proList={proList}
       />}
     </>
   )

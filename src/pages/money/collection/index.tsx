@@ -6,6 +6,13 @@ import DistributionModal from '@/pages/distribution/list/distributionModal'
 import CollectionSearch, { ICollectionSearch } from '@/pages/money/collection/collectionSearch'
 import moment from 'moment'
 import CollectionModal from '@/pages/money/collection/collectionModal'
+import { IMember } from '@/models/login'
+import { useSelector } from 'dva'
+import OneDayInfo from '@/component/order/oneDayInfo'
+import ShopOrderInfo from '@/component/order/shopInfo'
+import PartyOrderInfo from '@/component/order/partyInfo'
+import CarOrderInfo from '@/component/order/carInfo'
+import ReceptionOrderInfo from '@/component/order/receptionInfo'
 
 const Collection:FC = (props) => {
 
@@ -26,9 +33,15 @@ const Collection:FC = (props) => {
   const [id,setId] = useState<string>('')
   const [statistical,setStatistical] = useState<any>({})
 
+  const [detailVisible, setDetailVisible] = useState<boolean>(false)
+
+  const [type,setType] = useState<number>(0)
+
+  const memberList: Array<IMember> = useSelector((state: any) => state.login.memberList)
+
 
   const columns: ColumnProps<Object>[] = [
-    { dataIndex: 'order_no', title: '订单编号'},
+    { dataIndex: '', title: '订单编号',render:recode => <a onClick={() => handleDetail(recode)}>{recode.order_no}</a>},
     { dataIndex: 'payment_money', title: '金额',render:recode => <Row type='flex' align='middle'><Statistic valueStyle={{fontSize:14}} value={recode} precision={2} prefix='￥' /></Row>},
     { dataIndex: 'pay_type', title: '类型' ,render:recode => <div style={{color:recode === 1 ? '#00cd00' : 'red'}}>{recode === 1 ? '收款' : '退款'}</div> },
     { dataIndex: 'source_title', title: '来源',render:recode => recode === '' ? '-' : recode},
@@ -83,7 +96,7 @@ const Collection:FC = (props) => {
       ...values,
       status:2
     }
-    paymentServices.judgePayment(params,id,1).then(() => {
+    paymentServices.judgePayment(params,id).then(() => {
       message.success('操作成功!')
       setVisible(false)
       getPaymentList()
@@ -94,7 +107,7 @@ const Collection:FC = (props) => {
     const params = {
       status:1
     }
-    paymentServices.judgePayment(params,id,1).then(() => {
+    paymentServices.judgePayment(params,id).then(() => {
       message.success('操作成功!')
       setVisible(false)
       getPaymentList()
@@ -102,30 +115,20 @@ const Collection:FC = (props) => {
   }
 
   const handleExport = () => {
-    // if(params.start_time === '' || params.end_time === ''){
-    //   message.warning('请选择日期')
-    //   return false
-    // }
-    paymentServices.excelExport(1,'','',params.status,params.start_time,params.end_time)
-      .then((res:any)=>{
-        let blob = new Blob([res])
-        let url = window.URL.createObjectURL(blob)
-        let a = document.createElement("a")
-        document.body.appendChild(a)
-        let fileName = '收款报表.xls'
-        a.href = url
-        a.download = fileName //命名下载名称
-        a.click() //点击触发下载
-        document.body.removeChild(a)
-        window.URL.revokeObjectURL(url)
-      })
+    window.open(`http://test.allentravel.cn/api/report/expense?search=&status=${params.status}&start_time=${params.start_time}&end_time=${params.end_time}&sourceid=&type=1`)
+  }
+
+  const handleDetail = (recode:any) => {
+    setDetailVisible(true)
+    setType(recode.order_type)
+    setId(recode.order_id)
   }
 
   return (
     <>
       <Row type='flex' align='middle'>
-        已确认：<Statistic style={{marginRight:20}} valueStyle={{fontSize:14}} value={statistical.total_confim_money} precision={2} prefix='￥' />
-        待确认：<Statistic valueStyle={{fontSize:14}} value={statistical.wait_confim_money} precision={2} prefix='￥' />
+        已确认：<Statistic style={{marginRight:20}} valueStyle={{fontSize:24,color:"#00cd00"}} value={statistical.total_confim_money} precision={2} prefix='￥' />
+        待确认：<Statistic valueStyle={{fontSize:24}} value={statistical.wait_confim_money} precision={2} prefix='￥' />
       </Row>
       <Row type='flex' align='middle'>
         <CollectionSearch initialValue={params} onSearch={handleSearch}/>
@@ -161,7 +164,7 @@ const Collection:FC = (props) => {
           </Row>
           <Row style={{ marginBottom: 10 }}>
             <Col span={12}>
-              提交人：{initialValue.create_id}
+              提交人：{memberList.find(item => item.id === initialValue.create_id)?.name}
             </Col>
             <Col span={12}>
               提交时间：{moment(initialValue.create_time).format('YYYY-MM-DD HH:mm:ss')}
@@ -187,6 +190,12 @@ const Collection:FC = (props) => {
         onCancel={() => setVisible(false)}
         onOk={handleConfirm}
       />
+
+      {detailVisible && type === 1 && <OneDayInfo id={id} visible={detailVisible} onCancel={() => setDetailVisible(false)}/>}
+      {detailVisible && type === 2 && <ShopOrderInfo id={id} visible={detailVisible} onCancel={() => setDetailVisible(false)}/>}
+      {detailVisible && type === 3 && <PartyOrderInfo id={id} visible={detailVisible} onCancel={() => setDetailVisible(false)}/>}
+      {detailVisible && type === 4 && <CarOrderInfo id={id} visible={detailVisible} onCancel={() => setDetailVisible(false)}/>}
+      {detailVisible && type === 5 && <ReceptionOrderInfo id={id} visible={detailVisible} onCancel={() => setDetailVisible(false)}/>}
     </>
   );}
 

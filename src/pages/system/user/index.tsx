@@ -122,6 +122,19 @@ const User: FC = (props) => {
     }
   }
 
+  const handleChangePwd = (id:string) => {
+    Modal.confirm({
+      title: '提示',
+      content: '是否确认要重置密码？',
+      onOk: () => {
+        userServices.changePwd(id ).then(() => {
+          message.success('操作成功！')
+          getUserList()
+        })
+      },
+    })
+  }
+
   return (
     <>
       <UserModal
@@ -142,6 +155,7 @@ const User: FC = (props) => {
         onViewUserInfo={handleViewUserInfo}
         onDeleteUser={handleDeleteUser}
         onPageChange={handlePageChange}
+        onChangePwd={handleChangePwd}
         deptList={deptList}
         dataSource={dataSource}
         page={page}

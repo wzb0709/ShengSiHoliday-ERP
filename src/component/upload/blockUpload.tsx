@@ -1,6 +1,6 @@
 // @ts-nocheck
 import React, { Component } from 'react'
-import { Row, Upload, Col } from 'antd'
+import { Row, Upload, Col, Icon } from 'antd'
 import styles from './index.scss'
 import * as commonServer from '@/services/common'
 import uuid from 'uuid/v1'
@@ -62,6 +62,14 @@ class BlockUpload extends Component {
     }
   }
 
+  handleDelete = (e,index:number) => {
+    e.stopPropagation();
+    const imgList = this.state.fileList
+    imgList[index] = ''
+    this.props.onChange(imgList)
+    this.setState({ fileList: imgList })
+  }
+
   render() {
     const { fileList, uploadData } = this.state
     return (
@@ -78,6 +86,7 @@ class BlockUpload extends Component {
             onChange={this.handleChange}
           >
             <div>
+              <Icon onClick={(e) => this.handleDelete(e,0)} type="close-circle" style={{color:'#AAA',position:'absolute',right:0,top:0,fontSize:20,zIndex:10}} />
               {fileList[0] === '' ? '上传默认图' :
                 <img src={fileList[0]} alt="avatar" style={{objectFit: 'cover' }}/>}
             </div>
@@ -96,6 +105,7 @@ class BlockUpload extends Component {
               action="https://pzyfile.oss-cn-hangzhou.aliyuncs.com"
             >
               <div>
+                <Icon onClick={(e) => this.handleDelete(e,1)} type="close-circle" style={{color:'#AAA',position:'absolute',right:0,top:0,fontSize:20,zIndex:10}} />
                 {fileList[1] === '' ? '上传图片' :
                   <img src={fileList[1]} alt="avatar" style={{ objectFit: 'cover' }}/>}
               </div>
@@ -114,6 +124,7 @@ class BlockUpload extends Component {
               action="https://pzyfile.oss-cn-hangzhou.aliyuncs.com"
             >
               <div>
+                <Icon onClick={(e) => this.handleDelete(e,2)} type="close-circle" style={{color:'#AAA',position:'absolute',right:0,top:0,fontSize:20,zIndex:10}} />
                 {fileList[2] === '' ? '上传图片' :
                   <img src={fileList[2]} alt="avatar" style={{ objectFit: 'cover' }}/>}
               </div>
@@ -132,6 +143,7 @@ class BlockUpload extends Component {
               action="https://pzyfile.oss-cn-hangzhou.aliyuncs.com"
             >
               <div>
+                <Icon onClick={(e) => this.handleDelete(e,3)} type="close-circle" style={{color:'#AAA',position:'absolute',right:0,top:0,fontSize:20,zIndex:10}} />
                 {fileList[3] === '' ? '上传图片' :
                   <img src={fileList[3]} alt="avatar" style={{ objectFit: 'cover' }}/>}
               </div>

@@ -24,7 +24,7 @@ const OrderStatistical:FC<IProps> = (props) => {
     <Modal
       title='统计信息'
       footer={null}
-      width={600}
+      width={400}
       destroyOnClose={true}
       visible={props.visible}
       onCancel={props.onCancel}

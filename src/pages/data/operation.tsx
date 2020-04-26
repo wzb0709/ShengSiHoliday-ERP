@@ -4,7 +4,7 @@ import OperationChart from '@/component/chart/operationChart'
 class Operation extends Component {
   render() {
     return (
-      <OperationChart id='' />
+      <OperationChart type={1} id={undefined} />
     )
   }
 }

@@ -73,6 +73,6 @@ export function addPlanPackage(item:any) {
   return axios.post(`/productDate/addpackage`,item)
 }
 
-export function copy() {
-  // return axios.put()
+export function copy(id:string,date:Array<string>) {
+  return axios.post(`/productDate/copy/${id}`,date)
 }

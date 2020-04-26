@@ -14,6 +14,7 @@ interface IProps {
   readonly size: number
   readonly count: number
   readonly deptList:any
+  readonly onChangePwd:(id:string) =>void
 }
 
 const UserTable: FC<IProps> = (props) => {
@@ -37,7 +38,7 @@ const UserTable: FC<IProps> = (props) => {
     },
     {
       title: '操作', dataIndex: 'id', render: recode => <>
-        <a>发送密码</a>
+        <a onClick={() => props.onChangePwd(recode)}>发送密码</a>
         <Divider type="vertical"/>
         <a onClick={() => props.onViewUserInfo(recode)}>编辑</a>
         <Divider type="vertical"/>

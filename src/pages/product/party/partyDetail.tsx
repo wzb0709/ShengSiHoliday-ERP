@@ -99,6 +99,7 @@ const PartyDetail: FC<IProps> = (props) => {
       onOk:() => {
         partyServices.copyProduct(props.match.params.id).then(() => {
           message.success('操作成功！')
+          router.replace('/product/party')
         })
       }
     })

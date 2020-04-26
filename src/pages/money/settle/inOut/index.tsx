@@ -9,6 +9,7 @@ import SettleInOutModal from '@/pages/money/settle/inOut/inOutModal'
 interface IProps {
   id: string,
   onRefresh:any,
+  status:boolean
 }
 
 const InOutInfo: FC<IProps> = (props) => {
@@ -24,7 +25,7 @@ const InOutInfo: FC<IProps> = (props) => {
     { dataIndex: 'total_price', title: '金额' ,render:recode=> <Statistic valueStyle={{fontSize:14}} value={recode} precision={2} prefix='￥' />},
     { dataIndex: 'remark', title: '备注'},
     {
-      dataIndex: 'id', title: '操作', render: recode => <Fragment>
+      dataIndex: 'id', title: '操作', render: recode => props.status  &&<Fragment>
         <a onClick={() => handleUpdate(recode)} >编辑</a>
         <Divider type='vertical'/>
         <a onClick={() => handleDelete(recode)} style={{ color: 'red' }}>删除</a>
@@ -97,7 +98,7 @@ const InOutInfo: FC<IProps> = (props) => {
     <Card
       title='收入/支出信息'
       style={{marginTop:20}}
-      extra={<a onClick={handleAdd}>添加收入/支出信息</a>}
+      extra={props.status  &&<a onClick={handleAdd}>添加收入/支出信息</a>}
     >
       <Table
         bordered={true}

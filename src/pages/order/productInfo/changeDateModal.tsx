@@ -59,7 +59,7 @@ const ChangeDateModal:FC<IProps> = (props) => {
         >
           {props.dateList.map((item:any) => {
             return(
-              <Option key={item.id}>{`${moment(item.start_date).format('YYYY-MM-DD')}`}</Option>
+              <Option key={item.id}>{`${moment(item.start_date).format('YYYY-MM-DD')} 余位${item.site}`}</Option>
             )
           })}
         </Select>)}

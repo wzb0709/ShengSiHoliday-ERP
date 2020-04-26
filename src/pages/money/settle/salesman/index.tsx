@@ -12,6 +12,7 @@ import { useSelector } from 'dva'
 interface IProps {
   id: string,
   onRefresh:any,
+  status:boolean
 }
 
 const SalesmanInfo: FC<IProps> = (props) => {
@@ -29,7 +30,7 @@ const SalesmanInfo: FC<IProps> = (props) => {
     { dataIndex: 'total_price', title: '金额' ,render:recode=> <Statistic valueStyle={{fontSize:14}} value={recode} precision={2} prefix='￥' />},
     { dataIndex: 'remark', title: '备注'},
     {
-      dataIndex: 'id', title: '操作', render: recode => <Fragment>
+      dataIndex: 'id', title: '操作', render: recode =>props.status  && <Fragment>
         <a onClick={() => handleUpdate(recode)} >编辑</a>
         <Divider type='vertical'/>
         <a onClick={() => handleDelete(recode)} style={{ color: 'red' }}>删除</a>
@@ -39,6 +40,11 @@ const SalesmanInfo: FC<IProps> = (props) => {
 
   const getSalesmanList = useCallback(() => {
     settleSalesmanServices.getSettleSalesmanList(props.id,1,10000).then(res => {
+      let salesmanPrice = 0
+      res.data.forEach((item:any) => {
+        salesmanPrice += item.total_price
+      })
+      localStorage.setItem('salesmanPrice',salesmanPrice.toString())
       setDataSource(res.data)
     })
   }, [props.id])
@@ -102,7 +108,7 @@ const SalesmanInfo: FC<IProps> = (props) => {
     <Card
       title='业务员提成信息'
       style={{marginTop:20}}
-      extra={<a onClick={handleAdd}>添加业务员提成</a>}
+      extra={props.status  &&<a onClick={handleAdd}>添加业务员提成</a>}
     >
       <Table
         bordered={true}

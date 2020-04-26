@@ -106,8 +106,8 @@ const Withdraw:FC = (props) => {
   return (
     <>
       <Row type='flex' align='middle'>
-        已确认：<Statistic style={{marginRight:20}} valueStyle={{fontSize:14}} value={statistical.total_confim_money} precision={2} prefix='￥' />
-        待确认：<Statistic valueStyle={{fontSize:14}} value={statistical.wait_confim_money} precision={2} prefix='￥' />
+        已确认：<Statistic style={{marginRight:20}} valueStyle={{fontSize:24,color:"#00cd00"}} value={statistical.total_confim_money} precision={2} prefix='￥' />
+        待确认：<Statistic valueStyle={{fontSize:24}} value={statistical.wait_confim_money} precision={2} prefix='￥' />
       </Row>
       <Row type='flex' align='middle'>
         <WithdrawSearch initialValue={params} onSearch={handleSearch}/>

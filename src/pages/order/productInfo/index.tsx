@@ -13,6 +13,7 @@ import * as oneDayOrderServices from '@/services/order/oneDay'
 interface IProps {
   basicInfo:any,
   onRefresh:any
+  cantEdit?:boolean
 }
 
 const ProductInfo:FC<IProps> = (props) => {
@@ -58,7 +59,7 @@ const ProductInfo:FC<IProps> = (props) => {
     <>
       <Card
         title={<div>产品信息</div>}
-        extra={
+        extra={!props.cantEdit &&
           <>
             <a onClick={() => setVisible(true)}>更换产品</a>
             <Divider type='vertical' />

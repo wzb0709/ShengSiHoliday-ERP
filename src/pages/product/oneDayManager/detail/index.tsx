@@ -5,7 +5,7 @@ import moment from  'moment'
 import PackageTable from '@/pages/product/oneDayManager/detail/packageTable'
 import { Link, router } from 'umi'
 import { getAllList } from '@/utils/common'
-import * as oneDayServices from '@/services/onDay'
+import CopyModal from '@/pages/product/oneDayManager/detail/copyModal'
 
 interface IProps {
   match:any
@@ -31,6 +31,7 @@ const DetailEdit:FC<IProps> = (props) => {
     op_id:''
   })
   const [memberList,setMemberList] = useState<any>([])
+  const [visible, setVisible] = useState<boolean>(false)
 
   const getBasicInfo = useCallback(() => {
     planServices.getPlanInfo(props.match.params.id).then((res:any)=>{
@@ -58,6 +59,15 @@ const DetailEdit:FC<IProps> = (props) => {
     })
   }
 
+  const handleConfirm = (values:any) => {
+    const date = [values.date]
+    planServices.copy(props.match.params.id,date).then(()=>{
+      message.success('操作成功！')
+      setVisible(false)
+      router.replace('/product/oneDayManager')
+    })
+  }
+
   return (
     <>
       <Card
@@ -65,7 +75,7 @@ const DetailEdit:FC<IProps> = (props) => {
         extra={<>
           <Link to={`/product/oneDayManager/${props.match.params.id}/edit`} >编辑计划</Link>
           <Divider type='vertical' />
-          <a>复制计划</a>
+          <a onClick={() => setVisible(true)}>复制计划</a>
           <Divider type='vertical' />
           <a onClick={handleDelete} style={{color:'red'}}>删除计划</a>
         </>}
@@ -97,6 +107,12 @@ const DetailEdit:FC<IProps> = (props) => {
           <Col span={12}>联系方式：{memberList.find((item:any) => item.id === basicInfo.op_id) ? memberList.find((item:any) => item.id === basicInfo.op_id).phone : ''}</Col>
         </Row>
       </Card>
+
+      <CopyModal
+        visible={visible}
+        onOk={handleConfirm}
+        onCancel={() => setVisible(false)}
+      />
 
       <PackageTable id={props.match.params.id} canEdit={false}/>
     </>

@@ -41,6 +41,8 @@ const DistributionDetail:FC<IProps> = (props) => {
   const [card,setCard] = useState<any>([])
   const [initialValue,setInitialValue] = useState<any>({})
   const [id,setId] = useState<string>('')
+  const [imgVisible,setImgVisible] = useState<boolean>(false)
+  const [url,setUrl] = useState<string>('')
 
 
   const getBasicInfo = useCallback(() => {
@@ -154,12 +156,48 @@ const DistributionDetail:FC<IProps> = (props) => {
     })
   }
 
+  const changePwd = () => {
+    Modal.confirm({
+      title:"提示",
+      content:"是否要重置密码？",
+      onOk:() => {
+        distributionServices.changePwd(id).then(() => {
+          message.success('重置成功！')
+          getCardList()
+        })
+      }
+    })
+  }
+
+  const handleViewCode = () => {
+    distributionServices.getCode(props.match.params.id).then((res:any)=>{
+      // let blob = new Blob([res])
+      let imageUrl = window.URL.createObjectURL(res);
+      setUrl(imageUrl)
+      setImgVisible(true)
+    })
+  }
+
+  const handleDownload = () => {
+    let a = document.createElement("a")
+    document.body.appendChild(a)
+    let fileName = '二维码.jpg'
+    a.href = url
+    a.download = fileName //命名下载名称
+    a.click() //点击触发下载
+    document.body.removeChild(a)
+  }
+
   return (
     <>
       <Card
         title='基本信息'
         extra={<>
+          <a onClick={handleViewCode} >查看二维码</a>
+          <Divider type='vertical' />
           <a onClick={handleUpdateModal} >编辑</a>
+          <Divider type='vertical' />
+          <a onClick={changePwd} >重置密码</a>
           <Divider type='vertical' />
           <a onClick={handleDelete} style={{color:'red'}}>删除</a>
         </>}
@@ -205,7 +243,17 @@ const DistributionDetail:FC<IProps> = (props) => {
         />
       </Card>
 
-      <OrderChart/>
+      <OperationChart id={props.match.params.id}  type={2} />
+
+      <Modal
+        visible={imgVisible}
+        onCancel={() => setImgVisible(false)}
+        okText='下载二维码'
+        onOk={handleDownload}
+        title='二维码'
+      >
+        <img src={url} style={{width:'100%'}} alt='' />
+      </Modal>
 
 
       <DistributionModal

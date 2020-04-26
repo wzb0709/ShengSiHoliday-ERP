@@ -10,6 +10,7 @@ import { RcFile } from 'antd/es/upload'
 
 interface IProps {
   id: string,
+  cantEdit?:boolean
 }
 
 const TouristInfo: FC<IProps> = (props) => {
@@ -33,14 +34,14 @@ const TouristInfo: FC<IProps> = (props) => {
     { dataIndex: 'certification_no', title: '证件号码' },
     { dataIndex: 'status', title: '状态',render:recode => <div style={{color:recode === 1 ? '#00CD00' : 'red'}}>{recode === 1 ? '正常' : '退团'}</div>  },
     {
-      dataIndex: '', title: '操作', render: recode => <Fragment>
+      dataIndex: '', title: '操作', render: recode =>!props.cantEdit && <Fragment>
         {recode.status === 1 &&
           <>
             <a onClick={() => handleUpdate(recode.id)} >编辑</a>
             <Divider type='vertical'/>
             <a onClick={() => handleChangeStatus(recode.id,recode.status)} style={{ color: 'red' }}>退团</a>
           </>}
-        {recode.status === 2 &&
+        {(recode.status === 2 ||  recode.status === 0 )&&
           <>
             <a onClick={() => handleChangeStatus(recode.id,recode.status)}>恢复</a>
             <Divider type='vertical'/>
@@ -156,25 +157,27 @@ const TouristInfo: FC<IProps> = (props) => {
   }
 
   const handleExport = () => {
-    axios.get(`/report/ordertourists?orderid=${props.id}`).then((res:any)=>{
-      let blob = new Blob([res])
-      let url = window.URL.createObjectURL(blob)
-      let a = document.createElement("a")
-      document.body.appendChild(a)
-      let fileName = '名单报表.xls'
-      a.href = url
-      a.download = fileName //命名下载名称
-      a.click() //点击触发下载
-      document.body.removeChild(a)
-      window.URL.revokeObjectURL(url)
-    })
+    window.open(`http://test.allentravel.cn/api/report/ordertourists?orderid=${props.id}`)
+
+    // axios.get(`/report/ordertourists?orderid=${props.id}`).then((res:any)=>{
+    //   let blob = new Blob([res])
+    //   let url = window.URL.createObjectURL(blob)
+    //   let a = document.createElement("a")
+    //   document.body.appendChild(a)
+    //   let fileName = '名单报表.xls'
+    //   a.href = url
+    //   a.download = fileName //命名下载名称
+    //   a.click() //点击触发下载
+    //   document.body.removeChild(a)
+    //   window.URL.revokeObjectURL(url)
+    // })
   }
 
   return (
     <Card
       title='名单信息'
       style={{marginTop:20}}
-      extra={
+      extra={!props.cantEdit &&
         <>
           <a onClick={handleAddTourist}>添加名单</a>
           <Divider type='vertical' />
@@ -201,7 +204,7 @@ const TouristInfo: FC<IProps> = (props) => {
         initialValue={initialValue}
       />
       <Modal
-        title='上传名单'
+        title={<div>上传名单 <a onClick={() => window.open('https://pzyfile.oss-cn-hangzhou.aliyuncs.com/shengsi/tourists_import_model.xlsx')}>下载模板</a></div>}
         visible={fileVisible}
         onCancel={() => setFileVisible(false)}
         footer={null}

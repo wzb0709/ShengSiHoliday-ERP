@@ -72,6 +72,8 @@ const CarInfoModal:FC<IProps> = (props) => {
       >
         <div>按天计价：￥{props.basicInfo.day_price}/天</div>
         <div style={{marginTop:20}}>按时计价：￥{props.basicInfo.time_price}/小时</div>
+        <div>按天计价佣金：￥{props.basicInfo.day_commission}</div>
+        <div style={{marginTop:20}}>按时计价佣金：￥{props.basicInfo.time_commission}</div>
       </Card>
       <CarModal
         visible={visible}

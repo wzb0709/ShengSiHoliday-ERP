@@ -33,3 +33,7 @@ export function updateReceptionOrder(item:IPartyOrderItem,id:string) {
 export function getReceptionInfo(id:string) {
   return axios.get(`/receptionOrder/detail/${id}`)
 }
+
+export function addReception(item:any) {
+  return axios.post(`/receptionOrder`,item)
+}

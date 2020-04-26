@@ -80,6 +80,7 @@ const OneDayDetail: FC<IProps> = (props) => {
       onOk:() => {
         oneDayServices.copyProduct(props.match.params.id).then(() => {
           message.success('操作成功！')
+          router.replace('/product/oneDay')
         })
       }
     })
@@ -116,16 +117,22 @@ const OneDayDetail: FC<IProps> = (props) => {
         </>}
       >
         <Row>
-          <Col span={11}>
-            <Calendar className='plan' dateCellRender={handleRender}  />
-          </Col>
-          <Col span={9} style={{marginTop:70}}>
-            <Row style={{ marginBottom: 20 }}>产品标题：{basicInfo.product_title}</Row>
-            <Row style={{ marginBottom: 20 }}>产品副标题：{basicInfo.product_sub_title}</Row>
-            <Row style={{ marginBottom: 20 }}>产品标签：{basicInfo.product_tag.map(item => {
+          <Col span={12}>
+            <Row style={{ marginBottom: 10 }}>产品标题：{basicInfo.product_title}</Row>
+            <Row style={{ marginBottom: 10 }}>产品副标题：{basicInfo.product_sub_title}</Row>
+            <Row style={{ marginBottom: 10 }}>产品标签：{basicInfo.product_tag.map(item => {
               return (<Tag key={item} color={tagColor[Math.floor((Math.random() * tagColor.length))]}>{item}</Tag>)
             })}</Row>
-            <Row style={{ marginBottom: 20 }}>游玩人数：{basicInfo.travel_person}人</Row>
+            <Row style={{ marginBottom: 10 }}>游玩人数：{basicInfo.travel_person}人</Row>
+          </Col>
+          <Col span={12}>
+            {basicInfo.product_img.map((item,index)=>{
+              return item !=='' && (
+                <Col span={6} key={index} >
+                  <img src={item} alt="" style={{objectFit:'cover',width:'95%'}} />
+                </Col>
+              )
+            })}
           </Col>
         </Row>
       </Card>

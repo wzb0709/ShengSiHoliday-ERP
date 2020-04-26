@@ -35,12 +35,12 @@ class ChangeMember extends Component<IProps,IState> {
         visible={this.props.visible}
         onCancel={this.props.onCancel}
         title='转让销售/计调'
-        width={800}
+        width={500}
         destroyOnClose={true}
         onOk={this.handleConfirm}
       >
         <Row type='flex' align='middle' justify='center' >
-          <div>转让人员：</div>
+          <div>转让产品：</div>
           <Select onChange={(value:string) => this.setState({id:value})} style={{width:300}} placeholder='请选择要转让的人员' >
             {this.props.memberList.map((item:any) => {
               return localStorage.getItem('id') !== item.id && <Option key={item.id}>{item.name}</Option>

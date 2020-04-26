@@ -12,6 +12,7 @@ import ProductInfo from '@/pages/order/productInfo'
 import ShoppingProductInfo from '@/pages/order/shop/productInfo'
 import ShoppingAddressInfo from '@/pages/order/shop/addressInfo'
 import ShoppingExpressInfo from '@/pages/order/shop/expressInfo'
+import Progress from '@/pages/order/progress'
 
 interface IProps {
   match:any
@@ -20,6 +21,7 @@ interface IProps {
 const ShoppingOrderDetail:FC<IProps> = (props) => {
 
   const [basicInfo,setBasicInfo] = useState<any>({})
+  const [visible,setVisible] = useState<boolean>(false)
 
   const getBasicInfo = useCallback(() => {
     Promise.all([shopOrderServices.getShoppingOrderInfo(props.match.params.id),commonServices.getBasicOrderInfo(props.match.params.id)])
@@ -41,7 +43,7 @@ const ShoppingOrderDetail:FC<IProps> = (props) => {
       <Card
         title='订单信息'
         extra={<>
-          <a>跟踪记录</a>
+          <a onClick={() => setVisible(true)} >跟踪记录</a>
         </>}
       >
         <OrderBasicInfo type={2} showSale={false} onRefresh={getBasicInfo} basicInfo={basicInfo}/>
@@ -55,6 +57,8 @@ const ShoppingOrderDetail:FC<IProps> = (props) => {
         </>}
         <NotesInfo basicInfo={basicInfo} onRefresh={getBasicInfo}/>
       </Card>
+
+      {visible && <Progress id={basicInfo.order_id} visible={visible} onCancel={() => setVisible(false)}/>}
     </>
   )
 }

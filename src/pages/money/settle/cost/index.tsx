@@ -10,6 +10,7 @@ import SettleCostModal from '@/pages/money/settle/cost/costModal'
 interface IProps {
   id: string,
   onRefresh:any,
+  status:boolean
 }
 
 const CostInfo: FC<IProps> = (props) => {
@@ -25,7 +26,7 @@ const CostInfo: FC<IProps> = (props) => {
     { dataIndex: 'cost_price', title: '单价' ,render:recode=> <Statistic valueStyle={{fontSize:14}} value={recode} precision={2} prefix='￥' />},
     { dataIndex: 'total_price', title: '总价' ,render:recode=> <Statistic valueStyle={{fontSize:14}} value={recode} precision={2} prefix='￥' />},
     {
-      dataIndex: 'id', title: '操作', render: recode => <Fragment>
+      dataIndex: 'id', title: '操作', render: recode => props.status &&<Fragment>
         <a onClick={() => handleUpdate(recode)} >编辑</a>
         <Divider type='vertical'/>
         <a onClick={() => handleDelete(recode)} style={{ color: 'red' }}>删除</a>
@@ -35,6 +36,11 @@ const CostInfo: FC<IProps> = (props) => {
 
   const getCostList = useCallback(() => {
     settleCostServices.getSettleCostList(props.id,1,10000).then(res => {
+      let costPrice = 0
+      res.data.forEach((item:any) => {
+        costPrice += item.total_price
+      })
+      localStorage.setItem('costPrice',costPrice.toString())
       setDataSource(res.data)
     })
   }, [props.id])
@@ -98,7 +104,7 @@ const CostInfo: FC<IProps> = (props) => {
     <Card
       title='成本信息'
       style={{marginTop:20}}
-      extra={<a onClick={handleAdd}>添加成本信息</a>}
+      extra={props.status &&<a onClick={handleAdd}>添加成本信息</a>}
     >
       <Table
         bordered={true}

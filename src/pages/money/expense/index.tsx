@@ -8,7 +8,6 @@ import ExpenseSearch, { IExpenseSearch } from '@/pages/money/expense/expenseSear
 import { Link } from 'umi'
 import { IMember } from '@/models/login'
 import { useSelector } from 'dva'
-import * as paymentServices from '@/services/order/payment'
 
 const Expense:FC = (props) => {
 
@@ -38,7 +37,8 @@ const Expense:FC = (props) => {
     { dataIndex: 'status', title: '状态' ,render:recode =>
         recode === 0 ? <Badge status='warning' text='待审核' />
           :recode === 1 ? <Badge status='success' text='审核通过' />
-          :<Badge status='error' text='审核拒绝' /> },
+          : recode === 3 ? <Badge status='success' text='已发放' />
+            : <Badge status='error' text='审核拒绝' /> },
     {
       dataIndex: '', title: '操作', render: recode => <Fragment>
         <Link to={`/money/expense/${recode.id}`}>查看详情</Link>
@@ -52,10 +52,10 @@ const Expense:FC = (props) => {
       .then((res: any) => {
         setDataSource(res.data)
         setCount(res.count)
+        expenseServices.getStatistical(2,params.search,params.status,params.start_time,params.end_time).then(res=>{
+          setStatistical(res)
+        })
       })
-    // paymentServices.getStatistical(1,params.status,params.start_time,params.end_time).then(res=>{
-    //   setStatistical(res)
-    // })
   }, [page, size, params])
   useEffect(() => {
     getExpenseList()
@@ -94,27 +94,29 @@ const Expense:FC = (props) => {
     //   message.warning('请选择日期')
     //   return false
     // }
-    expenseServices.excelExport(params.search,params.status,params.start_time,params.end_time)
-      .then((res:any)=>{
-        let blob = new Blob([res])
-        let url = window.URL.createObjectURL(blob)
-        let a = document.createElement("a")
-        document.body.appendChild(a)
-        let fileName = '报销报表.xls'
-        a.href = url
-        a.download = fileName //命名下载名称
-        a.click() //点击触发下载
-        document.body.removeChild(a)
-        window.URL.revokeObjectURL(url)
-      })
+    window.open(`http://test.allentravel.cn/api/report/expense?search=${params.search}&status=${params.status}&start_time=${params.start_time}&end_time=${params.end_time}`)
+
+    // expenseServices.excelExport(params.search,params.status,params.start_time,params.end_time)
+    //   .then((res:any)=>{
+    //     let blob = new Blob([res])
+    //     let url = window.URL.createObjectURL(blob)
+    //     let a = document.createElement("a")
+    //     document.body.appendChild(a)
+    //     let fileName = '报销报表.xls'
+    //     a.href = url
+    //     a.download = fileName //命名下载名称
+    //     a.click() //点击触发下载
+    //     document.body.removeChild(a)
+    //     window.URL.revokeObjectURL(url)
+    //   })
   }
 
   return (
     <>
-      {/*<Row type='flex' align='middle'>*/}
-      {/*  已确认：<Statistic style={{marginRight:20}} valueStyle={{fontSize:14}} value={statistical.total_confim_money} precision={2} prefix='￥' />*/}
-      {/*  待确认：<Statistic valueStyle={{fontSize:14}} value={statistical.wait_confim_money} precision={2} prefix='￥' />*/}
-      {/*</Row>*/}
+      <Row type='flex' align='middle'>
+        已确认：<Statistic style={{marginRight:20}} valueStyle={{fontSize:24,color:"#00cd00"}} value={statistical.total_confim_money} precision={2} prefix='￥' />
+        待确认：<Statistic valueStyle={{fontSize:24}} value={statistical.wait_confim_money} precision={2} prefix='￥' />
+      </Row>
       <Row type='flex' align='middle'>
         <Button onClick={handleAddModal} type='primary' style={{ marginBottom: 24, marginRight: 20 }}>新增报销</Button>
         <ExpenseSearch initialValue={params} onSearch={handleSearch}/>

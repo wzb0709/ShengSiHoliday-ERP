@@ -7,7 +7,8 @@ import * as oneDayOrderServices from '@/services/order/oneDay'
 
 interface IProps {
   basicInfo:any,
-  onRefresh:any
+  onRefresh:any,
+  cantEdit?:boolean
 }
 
 const CarPoint:FC<IProps> = (props) => {
@@ -33,7 +34,7 @@ const CarPoint:FC<IProps> = (props) => {
     <>
      <Card
       title='上车点'
-      extra={<a onClick={() => setVisible(true)}>更换上车点</a>}
+      extra={!props.cantEdit && <a onClick={() => setVisible(true)}>更换上车点</a>}
       style={{marginTop:20}}
      >
        {

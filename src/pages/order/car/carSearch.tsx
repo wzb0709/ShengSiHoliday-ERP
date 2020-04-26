@@ -49,7 +49,7 @@ const CarOrderSearch:FC<IProps> = (props) => {
           ],
         })(<Input placeholder='搜索关键词' style={{width:150}} />)}
       </FormItem>
-      <FormItem style={{width:150,marginLeft:20}}>
+      <FormItem style={{width:150,marginLeft:20,marginRight:20}}>
         {getFieldDecorator('carid', {
           initialValue:props.initialValue.carid || undefined,
           rules: [
@@ -64,7 +64,7 @@ const CarOrderSearch:FC<IProps> = (props) => {
           })}
         </Select>)}
       </FormItem>
-      <FormItem style={{width:150,marginLeft:20}}>
+      <FormItem style={{width:150,marginRight:20}}>
         {getFieldDecorator('price_type', {
           initialValue:props.initialValue.price_type,
           rules: [
@@ -78,7 +78,7 @@ const CarOrderSearch:FC<IProps> = (props) => {
           <Option value={2}>按时</Option>
         </Select>)}
       </FormItem>
-      <FormItem style={{width:150,marginLeft:20}}>
+      <FormItem style={{width:150,marginRight:20}}>
         {getFieldDecorator('getId', {
           initialValue:props.initialValue.getId || undefined,
           rules: [
@@ -93,7 +93,7 @@ const CarOrderSearch:FC<IProps> = (props) => {
           })}
         </Select>)}
       </FormItem>
-      <FormItem style={{width:150,marginLeft:20}}>
+      <FormItem style={{width:150,marginRight:20}}>
         {getFieldDecorator('backId', {
           initialValue:props.initialValue.backId || undefined,
           rules: [
@@ -108,7 +108,7 @@ const CarOrderSearch:FC<IProps> = (props) => {
           })}
         </Select>)}
       </FormItem>
-      <FormItem style={{width:150,marginLeft:20}}>
+      <FormItem style={{width:150,marginRight:20}}>
         {getFieldDecorator('status', {
           initialValue:props.initialValue.status,
           rules: [
@@ -127,7 +127,7 @@ const CarOrderSearch:FC<IProps> = (props) => {
           <Option value={9}>已取消</Option>
         </Select>)}
       </FormItem>
-      <FormItem style={{width:150,marginLeft:20}} >
+      <FormItem style={{width:150,marginRight:20}} >
         {getFieldDecorator('start_time', {
           initialValue:props.initialValue.start_time === '' ? undefined : moment(props.initialValue.start_time),
           rules: [
@@ -137,7 +137,7 @@ const CarOrderSearch:FC<IProps> = (props) => {
           ],
         })(<DatePicker  placeholder='请选择开始时间' style={{width:150}} />)}
       </FormItem>
-      <FormItem style={{width:150,marginLeft:20}} >
+      <FormItem style={{width:150,marginRight:20}} >
         {getFieldDecorator('end_time', {
           initialValue:props.initialValue.end_time === '' ? undefined : moment(props.initialValue.end_time),
           rules: [
@@ -147,7 +147,7 @@ const CarOrderSearch:FC<IProps> = (props) => {
           ],
         })(<DatePicker placeholder='请选择结束时间' style={{width:150}} />)}
       </FormItem>
-      <Button type='primary' style={{marginBottom:24,marginLeft:20}} onClick={handleConfirm}>查询</Button>
+      <Button type='primary' style={{marginBottom:24}} onClick={handleConfirm}>查询</Button>
     </>
   )
 }

@@ -4,20 +4,39 @@ import { ColumnProps } from 'antd/lib/table'
 import * as settleOrderServices from '@/services/settle/order'
 import SettleOrderModal from '@/pages/money/settle/order/orderModal'
 import moment from 'moment'
+import { IMember } from '@/models/login'
+import { useSelector } from 'dva'
+import OneDayInfo from '@/component/order/oneDayInfo'
+import PartyOrderInfo from '@/component/order/partyInfo'
+import ReceptionOrderInfo from '@/component/order/receptionInfo'
+import ShopOrderInfo from '@/component/order/shopInfo'
+import CarOrderInfo from '@/component/order/carInfo'
 
 interface IProps {
   id: string,
-  onRefresh:any
+  onRefresh:any,
+  status:boolean
 }
 
 const SettleOrderInfo: FC<IProps> = (props) => {
 
   const [dataSource, setDataSource] = useState<any>([])
   const [visible, setVisible] = useState<boolean>(false)
+  const [detailVisible, setDetailVisible] = useState<boolean>(false)
+
+  const [type,setType] = useState<number>(0)
+  const [id,setId] = useState<string>('')
+
+
+  const [price1,setPrice1] = useState<number>(0)
+  const [price2,setPrice2] = useState<number>(0)
+  const [price3,setPrice3] = useState<number>(0)
+
+  const memberList: Array<IMember> = useSelector((state: any) => state.login.memberList)
 
   const columns: ColumnProps<Object>[] = [
     { dataIndex: '', title: '订单信息' ,render:recode => <>
-        <div>{recode.order_no}</div>
+        <a onClick={() => handleDetail(recode)}>{recode.order_no}</a>
         <div>{recode.contact_name}</div>
       </>},
     { dataIndex: '', title: '产品信息' ,render:recode => <>
@@ -39,7 +58,7 @@ const SettleOrderInfo: FC<IProps> = (props) => {
     // @ts-ignore
     { dataIndex: 'operation_id', width:100,title: '计调' ,render:recode=>memberList.find((item:any) => item.id === recode) ? memberList.find((item:any) => item.id === recode).name : ''},
     {
-      dataIndex: 'id', title: '操作', render: recode => <Fragment>
+      dataIndex: 'id', title: '操作', render: recode => props.status &&<Fragment>
         <a onClick={() => handleDelete(recode)} style={{ color: 'red' }}>删除</a>
       </Fragment>,
     },
@@ -47,6 +66,17 @@ const SettleOrderInfo: FC<IProps> = (props) => {
 
   const getOrderList = useCallback(() => {
     settleOrderServices.getSettleOrderList(props.id,1,10000).then(res => {
+      let [price1,price2,price3,count] = [0,0,0,0]
+      res.data.forEach((item:any) => {
+        price1 += item.total_price
+        price2 += item.paid
+        price3 += item.total_price - item.paid
+        count += (item.adult_count + item.child_count)
+      })
+      localStorage.setItem('count',count.toString())
+      setPrice1(price1)
+      setPrice2(price2)
+      setPrice3(price3)
       setDataSource(res.data)
     })
   }, [props.id])
@@ -75,11 +105,17 @@ const SettleOrderInfo: FC<IProps> = (props) => {
     })
   }
 
+  const handleDetail = (recode:any) => {
+    setDetailVisible(true)
+    setType(recode.order_type)
+    setId(recode.id)
+  }
+
   return (
     <Card
       title='添加订单'
       style={{marginTop:20}}
-      extra={<a onClick={() => setVisible(true)}>添加订单</a>}
+      extra={props.status && <a onClick={() => setVisible(true)}>添加订单</a>}
     >
       <Table
         bordered={true}
@@ -88,7 +124,9 @@ const SettleOrderInfo: FC<IProps> = (props) => {
         columns={columns}
         rowKey='id'
         footer={() => <div style={{display:'flex',alignItems:'center'}}>
-          应收款：￥   已收款：￥800.00 未收款：￥100.00
+          应收款：<Statistic prefix='￥' valueStyle={{fontSize:16}} value={price1} />
+          已收款：<Statistic prefix='￥' valueStyle={{fontSize:16}} value={price2} />
+          未收款：<Statistic prefix='￥' valueStyle={{fontSize:16}} value={price3} />
         </div>}
       />
       {visible && <SettleOrderModal
@@ -97,6 +135,12 @@ const SettleOrderInfo: FC<IProps> = (props) => {
         id={props.id}
         onOk={handleConfirm}
       />}
+
+      {detailVisible && type === 1 && <OneDayInfo id={id} visible={detailVisible} onCancel={() => setDetailVisible(false)}/>}
+      {detailVisible && type === 2 && <ShopOrderInfo id={id} visible={detailVisible} onCancel={() => setDetailVisible(false)}/>}
+      {detailVisible && type === 3 && <PartyOrderInfo id={id} visible={detailVisible} onCancel={() => setDetailVisible(false)}/>}
+      {detailVisible && type === 4 && <CarOrderInfo id={id} visible={detailVisible} onCancel={() => setDetailVisible(false)}/>}
+      {detailVisible && type === 5 && <ReceptionOrderInfo id={id} visible={detailVisible} onCancel={() => setDetailVisible(false)}/>}
     </Card>
   )
 }

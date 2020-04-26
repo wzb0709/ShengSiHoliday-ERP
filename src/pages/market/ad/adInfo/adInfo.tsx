@@ -50,9 +50,11 @@ const AdInfo:FC<IProps> = (props) => {
   //table列数据
   const columns: ColumnProps<Object>[] = [
     { dataIndex: 'advertising_title', title: '广告标题' },
-    { dataIndex: 'advertising_type', title: '广告类型' },
-    { dataIndex: 'detail_type', title: '详细类型' },
-    { dataIndex: 'advertising_url', title: '链接地址' },
+    { dataIndex: 'advertising_type', title: '广告类型' ,render:recode => recode === 1 ? '内部链接' : '外部链接'},
+    { dataIndex: 'detail_type', title: '详细类型' ,render:recode => recode === 1 ? '一日游'
+      : recode === 2 ? '当地购物' : '定制游'
+    },
+    { dataIndex: 'advertising_url', title: '链接地址' ,render:recode => <img src={recode} width={80} height={80} style={{objectFit:"cover"}} alt=""/>},
     { dataIndex: 'sort', title: '排序' },
     {
       dataIndex: '', title: '上架状态', render: recode =>

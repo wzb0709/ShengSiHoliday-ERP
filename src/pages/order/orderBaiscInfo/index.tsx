@@ -11,7 +11,8 @@ interface IProps {
   basicInfo:any,
   onRefresh:any,
   showSale:boolean,
-  type:number
+  type:number,
+  cantEdit?:boolean,
 }
 
 const OrderBasicInfo:FC<IProps> = (props) => {
@@ -50,14 +51,14 @@ const OrderBasicInfo:FC<IProps> = (props) => {
           <div style={{border:'1px solid #eee',height:125,boxSizing:'border-box',padding:20}}>
             <Row type='flex' align='middle' justify='space-between'>
               <div style={{fontSize:16,fontWeight:'bold'}}>{props.basicInfo.contact_name}</div>
-              <a onClick={() => setVisible(true)}>编辑</a>
+              {!props.cantEdit && <a onClick={() => setVisible(true)}>编辑</a>}
             </Row>
             <Row style={{marginTop:10}} type='flex' align='middle' justify='space-between'>
               <Row type='flex' align='middle'>
                 <Icon style={{marginRight:10}} type="phone" />
                 <div>{props.basicInfo.contact_phone}</div>
               </Row>
-              <a>发送短信</a>
+              {!props.cantEdit && <a>发送短信</a>}
             </Row>
             {props.type === 1 && <Row style={{marginTop:10}} type='flex' align='middle' justify='space-between'>
               <div>订单状态：{props.basicInfo.status === 0 ? <Badge status='warning' text='待付款' />
@@ -66,8 +67,8 @@ const OrderBasicInfo:FC<IProps> = (props) => {
                       : props.basicInfo.status === 3 ? <Badge status='success' text='已评价' />
                         :  <Badge status='default' text='已取消' />
               }</div>
-              {(props.basicInfo.status === 1) && <a style={{marginRight:10}} onClick={() => handleChangeOrder(2)}>确认订单</a>}
-              {(props.basicInfo.status === 0 || props.basicInfo.status === 1 || props.basicInfo.status === 2) && <a style={{color:'red'}} onClick={() => handleChangeOrder(9)}>取消订单</a>}
+              {(props.basicInfo.status === 1) && !props.cantEdit && <a style={{marginRight:10}} onClick={() => handleChangeOrder(2)}>确认订单</a>}
+              {(props.basicInfo.status === 0 || props.basicInfo.status === 1 || props.basicInfo.status === 2) && !props.cantEdit &&  <a style={{color:'red'}} onClick={() => handleChangeOrder(9)}>取消订单</a>}
             </Row>}
             {props.type === 2 && <Row style={{marginTop:10}} type='flex' align='middle' justify='space-between'>
               <div>订单状态：{props.basicInfo.status === 0 ? <Badge status='warning' text='待付款' />
@@ -77,8 +78,8 @@ const OrderBasicInfo:FC<IProps> = (props) => {
                       : props.basicInfo.status === 4 ? <Badge status='success' text='已评价' />
                         :  <Badge status='default' text='已取消' />
               }</div>
-              {(props.basicInfo.status === 1) && <a style={{marginRight:10}} onClick={() => handleChangeOrder(2)}>订单发货</a>}
-              {(props.basicInfo.status === 0 || props.basicInfo.status === 1) && <a style={{color:'red'}} onClick={() => handleChangeOrder(9)}>取消订单</a>}
+              {(props.basicInfo.status === 1) && !props.cantEdit &&  <a style={{marginRight:10}} onClick={() => handleChangeOrder(2)}>订单发货</a>}
+              {(props.basicInfo.status === 0 || props.basicInfo.status === 1) && !props.cantEdit &&  <a style={{color:'red'}} onClick={() => handleChangeOrder(9)}>取消订单</a>}
             </Row>}
             {props.type === 3 && <Row style={{marginTop:10}} type='flex' align='middle' justify='space-between'>
               <div>订单状态：{props.basicInfo.status === 0 ? <Badge status='warning' text='待付款' />
@@ -87,8 +88,8 @@ const OrderBasicInfo:FC<IProps> = (props) => {
                     : props.basicInfo.status === 3 ? <Badge status='success' text='已评价' />
                       :  <Badge status='default' text='已取消' />
               }</div>
-              {(props.basicInfo.status === 1) && <a style={{marginRight:10}} onClick={() => handleChangeOrder(2)}>确认订单</a>}
-              {(props.basicInfo.status === 0 || props.basicInfo.status === 1 || props.basicInfo.status === 2) && <a style={{color:'red'}} onClick={() => handleChangeOrder(9)}>取消订单</a>}
+              {(props.basicInfo.status === 1) && !props.cantEdit &&  <a style={{marginRight:10}} onClick={() => handleChangeOrder(2)}>确认订单</a>}
+              {(props.basicInfo.status === 0 || props.basicInfo.status === 1 || props.basicInfo.status === 2) && !props.cantEdit &&  <a style={{color:'red'}} onClick={() => handleChangeOrder(9)}>取消订单</a>}
             </Row>}
             {props.type === 4 && <Row style={{marginTop:10}} type='flex' align='middle' justify='space-between'>
               <div>订单状态：{props.basicInfo.status === 0 ? <Badge status='warning' text='待付款' />
@@ -99,10 +100,10 @@ const OrderBasicInfo:FC<IProps> = (props) => {
                         : props.basicInfo.status === 6 ? <Badge status='success' text='订单完成' />
                           :  <Badge status='default' text='已取消' />
               }</div>
-              {(props.basicInfo.status === 1) && <a style={{marginRight:10}} onClick={() => handleChangeOrder(3)}>确认订单</a>}
-              {(props.basicInfo.status === 3) && <a style={{marginRight:10}} onClick={() => handleChangeOrder(4)}>提车</a>}
-              {(props.basicInfo.status === 4) && <a style={{marginRight:10}} onClick={() => handleChangeOrder(5)}>还车</a>}
-              {(props.basicInfo.status === 0 || props.basicInfo.status === 1 || props.basicInfo.status === 3) && <a style={{color:'red'}} onClick={() => handleChangeOrder(9)}>取消订单</a>}
+              {(props.basicInfo.status === 1) && !props.cantEdit &&  <a style={{marginRight:10}} onClick={() => handleChangeOrder(3)}>确认订单</a>}
+              {(props.basicInfo.status === 3) && !props.cantEdit &&  <a style={{marginRight:10}} onClick={() => handleChangeOrder(4)}>提车</a>}
+              {(props.basicInfo.status === 4) && !props.cantEdit &&  <a style={{marginRight:10}} onClick={() => handleChangeOrder(5)}>还车</a>}
+              {(props.basicInfo.status === 0 || props.basicInfo.status === 1 || props.basicInfo.status === 3) && !props.cantEdit &&  <a style={{color:'red'}} onClick={() => handleChangeOrder(9)}>取消订单</a>}
             </Row>}
             {props.type === 5 && <Row style={{marginTop:10}} type='flex' align='middle' justify='space-between'>
               <div>订单状态：{props.basicInfo.status === 0 ? <Badge status='warning' text='待付款' />
@@ -110,8 +111,8 @@ const OrderBasicInfo:FC<IProps> = (props) => {
                   : props.basicInfo.status === 2 ?  <Badge status='processing' text='已付款' />
                     :  <Badge status='default' text='已取消' />
               }</div>
-              {(props.basicInfo.status === 1) && <a style={{marginRight:10}} onClick={() => handleChangeOrder(2)}>确认订单</a>}
-              {(props.basicInfo.status === 0 || props.basicInfo.status === 1 || props.basicInfo.status === 2) && <a style={{color:'red'}} onClick={() => handleChangeOrder(9)}>取消订单</a>}
+              {(props.basicInfo.status === 1) && !props.cantEdit &&  <a style={{marginRight:10}} onClick={() => handleChangeOrder(2)}>确认订单</a>}
+              {(props.basicInfo.status === 0 || props.basicInfo.status === 1 || props.basicInfo.status === 2) && !props.cantEdit &&  <a style={{color:'red'}} onClick={() => handleChangeOrder(9)}>取消订单</a>}
             </Row>}
           </div>
         </Col>

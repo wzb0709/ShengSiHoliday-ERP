@@ -13,7 +13,7 @@ const BreadcrumbLayout: FC = (props) => {
     { path: '/product/oneDay/:id/img', name: '编辑图文详情' },
     { path: '/product/oneDay/:id/plan', name: '计划管理' },
     { path: '/product/oneDay/:id/plan/add', name: '批量添加计划' },
-    { path: '/product/oneDayManager', name: '一日游管理' },
+    { path: '/product/oneDayManager', name: '一日游计划' },
     { path: '/product/oneDayManager/:id', name: '计划详情' },
     { path: '/product/oneDayManager/:id/edit', name: '编辑计划' },
     { path: '/product/shopping', name: '当地购物' },

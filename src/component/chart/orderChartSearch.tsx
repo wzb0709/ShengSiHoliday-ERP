@@ -33,19 +33,19 @@ const OrderChartSearch:FC<IProps> = (props) => {
 
   return (
     <>
-      <FormItem style={{width:150}}>
-        {getFieldDecorator('groupbytype', {
-          initialValue:props.initialValue.groupbytype,
-          rules: [
-            {
-              required: false,
-            },
-          ],
-        })(<Select placeholder='请选择显示方式' style={{width:150}} >
-          <Option value={1}>按天</Option>
-          <Option value={2}>按月</Option>
-        </Select>)}
-      </FormItem>
+      {/*<FormItem style={{width:150}}>*/}
+      {/*  {getFieldDecorator('groupbytype', {*/}
+      {/*    initialValue:props.initialValue.groupbytype,*/}
+      {/*    rules: [*/}
+      {/*      {*/}
+      {/*        required: false,*/}
+      {/*      },*/}
+      {/*    ],*/}
+      {/*  })(<Select placeholder='请选择显示方式' style={{width:150}} >*/}
+      {/*    <Option value={1}>按天</Option>*/}
+      {/*    <Option value={2}>按月</Option>*/}
+      {/*  </Select>)}*/}
+      {/*</FormItem>*/}
       <FormItem style={{width:150,marginLeft:20}}>
         {getFieldDecorator('ordertype', {
           initialValue:props.initialValue.ordertype,

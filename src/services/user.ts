@@ -42,3 +42,7 @@ export function addUser({info}:{info:IUserInfo}) {
   const params = {...info}
   return axios.post(`/sysUser`,params)
 }
+
+export function changePwd(id:string) {
+  return axios.put(`/sysUser/pwd/${id}`)
+}

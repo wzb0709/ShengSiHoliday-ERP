@@ -9,6 +9,7 @@ import SalesmanModal from '@/pages/order/salesman/salesmanModal'
 interface IProps {
   basicInfo: any,
   onRefresh: any
+  cantEdit?:boolean
 }
 
 const SalesmanInfo: FC<IProps> = (props) => {
@@ -45,8 +46,8 @@ const SalesmanInfo: FC<IProps> = (props) => {
     <>
       <Card
         title={<div>业务员信息</div>}
-        extra={
-          <>
+        extra={!props.cantEdit &&
+        <>
             <a onClick={() => setVisible(true)}>更换业务员</a>
             {props.basicInfo.salesman_id !== '' &&<>
               <Divider type='vertical' />

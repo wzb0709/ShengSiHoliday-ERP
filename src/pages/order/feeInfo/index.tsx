@@ -8,6 +8,7 @@ import FeeModal from '@/pages/order/feeInfo/feeModal'
 
 interface IProps {
   id: string,
+  cantEdit?:boolean
 }
 
 const FeeInfo: FC<IProps> = (props) => {
@@ -22,11 +23,11 @@ const FeeInfo: FC<IProps> = (props) => {
   const [count, setCount] = useState<number>(0)
 
   const columns: ColumnProps<Object>[] = [
-    { dataIndex: '', title: '金额',render:recode=><div style={{color:recode.fee_type === 1 ? '#00cd00' : 'red'}}>{recode.fee_type === 1 ? `+${recode.fee_price}` : '-${recode.fee_price}'}</div>},
+    { dataIndex: '', title: '金额',render:recode=><div style={{color:recode.fee_type === 1 ? '#00cd00' : 'red'}}>{recode.fee_type === 1 ? `+${recode.fee_price}` : `-${recode.fee_price}`}</div>},
     { dataIndex: 'fee_summary', title: '备注' },
     { dataIndex: 'create_time', title: '操作时间',render:recode=>moment(recode).format('YYYY-MM-DD HH:mm:ss') },
     {
-      dataIndex: '', title: '操作', render: recode => <Fragment>
+      dataIndex: '', title: '操作', render: recode => !props.cantEdit &&<Fragment>
         <a onClick={() => handleUpdate(recode.id)} >编辑</a>
         <Divider type='vertical'/>
         <a onClick={() => handleDelete(recode.id)} style={{ color: 'red' }}>删除</a>
@@ -102,7 +103,7 @@ const FeeInfo: FC<IProps> = (props) => {
     <Card
       title='费用信息'
       style={{marginTop:20}}
-      extra={
+      extra={!props.cantEdit &&
         <>
           <a onClick={handleAdd}>添加费用</a>
         </>

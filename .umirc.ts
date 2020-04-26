@@ -41,6 +41,8 @@ const config: IConfig = {
             {path:'/money/refund',component:'./money/refund'},
             {path:'/money/withdraw',component:'./money/withdraw'},
             {path:'/money/expense',component:'./money/expense'},
+            {path:'/money/myExpense',component:'./money/MyExpense'},
+            {path:'/money/myExpense/:id',component:'./money/MyExpense/detail'},
             {path:'/money/expense/:id',component:'./money/expense/detail'},
             {path:'/money/settle',component:'./money/settle'},
             {path:'/money/settle/:id',component:'./money/settle/detail'},
@@ -104,6 +106,7 @@ const config: IConfig = {
             {path:'/team/manager/:id',component:'./team/manager/detail'},
             {path:'/team/guide',component:'./team/guide'},
             {path:'/team/guide/:id',component:'./team/guide/detail'},
+            {path:'/team/calendar',component:'./team/guideCalendar'},
           ]},
         { path: '/basic', component: './basic/breadcrumb' ,routes:[
             {path:'/basic/bus',component:'./basic/bus'},

@@ -10,6 +10,7 @@ import PointInfoModal from '@/pages/order/car/point/pointModal'
 interface IProps {
   basicInfo: any,
   onRefresh: any
+  cantEdit?:boolean
 }
 
 const PointInfo: FC<IProps> = (props) => {
@@ -41,7 +42,7 @@ const PointInfo: FC<IProps> = (props) => {
     <>
       <Card
         title={<div>取/还车点</div>}
-        extra={
+        extra={!props.cantEdit &&
           <>
             <a onClick={() => setVisible(true)}>编辑</a>
           </>

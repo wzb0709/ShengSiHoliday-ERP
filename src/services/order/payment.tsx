@@ -40,11 +40,11 @@ export function getAudit(type:number,status:number,start_time:string,end_time:st
   return axios.get(`/payment/audit`,{params})
 }
 
-export function judgePayment(item:any,id:string,type:number) {
+export function judgePayment(item:any,id:string) {
   const params = {
     ...item,id
   }
-  return axios.put(`/payment/audit/${type}`,item)
+  return axios.put(`/payment/audit`,params)
 }
 
 export function getStatistical(type:number,status:number,start_time:string,end_time:string) {

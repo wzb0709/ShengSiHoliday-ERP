@@ -15,6 +15,10 @@ export function getCouponList(params:IParams) {
   return axios.get(`/coupon`,{params})
 }
 
+export function getMemberList(params:any) {
+  return axios.get(`/coupon/member`,{params})
+}
+
 export function getAllCouponList() {
   return axios.get(`/coupon/list`)
 }

@@ -9,6 +9,7 @@ import OrderOtherPackageModal from '@/pages/order/otherPackageInfo/otherPackageM
 interface IProps {
   id: string,
   pro_id:string,
+  cantEdit?:boolean,
 }
 
 const ShoppingPackageInfo: FC<IProps> = (props) => {
@@ -24,7 +25,7 @@ const ShoppingPackageInfo: FC<IProps> = (props) => {
     { dataIndex: 'count', title: '套餐数量'},
     { dataIndex: 'price', title: '套餐价格' },
     {
-      dataIndex: 'id', title: '操作', render: recode => <Fragment>
+      dataIndex: 'id', title: '操作', render: recode => !props.cantEdit && <Fragment>
         <a onClick={() => handleUpdatePackage(recode)} >编辑</a>
         <Divider type='vertical'/>
         <a onClick={() => handleDeletePackage(recode)} style={{ color: 'red' }}>删除</a>
@@ -97,7 +98,7 @@ const ShoppingPackageInfo: FC<IProps> = (props) => {
     <Card
       title='套餐信息'
       style={{marginTop:20}}
-      extra={<a onClick={handleAddPackage}>添加套餐</a>}
+      extra={!props.cantEdit && <a onClick={handleAddPackage}>添加套餐</a>}
     >
       <Table
         bordered={true}

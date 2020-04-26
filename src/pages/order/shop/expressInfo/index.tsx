@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react'
+import React, { FC, Fragment, useEffect, useState } from 'react'
 import { Card, Divider, message, Modal, Row, Timeline } from 'antd'
 
 import * as commonServices from '@/services/common'
@@ -8,6 +8,7 @@ import ExpressModal from '@/pages/order/shop/expressInfo/expressModal'
 interface IProps {
   basicInfo: any,
   onRefresh: any
+  cantEdit?:boolean,
 }
 
 const ShoppingExpressInfo: FC<IProps> = (props) => {
@@ -51,8 +52,8 @@ const ShoppingExpressInfo: FC<IProps> = (props) => {
     <>
       <Card
         title={<div>物流信息</div>}
-        extra={
-          <>
+        extra={!props.cantEdit &&
+        <>
             <a onClick={() => setVisible(true)}>编辑物流信息</a>
             <Divider type='vertical' />
             <a onClick={handleViewExpress}>查看物流</a>

@@ -19,6 +19,10 @@ export function updateSettle(item:ISettleItem,id:string) {
   return axios.put(`/settle`,params)
 }
 
+export function updateSettleStatus(item:any) {
+  return axios.put(`/settle/status`,item)
+}
+
 export function addSettle(item:ISettleItem) {
   return axios.post(`/settle`,item)
 }

@@ -10,8 +10,10 @@ const BreadcrumbLayout: FC = (props) => {
     { path: '/money/refund', name: '订单退款' },
     { path: '/money/settle', name: '三清单管理' },
     { path: '/money/settle/:id', name: '三清单详情' },
-    { path: '/money/expense', name: '报销管理' },
+    { path: '/money/expense', name: '报销审核' },
+    { path: '/money/myExpense', name: '我的报销' },
     { path: '/money/expense/:id', name: '报销详情' },
+    { path: '/money/myExpense/:id', name: '报销详情' },
   ]
 
   return (

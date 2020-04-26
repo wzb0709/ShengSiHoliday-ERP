@@ -40,6 +40,13 @@ export function getAuditExpenseList(search:string,status:number,start_time:strin
   return axios.get(`/expense/audit`,{params})
 }
 
+export function getStatistical(type:number,search:string,status:number,start_time:string,end_time:string) {
+  const params = {
+    type,status,search,start_time,end_time
+  }
+  return axios.get(`/expense/statistical`,{params})
+}
+
 
 export function getDetailList(expenseid:string,page:number,size:number) {
   const params = {

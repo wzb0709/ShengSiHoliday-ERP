@@ -188,13 +188,24 @@ const AdInfoModal:FC<IProps> = (props) => {
       {props.form.getFieldValue('advertising_type') === 2 && <FormItem label='外部链接地址' {...formItemLayout}>
         {getFieldDecorator('advertising_url', {
           initialValue:props.initialValue.advertising_url,
+          normalize: value => {
+            if (typeof value === 'string') {
+              return value
+            } else if (Array.isArray(value)) {
+              return value.length > 0 ? value.slice(-1)[0] : ''
+            }
+          },
           rules: [
             {
               required: true,
-              message: '请输入外部链接地址',
+              message: '请上传广告图',
             },
           ],
-        })(<Input placeholder='请输入外部链接地址' style={{width:"70%"}} />)}
+        })(<FormUpload
+          accept="image/jpeg,image/jpg,image/png"
+          action="https://pzyfile.oss-cn-hangzhou.aliyuncs.com"
+          listType={'picture'}
+        />)}
       </FormItem>}
       <FormItem label='排序' {...formItemLayout}>
         {getFieldDecorator('sort', {

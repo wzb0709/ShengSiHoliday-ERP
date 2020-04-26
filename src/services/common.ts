@@ -62,3 +62,8 @@ export function getDistributionList() {
 export function clearSalesman(id:string) {
   return axios.put(`/baseOrder/cleansalesman?id=${id}`)
 }
+
+export function getProgress(id:string) {
+  return axios.get(`progress/${id}`)
+}
+

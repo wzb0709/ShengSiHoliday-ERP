@@ -26,6 +26,14 @@ const CouponModal:FC<IProps> = (props) => {
     labelCol: {span: 6},
     wrapperCol: {span: 18},
   }
+  const formItemLayout1 = {
+    labelCol: {span: 12},
+    wrapperCol: {span: 10},
+  }
+  const formItemLayout2 = {
+    labelCol: {span: 6},
+    wrapperCol: {span: 10},
+  }
 
   const [dataSource,setDataSource] = useState<any>([])
 
@@ -87,7 +95,7 @@ const CouponModal:FC<IProps> = (props) => {
       </FormItem>
       <Row>
         <Col span={12} >
-          <FormItem label='优惠券归属' {...formItemLayout}>
+          <FormItem label='优惠券归属' {...formItemLayout1}>
             {getFieldDecorator('coupon_use', {
               initialValue:props.initialValue.coupon_use,
               rules: [
@@ -103,7 +111,7 @@ const CouponModal:FC<IProps> = (props) => {
           </FormItem>
         </Col>
         <Col span={12} >
-          <FormItem label='优惠券类型' {...formItemLayout}>
+          <FormItem label='优惠券类型' {...formItemLayout2}>
             {getFieldDecorator('coupon_type', {
               initialValue:props.initialValue.coupon_type,
               rules: [
@@ -115,12 +123,12 @@ const CouponModal:FC<IProps> = (props) => {
             })(<Select placeholder='请选择优惠券类型' style={{width:"70%"}} >
               <Option value={1}>免单券</Option>
               <Option value={2}>满减券</Option>
-              <Option value={2}>立减券</Option>
+              <Option value={3}>立减券</Option>
             </Select>)}
           </FormItem>
         </Col>
       </Row>
-      <FormItem label='对应产品' {...formItemLayout}>
+      {props.form.getFieldValue('coupon_use') === 2 && <FormItem label='对应产品' {...formItemLayout}>
         {getFieldDecorator('product_id', {
           initialValue:props.initialValue.product_id,
           rules: [
@@ -134,10 +142,10 @@ const CouponModal:FC<IProps> = (props) => {
             return <Option key={item.id}>{item.food_title || item.product_title}</Option>
           })}
         </Select>)}
-      </FormItem>
+      </FormItem>}
       <Row>
         <Col span={12} >
-          <FormItem label='开始时间' {...formItemLayout}>
+          <FormItem label='开始时间' {...formItemLayout1}>
             {getFieldDecorator('start_time', {
               initialValue:props.initialValue.start_time ? moment(props.initialValue.start_time) : undefined,
               rules: [
@@ -150,7 +158,7 @@ const CouponModal:FC<IProps> = (props) => {
           </FormItem>
         </Col>
         <Col span={12} >
-          <FormItem label='结束时间' {...formItemLayout}>
+          <FormItem label='结束时间' {...formItemLayout2}>
             {getFieldDecorator('end_time', {
               initialValue:props.initialValue.end_time ? moment(props.initialValue.end_time) : undefined,
               rules: [
@@ -165,7 +173,7 @@ const CouponModal:FC<IProps> = (props) => {
       </Row>
       <Row>
         <Col span={12} >
-          <FormItem label='优惠券数量' {...formItemLayout}>
+          <FormItem label='优惠券数量' {...formItemLayout1}>
             {getFieldDecorator('coupon_count', {
               initialValue:props.initialValue.coupon_count,
               rules: [
@@ -178,7 +186,7 @@ const CouponModal:FC<IProps> = (props) => {
           </FormItem>
         </Col>
         <Col span={12} >
-          <FormItem label='用户最大领取数' {...formItemLayout}>
+          <FormItem label='用户最大领取数' {...formItemLayout2}>
             {getFieldDecorator('coupon_maxtake', {
               initialValue:props.initialValue.coupon_maxtake,
               rules: [

@@ -82,6 +82,7 @@ const ReceptionDetail:FC<IProps> = (props) => {
       onOk:() => {
         receptionServices.copyProduct(props.match.params.id).then(() => {
           message.success('操作成功！')
+          router.replace('/product/reception')
         })
       }
     })

@@ -10,6 +10,7 @@ import TouristInfo from '@/pages/order/touristInfo'
 import FeeInfo from '@/pages/order/feeInfo'
 import PaymentInfo from '@/pages/order/payment'
 import NotesInfo from '@/pages/order/notes'
+import Progress from '@/pages/order/progress'
 
 interface IProps {
   match:any
@@ -18,6 +19,7 @@ interface IProps {
 const ReceptionOrderDetail:FC<IProps> = (props) => {
 
   const [basicInfo,setBasicInfo] = useState<any>({})
+  const [visible,setVisible] = useState<boolean>(false)
 
   const getBasicInfo = useCallback(() => {
     Promise.all([receptionOrderServices.getReceptionInfo(props.match.params.id),commonServices.getBasicOrderInfo(props.match.params.id)])
@@ -39,7 +41,7 @@ const ReceptionOrderDetail:FC<IProps> = (props) => {
       <Card
         title='订单信息'
         extra={<>
-          <a>跟踪记录</a>
+          <a onClick={() => setVisible(true)} >跟踪记录</a>
           <Divider type='vertical' />
           <a>转让订单</a>
         </>}
@@ -54,6 +56,8 @@ const ReceptionOrderDetail:FC<IProps> = (props) => {
         </>}
         <NotesInfo basicInfo={basicInfo} onRefresh={getBasicInfo}/>
       </Card>
+
+      {visible && <Progress id={basicInfo.order_id} visible={visible} onCancel={() => setVisible(false)}/>}
     </>
   )
 }

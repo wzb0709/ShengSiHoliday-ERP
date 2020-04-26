@@ -35,19 +35,24 @@ const OperationSearch:FC<IProps> = (props) => {
 
   return (
     <>
-      <FormItem style={{width:150}}>
-        {getFieldDecorator('groupbytype', {
-          initialValue:props.initialValue.groupbytype,
-          rules: [
-            {
-              required: false,
-            },
-          ],
-        })(<Select placeholder='请选择显示方式' style={{width:150}} >
-          <Option value={1}>按天</Option>
-          <Option value={2}>按月</Option>
-        </Select>)}
-      </FormItem>
+      {/*<FormItem style={{width:150}}>*/}
+      {/*  {getFieldDecorator('groupbytype', {*/}
+      {/*    initialValue:props.initialValue.groupbytype,*/}
+      {/*    rules: [*/}
+      {/*      {*/}
+      {/*        required: false,*/}
+      {/*      },*/}
+      {/*    ],*/}
+      {/*  })(<Select placeholder='请选择显示方式' style={{width:150}} >*/}
+      {/*    <Option value={1}>按天</Option>*/}
+      {/*    <Option value={2}>按月</Option>*/}
+      {/*  </Select>)}*/}
+      {/*</FormItem>*/}
+      {/*<Select placeholder='请选择区间' style={{width:150}} >*/}
+      {/*  <Option value={1}>最近三个月</Option>*/}
+      {/*  <Option value={2}>会员数</Option>*/}
+      {/*  <Option value={3}>订单数</Option>*/}
+      {/*</Select>*/}
       <FormItem style={{width:150,marginLeft:20}}>
         {getFieldDecorator('operatingtype', {
           initialValue:props.initialValue.operatingtype,
@@ -78,7 +83,7 @@ const OperationSearch:FC<IProps> = (props) => {
           })}
         </Select>)}
       </FormItem>
-      {(props.form.getFieldValue('groupbytype') === 1) && <>
+      {(props.initialValue.groupbytype === 1) && <>
         <FormItem style={{width:150,marginLeft:20}} >
           {getFieldDecorator('start_time', {
             initialValue:props.initialValue.start_time === '' ? undefined : moment(props.initialValue.start_time),
@@ -100,7 +105,7 @@ const OperationSearch:FC<IProps> = (props) => {
           })(<DatePicker placeholder='请选择结束时间' style={{width:150}} />)}
         </FormItem>
       </>}
-      {(props.form.getFieldValue('groupbytype') === 2) && <>
+      {props.initialValue.groupbytype  === 2 && <>
         <FormItem style={{width:150,marginLeft:20}} >
           {getFieldDecorator('start_time', {
             initialValue:props.initialValue.start_time === '' ? undefined : moment(props.initialValue.start_time),

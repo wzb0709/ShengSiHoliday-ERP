@@ -4,7 +4,7 @@ import OrderChart from '@/component/chart/orderChart'
 class Order extends Component {
   render() {
     return (
-      <OrderChart />
+      <OrderChart type={1} />
     )
   }
 }

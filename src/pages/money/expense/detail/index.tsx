@@ -1,11 +1,11 @@
 import React, { FC, Fragment, useCallback, useEffect, useState } from 'react'
 import * as expenseServices from '@/services/expense'
-import { Card, Col, Divider, message, Modal, Row, Statistic, Table, Tag } from 'antd'
+import { Card, Col, Divider, Input, message, Modal, Row, Statistic, Table, Tag } from 'antd'
 import { Link, router } from 'umi'
 import GuideModal from '@/pages/team/guide/guideModal'
 import { ColumnProps } from 'antd/lib/table'
 import moment from 'moment'
-import { IMember } from '@/models/login'
+import { IMember, IUserInfo } from '@/models/login'
 import { useSelector } from 'dva'
 import ExpenseModal from '@/pages/money/expense/expenseModal'
 import * as couponServices from '@/services/coupon'
@@ -21,12 +21,21 @@ const ExpenseDetail:FC<IProps> = (props) => {
   const [basicInfo, setBasicInfo] = useState<any>({})
 
   const [visible,setVisible] = useState<boolean>(false)
+  const [statusVisible,setStatusVisible] = useState<boolean>(false)
+  const [val,setVal] = useState<string>('')
   const [detailVisible,setDetailVisible] = useState<boolean>(false)
   const [initialValue,setInitialValue] = useState<any>({})
   const [id,setId] = useState<string>('')
   const [list,setList] = useState<any>([])
 
   const memberList: Array<IMember> = useSelector((state: any) => state.login.memberList)
+  //获取用户信息
+  const userInfo: IUserInfo = useSelector((state: any) => state.login.userInfo)
+
+  const judge = userInfo.roleList.findIndex(item => item.id === 11) !== -1
+  const pull = userInfo.roleList.findIndex(item => item.id === 11) !== -1
+
+  const canEdit:boolean = basicInfo.create_id === localStorage.getItem('id')
 
   const getBasicInfo = useCallback(() => {
     expenseServices.getExpenseInfo(props.match.params.id).then((res: any) => {
@@ -46,14 +55,7 @@ const ExpenseDetail:FC<IProps> = (props) => {
   const columns: ColumnProps<Object>[] = [
     { dataIndex: 'detail_content', title: '报销内容',ellipsis:true},
     { dataIndex: 'expense_money', title: '报销金额',render:recode => <Row type='flex' align='middle'><Statistic valueStyle={{fontSize:14}} value={recode} precision={2} prefix='￥' /></Row>},
-    { dataIndex: 'happen_date', title: '发生时间',render:recode=>moment(recode).format('YYYY-MM-DD') },
-    {
-      dataIndex: '', title: '操作', render: recode => <Fragment>
-        <a onClick={() => handleEditList(recode)}>编辑</a>
-        <Divider type='vertical' />
-        <a onClick={() => handleDeleteList(recode.id)} style={{color:'red'}}>删除</a>
-      </Fragment>,
-    },
+    { dataIndex: 'happen_date', title: '发生时间',render:recode=>moment(recode).format('YYYY-MM-DD') }
   ]
 
   const handleUpdateModal = () => {
@@ -132,15 +134,46 @@ const ExpenseDetail:FC<IProps> = (props) => {
     })
   }
 
+  const handleChangeStatus = (status:number) => {
+    if(status === 1 || status === 3){
+      Modal.confirm({
+        title:"提示",
+        content:"是否要确认该操作？",
+        onOk:() => {
+          expenseServices.updateExpenseStatus(props.match.params.id,status).then(() => {
+            message.success('操作成功！')
+            getBasicInfo()
+          })
+        }
+      })
+    }else{
+      if(val === ''){
+        message.warning('请输入拒绝理由')
+        return false
+      }
+      expenseServices.updateExpenseStatus(props.match.params.id,status,val).then(() => {
+        message.success('操作成功！')
+        getBasicInfo()
+      })
+    }
+  }
+
   return (
     <>
       <Card
         title='基本信息'
-        extra={<>
-          <a onClick={handleUpdateModal} >编辑</a>
-          <Divider type='vertical' />
-          <a onClick={handleDelete} style={{color:'red'}}>删除</a>
-        </>}
+        extra={
+          <>
+            {judge && basicInfo.status === 0 && <>
+              <a style={{marginLeft:20}} onClick={() => handleChangeStatus(1)} >通过</a>
+              <Divider type='vertical' />
+              <a onClick={() => setStatusVisible(true)} style={{color:'red'}}>拒绝</a>
+            </>}
+            {pull && basicInfo.status === 1 && <>
+              <a onClick={() => handleChangeStatus(3)} >发放</a>
+            </>}
+          </>
+          }
       >
         <Row style={{ marginBottom: 10 }}>
           <Col span={24}>
@@ -189,6 +222,15 @@ const ExpenseDetail:FC<IProps> = (props) => {
         onOk={handleConfirmList}
         initialValue={initialValue}
       />
+      <Modal
+        title='拒绝理由'
+        destroyOnClose={true}
+        onCancel={() => setStatusVisible(false)}
+        onOk={() => handleChangeStatus(2)}
+        visible={statusVisible}
+      >
+        <Input style={{width:300}}  placeholder='请输入拒绝理由' onChange={(e) =>setVal(e.target.value)} />
+      </Modal>
     </>
   )
 }

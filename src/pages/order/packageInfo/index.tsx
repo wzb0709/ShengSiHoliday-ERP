@@ -10,6 +10,7 @@ import OrderPackageModal from '@/pages/order/packageInfo/orderPackageModal'
 interface IProps {
   id: string,
   date_id:string,
+  cantEdit?:boolean
 }
 
 const PackageInfo: FC<IProps> = (props) => {
@@ -31,9 +32,9 @@ const PackageInfo: FC<IProps> = (props) => {
         <div>成人：{recode.adult_count}</div>
         <div>儿童：{recode.child_count}</div>
       </>},
-    { dataIndex: 'price', title: '套餐价格' },
+    { dataIndex: 'price', title: '套餐价格' ,render:recode => <Statistic valueStyle={{fontSize:14}} value={recode} precision={2} prefix='￥' />},
     {
-      dataIndex: 'id', title: '操作', render: recode => <Fragment>
+      dataIndex: 'id', title: '操作', render: recode =>!props.cantEdit && <Fragment>
         <a onClick={() => handleUpdatePackage(recode)} >编辑</a>
         <Divider type='vertical'/>
         <a onClick={() => handleDeletePackage(recode)} style={{ color: 'red' }}>删除</a>
@@ -106,7 +107,7 @@ const PackageInfo: FC<IProps> = (props) => {
     <Card
       title='套餐信息'
       style={{marginTop:20}}
-      extra={<a onClick={handleAddPackage}>添加套餐</a>}
+      extra={!props.cantEdit &&<a onClick={handleAddPackage}>添加套餐</a>}
     >
       <Table
         bordered={true}

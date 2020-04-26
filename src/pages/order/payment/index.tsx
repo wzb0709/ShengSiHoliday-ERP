@@ -8,6 +8,7 @@ import PaymentModal from '@/pages/order/payment/paymentModal'
 
 interface IProps {
   id: string,
+  cantEdit?:boolean
 }
 
 const PaymentInfo: FC<IProps> = (props) => {
@@ -33,7 +34,7 @@ const PaymentInfo: FC<IProps> = (props) => {
         :<Badge status='error' text='审核拒绝' /> },
     {
       dataIndex: '', title: '操作', render: recode => <Fragment>
-        {recode.status === 0 && <>
+        {recode.status === 0 && !props.cantEdit && <>
           <a onClick={() => handleUpdate(recode.id)} >编辑</a>
           <Divider type='vertical'/>
           <a onClick={() => handleDelete(recode.id)} style={{ color: 'red' }}>删除</a>
@@ -114,7 +115,7 @@ const PaymentInfo: FC<IProps> = (props) => {
     <Card
       title='收退款信息'
       style={{marginTop:20}}
-      extra={
+      extra={!props.cantEdit &&
         <>
           <a onClick={handleAdd}>添加收退款</a>
         </>

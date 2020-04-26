@@ -51,7 +51,7 @@ const OrderPackageModal:FC<IProps> = (props) => {
         })(<Select placeholder='请选择套餐' style={{width:"70%"}} >
           {props.packageList.map((item:any) => {
             return(
-              <Option key={item.package_id}>{`${item.package_title} 成人${item.package_adult_price}元 儿童${item.package_child_price}元`}</Option>
+              <Option key={item.id}>{`${item.package_title} 成人${item.package_adult_price}元 儿童${item.package_child_price}元`}</Option>
             )
           })}
         </Select>)}

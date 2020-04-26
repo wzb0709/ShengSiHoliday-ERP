@@ -144,15 +144,30 @@ const MainLayout = (props: any) => {
     localStorage.setItem('height', document.body.clientHeight.toString())
   }, [props.children])
 
+  const auth = (auth?:number) => {
+    console.log(auth)
+    if(!auth) return true
+    let res = false
+    const a = userInfo?.roleList?.forEach(item => {
+      item.authList.forEach(item1 => {
+        if(item1.id === auth){
+          console.log(item1.title)
+          res = true
+        }
+      })
+    })
+    return res
+  }
+
   return (
     <Layout style={{ minHeight: '100vh' }}>
       <Sider
         collapsible={true}
         collapsed={collapsed}
         onCollapse={() => setCollapsed(!collapsed)}
+        className={styles.sider}
         style={{
           overflow: 'auto',
-          height: '100vh',
           position: 'fixed',
           left: 0,
         }}
@@ -197,7 +212,7 @@ const MainLayout = (props: any) => {
         >
           {menuList.map((item: IMenuItem) => {
             if (item.children.length > 0) {
-              return (
+              return auth(item.auth) && (
                 <SubMenu
                   key={item.id}
                   title={
@@ -208,7 +223,7 @@ const MainLayout = (props: any) => {
                   }
                 >
                   {item.children.map(item1 => {
-                    return (
+                    return auth(item1.auth) && (
                       <Menu.Item key={item1.id}>
                         <Link to={`/${item.path}/${item1.path}`}>{item1.title}</Link>
                       </Menu.Item>

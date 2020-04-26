@@ -8,6 +8,7 @@ import RentalInfoModal from '@/pages/order/car/rental/rentalModal'
 interface IProps {
   basicInfo: any,
   onRefresh: any
+  cantEdit?:boolean
 }
 
 const RentalInfo: FC<IProps> = (props) => {
@@ -33,7 +34,7 @@ const RentalInfo: FC<IProps> = (props) => {
     <>
       <Card
         title={<div>租赁信息</div>}
-        extra={
+        extra={!props.cantEdit &&
           <>
             <a onClick={() => setVisible(true)}>编辑</a>
           </>

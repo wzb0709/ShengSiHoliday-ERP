@@ -8,7 +8,8 @@ import * as receptionOrderServices from '@/services/order/reception'
 
 interface IProps {
   basicInfo:any,
-  onRefresh:any
+  onRefresh:any,
+  cantEdit?:boolean
 }
 
 const ProductInfo:FC<IProps> = (props) => {
@@ -35,7 +36,7 @@ const ProductInfo:FC<IProps> = (props) => {
     <>
       <Card
         title={<div>产品信息 {props.basicInfo.travel_date && <span style={{fontSize:14,marginLeft:20}}>出游日期:{moment(props.basicInfo.travel_date).format('YYYY-MM-DD')}</span>}</div>}
-        extra={
+        extra={!props.cantEdit &&
           <>
             {/*<a onClick={() => setVisible(true)}>更换产品</a>*/}
             {/*<Divider type='vertical' />*/}

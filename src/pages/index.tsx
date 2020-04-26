@@ -94,7 +94,7 @@ const HomePage = () => {
             <div style={{display:'flex',flexDirection:'column',justifyContent:'center',height:100}} >
               <div style={{fontSize:18}}>我的待办事项</div>
               {todo.length === 0 && <div style={{fontSize:22,fontWeight:'bold',marginTop:20}}>暂无待办事项</div>}
-              {todo.length !== 0 && <Row justify='space-between' type='flex' style={{fontSize:22,fontWeight:'bold',marginTop:20}}>
+              {todo.length !== 0 && <Row justify='space-between' type='flex' style={{fontSize:22,fontWeight:'bold',marginTop:20,cursor:'pointer'}}>
                 {count1}项
                 <span style={{color:'red'}}>{count}项紧急</span>
               </Row>}
@@ -117,12 +117,12 @@ const HomePage = () => {
           >
             <div style={{display:'flex',flexDirection:'column',justifyContent:'center',height:100}} >
               <Row type='flex' align='middle' justify='space-between' style={{fontSize:18}}>
-                <div>公告</div>
+                <div >公告</div>
                 {showList.length !== 0 && <a style={{fontSize:15}} onClick={handleViewMore} >查看更多>></a>}
               </Row>
                 {showList.map((item:any,index:number)=>{
                   return(
-                    <Row onClick={() => handleViewDetail(item)} key={index} type='flex' align='middle' style={{marginTop:20}} >
+                    <Row onClick={() => handleViewDetail(item)} key={index} type='flex' align='middle' style={{marginTop:20,cursor:'pointer'}} >
                       <div style={{width:'75%',overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>
                         {item.notice_title}
                       </div>
@@ -141,7 +141,7 @@ const HomePage = () => {
       </Row>
 
       {/*<OperationChart id='' />*/}
-      <OrderChart />
+      <OrderChart type={2} />
 
       <Modal
         title='公告列表'

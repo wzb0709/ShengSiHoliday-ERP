@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react'
+import React, { FC, Fragment, useEffect, useState } from 'react'
 import { Card, message, Row } from 'antd'
 
 import * as commonServices from '@/services/order/shopping'
@@ -7,6 +7,7 @@ import AddressInfoModal from '@/pages/order/shop/addressInfo/addressInfoModal'
 interface IProps {
   basicInfo: any,
   onRefresh: any
+  cantEdit?:boolean,
 }
 
 const ShoppingAddressInfo: FC<IProps> = (props) => {
@@ -27,8 +28,8 @@ const ShoppingAddressInfo: FC<IProps> = (props) => {
     <>
       <Card
         title={<div>收货信息</div>}
-        extra={
-          <>
+        extra={!props.cantEdit &&
+        <>
             <a onClick={() => setVisible(true)}>编辑收货信息</a>
           </>
         }

@@ -50,3 +50,12 @@ export function deleteCardInfo(id:string) {
   return axios.delete(`/distributionCard/${id}`)
 }
 
+export function changePwd(id:string) {
+  return axios.put(`/distribution/pwd/${id}`)
+}
+
+export function getCode(id:string) {
+  return axios.get(`/distribution/qrcode/${id}/${10}`,{responseType:'blob'})
+}
+
+

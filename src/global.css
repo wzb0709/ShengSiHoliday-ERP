@@ -33,3 +33,7 @@ body {
   text-overflow:ellipsis;
   white-space: nowrap;
 }
+
+.ant-layout-sider-children{
+  min-height: 100% !important;
+}

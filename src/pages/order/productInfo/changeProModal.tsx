@@ -1,6 +1,8 @@
-import React, { FC } from 'react'
+import React, { FC, useEffect, useState } from 'react'
 import { Modal, Form, Select } from 'antd'
 import { WrappedFormUtils } from 'antd/es/form/Form'
+import moment from 'moment'
+import * as oneDayServices from '@/services/onDay'
 
 interface IProps{
   readonly visible:boolean,
@@ -15,10 +17,21 @@ const FormItem = Form.Item
 const Option = Select.Option
 
 const ChangeProModal:FC<IProps> = (props) => {
+
+  const [dateList,setDateList] = useState<any>([])
+
+
+
   const {getFieldDecorator} = props.form
   const formItemLayout = {
     labelCol: {span: 6},
     wrapperCol: {span: 18},
+  }
+
+  const handleChange = (value:string) => {
+    oneDayServices.getPlan(value).then(res=>{
+      setDateList(res)
+    })
   }
 
   const handleConfirm = () => {
@@ -55,10 +68,36 @@ const ChangeProModal:FC<IProps> = (props) => {
             option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
           }
           showSearch={true}
+          // @ts-ignore
+          onSelect={handleChange}
         >
           {props.proList.map((item:any) => {
             return(
               <Option key={item.id}>{item.product_title}</Option>
+            )
+          })}
+        </Select>)}
+      </FormItem>
+      <FormItem label='发团日期' {...formItemLayout}>
+        {getFieldDecorator('date_id', {
+          rules: [
+            {
+              required: true,
+              message: '请选择要更换的发团日期',
+            },
+          ],
+        })(<Select
+          placeholder='请选择要更换的发团日期'
+          style={{width:"70%"}}
+          filterOption={(input, option) =>
+            // @ts-ignore
+            option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+          }
+          showSearch={true}
+        >
+          {dateList.map((item:any) => {
+            return(
+              <Option key={item.id}>{`${moment(item.start_date).format('YYYY-MM-DD')} 余位${item.site}`}</Option>
             )
           })}
         </Select>)}

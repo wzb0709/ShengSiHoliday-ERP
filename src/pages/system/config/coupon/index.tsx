@@ -51,10 +51,10 @@ const ConfigCoupon:FC<IProps> = (props) => {
         </FormItem>
         <FormItem label='注册赠送优惠券' {...formItemLayout}>
           {getFieldDecorator('register_coupons', {
-            initialValue:props.initialValue.register_coupons,
+            initialValue:props.initialValue.register_coupons === '' ? undefined : props.initialValue.register_coupons,
             rules: [
               {
-                required: true,
+                required: false,
                 message: '请选择注册赠送优惠券'
               },
             ],
@@ -68,10 +68,10 @@ const ConfigCoupon:FC<IProps> = (props) => {
         </FormItem>
         <FormItem label='一日游下单赠送优惠券' {...formItemLayout}>
           {getFieldDecorator('group_order_coupons', {
-            initialValue:props.initialValue.group_order_coupons,
+            initialValue:props.initialValue.group_order_coupons === '' ? undefined : props.initialValue.group_order_coupons,
             rules: [
               {
-                required: true,
+                required: false,
                 message: '请选择一日游下单赠送优惠券'
               },
             ],
@@ -85,10 +85,10 @@ const ConfigCoupon:FC<IProps> = (props) => {
         </FormItem>
         <FormItem label='购物下单赠送优惠券' {...formItemLayout}>
           {getFieldDecorator('shop_order_coupons', {
-            initialValue:props.initialValue.shop_order_coupons,
+            initialValue:props.initialValue.shop_order_coupons  === '' ? undefined : props.initialValue.shop_order_coupons,
             rules: [
               {
-                required: true,
+                required: false,
                 message: '请选择购物下单赠送优惠券'
               },
             ],
@@ -102,10 +102,10 @@ const ConfigCoupon:FC<IProps> = (props) => {
         </FormItem>
         <FormItem label='租赁下单赠送优惠券' {...formItemLayout}>
           {getFieldDecorator('car_order_coupons', {
-            initialValue:props.initialValue.car_order_coupons,
+            initialValue:props.initialValue.car_order_coupons === '' ? undefined : props.initialValue.car_order_coupons,
             rules: [
               {
-                required: true,
+                required: false,
                 message: '请选择租赁下单赠送优惠券'
               },
             ],
